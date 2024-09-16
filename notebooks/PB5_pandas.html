@@ -1,0 +1,2737 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Pandas &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/PB5_pandas';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Welcome to your Jupyter Book" href="../intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to your Jupyter Book
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Pandas</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fnotebooks/PB5_pandas.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/PB5_pandas.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Pandas</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#series-and-data-frames">Series and Data Frames</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-data-course-grades">Loading Data: Course Grades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-exploration">Data Exploration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preview">Preview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sorting">Sorting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-specific-columns">Selecting specific columns</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-for-particular-values">Filtering for particular values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#group-by">Group By</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-manipulation">Data Manipulation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-missing-values">Handling missing values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-irregular-cardinality">Handling irregular cardinality</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detecting-outliers">Detecting outliers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-a-dataframe">Saving a DataFrame</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="pandas">
+<h1>Pandas<a class="headerlink" href="#pandas" title="Link to this heading">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> module is Python’s fundamental data analytics library and it provides high-performance, easy-to-use data structures and tools for data analysis. Pandas allows for creating pivot tables, computing new columns based on other columns, etc. Pandas also facilitates grouping rows by column values and joining tables as in SQL.</p>
+<p>A good cheat sheet for Pandas can be found <a class="reference external" href="https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf">here</a>.</p>
+<p>Pandas is a very comprehensive and mature module that can be used for advanced data analytics, and this tutorial presents just a very basic overview of Pandas’ capabilities.</p>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#Data-Structures"><span class="xref myst">Data Structures</span></a></p></li>
+<li><p><a class="reference internal" href="#Loading-Data:-Course-Grades"><span class="xref myst">Loading Data: Course Grades</span></a></p></li>
+<li><p><a class="reference internal" href="#Data-Exploration"><span class="xref myst">Data Exploration</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#Preview"><span class="xref myst">Preview</span></a></p></li>
+<li><p><a class="reference internal" href="#Sort"><span class="xref myst">Sorting</span></a></p></li>
+<li><p><a class="reference internal" href="#Summary"><span class="xref myst">Summary</span></a></p></li>
+<li><p><a class="reference internal" href="#Selecting-specific-columns"><span class="xref myst">Selecting specific columns</span></a></p></li>
+<li><p><a class="reference internal" href="#Filtering-for-particular-values"><span class="xref myst">Filtering for particular values</span></a></p></li>
+<li><p><a class="reference internal" href="#Group-By"><span class="xref myst">Group By</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#Data-Manipulation"><span class="xref myst">Data Manipulation</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#Handling-missing-values"><span class="xref myst">Handling missing values</span></a></p></li>
+<li><p><a class="reference internal" href="#Handling-irregular-cardinality"><span class="xref myst">Handling irregular cardinality</span></a></p></li>
+<li><p><a class="reference internal" href="#Detecting-outliers"><span class="xref myst">Detecting outliers</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#Saving-a-DataFrame"><span class="xref myst">Saving a DataFrame</span></a></p></li>
+</ul>
+<p>Before we start, let’s suppress warnings as they can get annoying sometimes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s import <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> with the usual convention as <code class="docutils literal notranslate"><span class="pre">pd</span></code> and <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> as <code class="docutils literal notranslate"><span class="pre">np</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="series-and-data-frames">
+<h2>Series and Data Frames<a class="headerlink" href="#series-and-data-frames" title="Link to this heading">#</a></h2>
+<p>There are two main data structures in Pandas: <code class="docutils literal notranslate"><span class="pre">Series</span></code> and <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Series</span></code> is like a Python list: it is a one-dimensional data structure that can store values with labels (or index). We can initialize a Series with a list as below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">34</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    34
+1    23
+2    -5
+3     0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you would like to see the list of methods that you can use with a Series, use the code completion feature in Jupyter Notebook: type “x.” in a cell and then hit the Tab button.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> is just a table with rows and columns, much like an Excel spreadsheet.</p>
+<p>An easy way to create a DataFrame object is by using a dictionary:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Mary&#39;</span><span class="p">,</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Jack&#39;</span><span class="p">,</span> <span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="s1">&#39;Robin&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;VIC&#39;</span><span class="p">,</span> <span class="s1">&#39;NSW&#39;</span><span class="p">,</span> <span class="s1">&#39;VIC&#39;</span><span class="p">,</span> <span class="s1">&#39;SA&#39;</span><span class="p">,</span> <span class="s1">&#39;QLD&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;birthyear&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1980</span><span class="p">,</span> <span class="mi">1992</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">1980</span><span class="p">,</span> <span class="mi">1995</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>state</th>
+      <th>birthyear</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Mary</td>
+      <td>VIC</td>
+      <td>1980</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>David</td>
+      <td>NSW</td>
+      <td>1992</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Jack</td>
+      <td>VIC</td>
+      <td>2000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>John</td>
+      <td>SA</td>
+      <td>1980</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Robin</td>
+      <td>QLD</td>
+      <td>1995</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>An alternative is to first define an empty data frame with column names and then append rows to it as dictionaries whose keys are the columns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;birthyear&#39;</span><span class="p">])</span>
+
+<span class="c1"># Add rows using loc with dictionaries</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Mary&#39;</span><span class="p">,</span> <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="s1">&#39;VIC&#39;</span><span class="p">,</span> <span class="s1">&#39;birthyear&#39;</span><span class="p">:</span> <span class="mi">1980</span><span class="p">}</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="s1">&#39;NSW&#39;</span><span class="p">,</span> <span class="s1">&#39;birthyear&#39;</span><span class="p">:</span> <span class="mi">1992</span><span class="p">}</span>
+
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>state</th>
+      <th>birthyear</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Mary</td>
+      <td>VIC</td>
+      <td>1980</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>David</td>
+      <td>NSW</td>
+      <td>1992</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>A second alternative, which is a bit shorter, is to append rows as lists at the end of the data frame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;birthyear&#39;</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Mary&#39;</span><span class="p">,</span> <span class="s1">&#39;VIC&#39;</span><span class="p">,</span> <span class="mi">1980</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;NSW&#39;</span><span class="p">,</span> <span class="mi">1992</span><span class="p">]</span>
+
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>state</th>
+      <th>birthyear</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Mary</td>
+      <td>VIC</td>
+      <td>1980</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>David</td>
+      <td>NSW</td>
+      <td>1992</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>This tutorial will mostly focus on data frames, since real-world datasets are generally multi-dimensional tables rather than just one dimensional arrays.</p>
+</section>
+<section id="loading-data-course-grades">
+<h2>Loading Data: Course Grades<a class="headerlink" href="#loading-data-course-grades" title="Link to this heading">#</a></h2>
+<p>This sample data contains course assessment results and students’ final grades (Pass or Fail) for a class with 40 students.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Student</span> <span class="pre">ID</span></code>: Unique ID number for each student in the data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Gender</span></code>: The gender of student.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Project</span> <span class="pre">Phase</span> <span class="pre">1</span></code>: The mark student received by completing the first part of project. The marks are out of 20.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Project</span> <span class="pre">Phase</span> <span class="pre">2</span></code>: The mark student received by completing the second part of project. The marks are out of 30.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Mid-Semester</span> <span class="pre">Test</span></code>: The mark student received from the mid-semester test. The marks are out of 100.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Final</span> <span class="pre">Exam</span></code>: The mark student received from the final exam. The marks are out of 100.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Grade</span></code>: The grade student received indicating whether they passed or failed.</p></li>
+</ul>
+<p>Now let’s load the data into a DataFrame object from the Cloud.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c1"># so that we can see all the columns</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> 
+
+<span class="c1"># how to read a csv file from a github account</span>
+<span class="n">url_name</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/akmand/datasets/master/sample_grades.csv&#39;</span>
+<span class="n">url_content</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_name</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+<span class="n">grades</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">url_content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)))</span>
+
+<span class="c1"># alternatively, you can download this CSV file to </span>
+<span class="c1"># where this notebook is on your computer</span>
+<span class="c1"># and then use the read_csv() method:</span>
+<span class="c1"># ### grades = pd.read_csv(&#39;sample_grades.csv&#39;, header=0)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-exploration">
+<h2>Data Exploration<a class="headerlink" href="#data-exploration" title="Link to this heading">#</a></h2>
+<section id="preview">
+<h3>Preview<a class="headerlink" href="#preview" title="Link to this heading">#</a></h3>
+<p>There are different approaches to viewing the data we are interested in exploring.</p>
+<p>The method <code class="docutils literal notranslate"><span class="pre">head()</span></code> prints the first five rows by default.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Student ID</th>
+      <th>Gender</th>
+      <th>Project Phase 1</th>
+      <th>Project Phase 2</th>
+      <th>Mid-Semester Test</th>
+      <th>Final Exam</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>101</td>
+      <td>Male</td>
+      <td>18.25</td>
+      <td>15.5</td>
+      <td>94</td>
+      <td>61.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>102</td>
+      <td>Female</td>
+      <td>17.75</td>
+      <td>30.0</td>
+      <td>79</td>
+      <td>62.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>103</td>
+      <td>Male</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>78</td>
+      <td>15.0</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>104</td>
+      <td>Male</td>
+      <td>20.00</td>
+      <td>25.0</td>
+      <td>69</td>
+      <td>65.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>105</td>
+      <td>Male</td>
+      <td>18.75</td>
+      <td>30.0</td>
+      <td>96</td>
+      <td>51.0</td>
+      <td>PA</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Alternatively, we can define the number of header rows we want to print.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Student ID</th>
+      <th>Gender</th>
+      <th>Project Phase 1</th>
+      <th>Project Phase 2</th>
+      <th>Mid-Semester Test</th>
+      <th>Final Exam</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>101</td>
+      <td>Male</td>
+      <td>18.25</td>
+      <td>15.5</td>
+      <td>94</td>
+      <td>61.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>102</td>
+      <td>Female</td>
+      <td>17.75</td>
+      <td>30.0</td>
+      <td>79</td>
+      <td>62.0</td>
+      <td>PA</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">tail()</span></code> prints the last five rows by default.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Student ID</th>
+      <th>Gender</th>
+      <th>Project Phase 1</th>
+      <th>Project Phase 2</th>
+      <th>Mid-Semester Test</th>
+      <th>Final Exam</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>35</th>
+      <td>136</td>
+      <td>Male</td>
+      <td>18.50</td>
+      <td>22.0</td>
+      <td>26</td>
+      <td>68.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>137</td>
+      <td>Female</td>
+      <td>20.00</td>
+      <td>26.0</td>
+      <td>89</td>
+      <td>63.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>138</td>
+      <td>Male</td>
+      <td>18.75</td>
+      <td>30.0</td>
+      <td>59</td>
+      <td>52.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>139</td>
+      <td>Male</td>
+      <td>19.00</td>
+      <td>30.0</td>
+      <td>70</td>
+      <td>NaN</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>140</td>
+      <td>Male</td>
+      <td>20.00</td>
+      <td>29.0</td>
+      <td>84</td>
+      <td>77.0</td>
+      <td>PA</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">sample()</span></code> randomly selects rows from the entire data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">99</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Student ID</th>
+      <th>Gender</th>
+      <th>Project Phase 1</th>
+      <th>Project Phase 2</th>
+      <th>Mid-Semester Test</th>
+      <th>Final Exam</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>25</th>
+      <td>126</td>
+      <td>Female</td>
+      <td>20.00</td>
+      <td>22.5</td>
+      <td>83</td>
+      <td>56.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>137</td>
+      <td>Female</td>
+      <td>20.00</td>
+      <td>26.0</td>
+      <td>89</td>
+      <td>63.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>130</td>
+      <td>Male</td>
+      <td>19.50</td>
+      <td>13.0</td>
+      <td>62</td>
+      <td>39.0</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>123</td>
+      <td>Male</td>
+      <td>19.75</td>
+      <td>30.0</td>
+      <td>74</td>
+      <td>61.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>129</td>
+      <td>Male</td>
+      <td>20.00</td>
+      <td>30.0</td>
+      <td>64</td>
+      <td>86.0</td>
+      <td>PA</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="sorting">
+<h3>Sorting<a class="headerlink" href="#sorting" title="Link to this heading">#</a></h3>
+<p>We can sort the data with respect to a particular column by calling <code class="docutils literal notranslate"><span class="pre">sort_values()</span></code>. Let’s sort the data by Final Exam scores in descending order.</p>
+<p>If you want the sorting to be permanent, you must specifically set the <code class="docutils literal notranslate"><span class="pre">inplace</span></code> argument to <code class="docutils literal notranslate"><span class="pre">True</span></code>. This is a <strong>fundamental rule</strong> in Pandas: in most cases, if you don’t set the <code class="docutils literal notranslate"><span class="pre">inplace</span></code> argument to <code class="docutils literal notranslate"><span class="pre">True</span></code>, you will need to set the output of the command to another variable to save its effect.</p>
+<p>Another nice feature of Pandas is <strong>method chaining</strong>: notice below how we chain two methods together.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Final Exam&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Student ID</th>
+      <th>Gender</th>
+      <th>Project Phase 1</th>
+      <th>Project Phase 2</th>
+      <th>Mid-Semester Test</th>
+      <th>Final Exam</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>27</th>
+      <td>128</td>
+      <td>Female</td>
+      <td>20.0</td>
+      <td>30.00</td>
+      <td>84</td>
+      <td>91.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>129</td>
+      <td>Male</td>
+      <td>20.0</td>
+      <td>30.00</td>
+      <td>64</td>
+      <td>86.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>127</td>
+      <td>Female</td>
+      <td>20.0</td>
+      <td>35.00</td>
+      <td>84</td>
+      <td>83.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>115</td>
+      <td>Male</td>
+      <td>19.5</td>
+      <td>26.00</td>
+      <td>100</td>
+      <td>79.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>114</td>
+      <td>Male</td>
+      <td>20.0</td>
+      <td>22.75</td>
+      <td>85</td>
+      <td>78.0</td>
+      <td>PA</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h3>
+<p>The function <code class="docutils literal notranslate"><span class="pre">shape</span></code> counts the number of rows and columns. Thus, number of rows and columns can be obtained as <code class="docutils literal notranslate"><span class="pre">grade.shape[0]</span></code> and <code class="docutils literal notranslate"><span class="pre">grade.shape[1]</span></code> respectively.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(40, 7)
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">info()</span></code> provides a concise summary of the columns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 40 entries, 0 to 39
+Data columns (total 7 columns):
+ #   Column             Non-Null Count  Dtype  
+---  ------             --------------  -----  
+ 0   Student ID         40 non-null     int64  
+ 1   Gender             37 non-null     object 
+ 2   Project Phase 1    40 non-null     float64
+ 3   Project Phase 2    37 non-null     float64
+ 4   Mid-Semester Test  40 non-null     int64  
+ 5   Final Exam         36 non-null     float64
+ 6   Grade              40 non-null     object 
+dtypes: float64(3), int64(2), object(2)
+memory usage: 2.3+ KB
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">describe()</span></code> generates descriptive statistics. Keep in mind that this function excludes <em>null</em> values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Student ID</th>
+      <th>Project Phase 1</th>
+      <th>Project Phase 2</th>
+      <th>Mid-Semester Test</th>
+      <th>Final Exam</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>40.000000</td>
+      <td>40.000000</td>
+      <td>37.000000</td>
+      <td>40.000000</td>
+      <td>36.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>120.500000</td>
+      <td>16.987500</td>
+      <td>23.750000</td>
+      <td>72.100000</td>
+      <td>56.055556</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>11.690452</td>
+      <td>5.964626</td>
+      <td>7.509716</td>
+      <td>19.664885</td>
+      <td>20.520296</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>101.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>26.000000</td>
+      <td>6.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>110.750000</td>
+      <td>17.687500</td>
+      <td>20.000000</td>
+      <td>59.750000</td>
+      <td>45.500000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>120.500000</td>
+      <td>19.500000</td>
+      <td>25.500000</td>
+      <td>76.000000</td>
+      <td>60.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>130.250000</td>
+      <td>20.000000</td>
+      <td>30.000000</td>
+      <td>86.000000</td>
+      <td>71.750000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>140.000000</td>
+      <td>20.000000</td>
+      <td>35.000000</td>
+      <td>100.000000</td>
+      <td>91.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>To ensure all the columns are listed (including categoricals), we can add the <code class="docutils literal notranslate"><span class="pre">include</span> <span class="pre">=</span> <span class="pre">all</span></code> parameter.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Student ID</th>
+      <th>Gender</th>
+      <th>Project Phase 1</th>
+      <th>Project Phase 2</th>
+      <th>Mid-Semester Test</th>
+      <th>Final Exam</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>40.000000</td>
+      <td>37</td>
+      <td>40.000000</td>
+      <td>37.000000</td>
+      <td>40.000000</td>
+      <td>36.000000</td>
+      <td>40</td>
+    </tr>
+    <tr>
+      <th>unique</th>
+      <td>NaN</td>
+      <td>4</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td>NaN</td>
+      <td>Male</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td>NaN</td>
+      <td>22</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>120.500000</td>
+      <td>NaN</td>
+      <td>16.987500</td>
+      <td>23.750000</td>
+      <td>72.100000</td>
+      <td>56.055556</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>11.690452</td>
+      <td>NaN</td>
+      <td>5.964626</td>
+      <td>7.509716</td>
+      <td>19.664885</td>
+      <td>20.520296</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>101.000000</td>
+      <td>NaN</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>26.000000</td>
+      <td>6.000000</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>110.750000</td>
+      <td>NaN</td>
+      <td>17.687500</td>
+      <td>20.000000</td>
+      <td>59.750000</td>
+      <td>45.500000</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>120.500000</td>
+      <td>NaN</td>
+      <td>19.500000</td>
+      <td>25.500000</td>
+      <td>76.000000</td>
+      <td>60.000000</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>130.250000</td>
+      <td>NaN</td>
+      <td>20.000000</td>
+      <td>30.000000</td>
+      <td>86.000000</td>
+      <td>71.750000</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>140.000000</td>
+      <td>NaN</td>
+      <td>20.000000</td>
+      <td>35.000000</td>
+      <td>100.000000</td>
+      <td>91.000000</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We can also use the following functions to summarize the data. All these methods exclude null values by default.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">count()</span></code> to count the number of elements.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">value_counts()</span></code> to get a frequency distribution of unique values.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nunique()</span></code> to get the number of unique values.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mean()</span></code> to calculate the arithmetic mean of a given set of numbers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std()</span></code> to calculate the sample standard deviation of a given set of numbers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max()</span></code> to return the maximum of the provided values.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min()</span></code> to return minimum of the provided values.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Student ID           40
+Gender               37
+Project Phase 1      40
+Project Phase 2      37
+Mid-Semester Test    40
+Final Exam           36
+Grade                40
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Gender
+Male      22
+Female    13
+M          1
+F          1
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Final Exam&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(56.05555555555556)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Mid-Semester Test&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(19.66488475195551)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Project Phase 2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(35.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Project Phase 1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.0)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="selecting-specific-columns">
+<h3>Selecting specific columns<a class="headerlink" href="#selecting-specific-columns" title="Link to this heading">#</a></h3>
+<p>When there are many columns, we may prefer to select only the ones we are interested in. Let’s say we want to select the “Gender” and the “Grade” columns only.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># notice the double brackets</span>
+<span class="n">grades</span><span class="p">[[</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="s1">&#39;Grade&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Gender</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Male</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Female</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Male</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Male</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Male</td>
+      <td>PA</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We can also get a single column as a Series object from a data frame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># notice the single bracket</span>
+<span class="n">gender_series</span> <span class="o">=</span> <span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">gender_series</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas.core.series.Series
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gender_series</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      Male
+1    Female
+2      Male
+3      Male
+4      Male
+Name: Gender, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="filtering-for-particular-values">
+<h3>Filtering for particular values<a class="headerlink" href="#filtering-for-particular-values" title="Link to this heading">#</a></h3>
+<p>We can subset the data based on a particular criterion. Let’s say we want the list of students who have failed this class.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="p">[</span><span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Grade&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;NN&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Student ID</th>
+      <th>Gender</th>
+      <th>Project Phase 1</th>
+      <th>Project Phase 2</th>
+      <th>Mid-Semester Test</th>
+      <th>Final Exam</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td>103</td>
+      <td>Male</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>78</td>
+      <td>15.0</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>109</td>
+      <td>M</td>
+      <td>18.00</td>
+      <td>23.0</td>
+      <td>50</td>
+      <td>33.0</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>113</td>
+      <td>Female</td>
+      <td>0.00</td>
+      <td>NaN</td>
+      <td>67</td>
+      <td>NaN</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>117</td>
+      <td>NaN</td>
+      <td>15.75</td>
+      <td>10.0</td>
+      <td>81</td>
+      <td>34.0</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>118</td>
+      <td>Male</td>
+      <td>12.50</td>
+      <td>10.0</td>
+      <td>30</td>
+      <td>22.0</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>119</td>
+      <td>Male</td>
+      <td>17.50</td>
+      <td>20.0</td>
+      <td>61</td>
+      <td>31.0</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>122</td>
+      <td>Female</td>
+      <td>20.00</td>
+      <td>23.0</td>
+      <td>37</td>
+      <td>25.0</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>130</td>
+      <td>Male</td>
+      <td>19.50</td>
+      <td>13.0</td>
+      <td>62</td>
+      <td>39.0</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>131</td>
+      <td>Male</td>
+      <td>0.00</td>
+      <td>NaN</td>
+      <td>60</td>
+      <td>NaN</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>132</td>
+      <td>Female</td>
+      <td>17.50</td>
+      <td>20.0</td>
+      <td>42</td>
+      <td>47.0</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>135</td>
+      <td>Male</td>
+      <td>20.00</td>
+      <td>30.0</td>
+      <td>61</td>
+      <td>6.0</td>
+      <td>NN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We could also filter based on multiple conditions. Let’s see who failed the class even though their final exam scores were higher than 45, but let’s only look at a few of the columns using the <code class="docutils literal notranslate"><span class="pre">loc</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Grade&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;NN&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Final Exam&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">45</span><span class="p">),</span> <span class="p">[</span><span class="s1">&#39;Student ID&#39;</span><span class="p">,</span> <span class="s1">&#39;Final Exam&#39;</span><span class="p">,</span> <span class="s1">&#39;Grade&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Student ID</th>
+      <th>Final Exam</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>31</th>
+      <td>132</td>
+      <td>47.0</td>
+      <td>NN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Now let’s select the last 2 columns and all the rows between 10 and 15 using the <code class="docutils literal notranslate"><span class="pre">iloc</span></code> method. Notice the use of the negative sign for negative indexing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">16</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Final Exam</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10</th>
+      <td>52.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>NaN</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>NaN</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>78.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>79.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>52.0</td>
+      <td>PA</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="group-by">
+<h3>Group By<a class="headerlink" href="#group-by" title="Link to this heading">#</a></h3>
+<p>Pandas allows aggregation of data into groups to run calculations over each group. Let’s group the data by <code class="docutils literal notranslate"><span class="pre">Grade</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Grade&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Student ID</th>
+      <th>Gender</th>
+      <th>Project Phase 1</th>
+      <th>Project Phase 2</th>
+      <th>Mid-Semester Test</th>
+      <th>Final Exam</th>
+    </tr>
+    <tr>
+      <th>Grade</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>NN</th>
+      <td>11</td>
+      <td>10</td>
+      <td>11</td>
+      <td>9</td>
+      <td>11</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>PA</th>
+      <td>29</td>
+      <td>27</td>
+      <td>29</td>
+      <td>28</td>
+      <td>29</td>
+      <td>27</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Here, the <code class="docutils literal notranslate"><span class="pre">size()</span></code> method makes more sense.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Grade&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Grade
+NN    11
+PA    29
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>This time, let’s first group by <code class="docutils literal notranslate"><span class="pre">Gender</span></code> and then by <code class="docutils literal notranslate"><span class="pre">Grade</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span><span class="s1">&#39;Grade&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>Student ID</th>
+      <th>Project Phase 1</th>
+      <th>Project Phase 2</th>
+      <th>Mid-Semester Test</th>
+      <th>Final Exam</th>
+    </tr>
+    <tr>
+      <th>Gender</th>
+      <th>Grade</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>F</th>
+      <th>PA</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">Female</th>
+      <th>NN</th>
+      <td>3</td>
+      <td>3</td>
+      <td>2</td>
+      <td>3</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>PA</th>
+      <td>10</td>
+      <td>10</td>
+      <td>9</td>
+      <td>10</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>M</th>
+      <th>NN</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">Male</th>
+      <th>NN</th>
+      <td>6</td>
+      <td>6</td>
+      <td>5</td>
+      <td>6</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>PA</th>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>15</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Notice that there are unexpected multiple levels defining the same category (e.g., <em>F</em> also represents <em>Female</em>). We will take care of this in Data Manipulation section.</p>
+<p>So, how do we make the above grouping a data frame? For this, we use the <code class="docutils literal notranslate"><span class="pre">reset_index</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span><span class="s1">&#39;Grade&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Gender</th>
+      <th>Grade</th>
+      <th>Student ID</th>
+      <th>Project Phase 1</th>
+      <th>Project Phase 2</th>
+      <th>Mid-Semester Test</th>
+      <th>Final Exam</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>F</td>
+      <td>PA</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Female</td>
+      <td>NN</td>
+      <td>3</td>
+      <td>3</td>
+      <td>2</td>
+      <td>3</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Female</td>
+      <td>PA</td>
+      <td>10</td>
+      <td>10</td>
+      <td>9</td>
+      <td>10</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>M</td>
+      <td>NN</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Male</td>
+      <td>NN</td>
+      <td>6</td>
+      <td>6</td>
+      <td>5</td>
+      <td>6</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Male</td>
+      <td>PA</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>15</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="data-manipulation">
+<h2>Data Manipulation<a class="headerlink" href="#data-manipulation" title="Link to this heading">#</a></h2>
+<section id="handling-missing-values">
+<h3>Handling missing values<a class="headerlink" href="#handling-missing-values" title="Link to this heading">#</a></h3>
+<p>Dealing with missing values is a time consuming but crucial task. We should first identify the missing values and then try to determine why they are missing.</p>
+<p>There are two basic strategies to handle missing values:</p>
+<ol class="arabic simple">
+<li><p>Remove rows and columns with missing values.</p></li>
+<li><p>Impute missing values, replacing them with predefined values.</p></li>
+</ol>
+<p>Missing values are a bit complicated in Python as they can be denoted by either “na” or “null” in Pandas (both mean the same thing). Furthermore, <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> denotes missing values as “NaN” (that is, “not a number”).</p>
+<p>First, let’s count the number of missing values in each column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Student ID           0
+Gender               3
+Project Phase 1      0
+Project Phase 2      3
+Mid-Semester Test    0
+Final Exam           4
+Grade                0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">dropna()</span></code> drops rows with at least one missing value.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades_no_na</span> <span class="o">=</span> <span class="n">grades</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">grades_no_na</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(33, 7)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades_no_na</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Student ID           0
+Gender               0
+Project Phase 1      0
+Project Phase 2      0
+Mid-Semester Test    0
+Final Exam           0
+Grade                0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s look at the <code class="docutils literal notranslate"><span class="pre">Gender</span></code> column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Gender
+Male      22
+Female    13
+M          1
+F          1
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(3)
+</pre></div>
+</div>
+</div>
+</div>
+<p>So this column has 3 missing values. Let’s use the <code class="docutils literal notranslate"><span class="pre">fillna()</span></code> method to replace these missing values with “Unknown”:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;Unknown&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># this also works:</span>
+<span class="c1"># ## grades[[&#39;Gender&#39;]] = grades[[&#39;Gender&#39;]].fillna(&#39;Unknown&#39;)</span>
+
+<span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Gender
+Male       22
+Female     13
+Unknown     3
+M           1
+F           1
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s go back and check the missing values in our modified data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Student ID           0
+Gender               0
+Project Phase 1      0
+Project Phase 2      3
+Mid-Semester Test    0
+Final Exam           4
+Grade                0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Some assessments have missing values. We know for a fact that these missing values are due to students missing these assessments, and therefore we set these missing values to zero.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span> <span class="o">=</span> <span class="n">grades</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now confirm that there are no more missing values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Student ID           0
+Gender               0
+Project Phase 1      0
+Project Phase 2      0
+Mid-Semester Test    0
+Final Exam           0
+Grade                0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="handling-irregular-cardinality">
+<h3>Handling irregular cardinality<a class="headerlink" href="#handling-irregular-cardinality" title="Link to this heading">#</a></h3>
+<p>The cardinality is the number of different values we have for a particular feature. Sometimes we might have unexpected number of distinct values for a feature and this is called <strong>irregular cardinality</strong>. Let’s start by counting the unique number of observations for each column by using the <code class="docutils literal notranslate"><span class="pre">nunique()</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Student ID           40
+Gender                5
+Project Phase 1      15
+Project Phase 2      19
+Mid-Semester Test    34
+Final Exam           31
+Grade                 2
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>First, it is clear that all the values in the <code class="docutils literal notranslate"><span class="pre">Student</span> <span class="pre">ID</span></code> column are unique for each student. Therefore, we will remove it since <strong>ID-type columns are not useful in statistical modeling</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Student ID&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we notice <code class="docutils literal notranslate"><span class="pre">Gender</span></code> has a cardinality of 4, which is more than expected. This issue often arises when multiple levels are used to represent the same thing (e.g., <em>M, male, MALE, Male</em> all represent the “male” gender). For Gender, in this case, there should be only three different values: <code class="docutils literal notranslate"><span class="pre">Female</span></code>, <code class="docutils literal notranslate"><span class="pre">Male</span></code>, and <code class="docutils literal notranslate"><span class="pre">Unknown</span></code>. Let’s print the unique elements in Gender using the <code class="docutils literal notranslate"><span class="pre">value_counts()</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Gender
+Male       22
+Female     13
+Unknown     3
+M           1
+F           1
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s use the <code class="docutils literal notranslate"><span class="pre">replace()</span></code> method to replace all the problematic levels to a standard set of levels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">replace</span><span class="p">([</span><span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;male&#39;</span><span class="p">],</span> <span class="s1">&#39;Male&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">replace</span><span class="p">([</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">],</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s check again the unique elements in Gender.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Gender
+Male       23
+Female     14
+Unknown     3
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="detecting-outliers">
+<h3>Detecting outliers<a class="headerlink" href="#detecting-outliers" title="Link to this heading">#</a></h3>
+<p>Outliers are values that significantly differ from other values and they lie far away from the central tendency of a variable. The best way to visually detect outliers is by using boxplots. Pandas allows for direct visualization of a data frame’s columns.</p>
+<p>First, let’s prepare the plotting environment as Pandas’ plotting functions actually use Matplotlib.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline 
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;seaborn-v0_8&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Project Phase 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Project Phase 2&#39;</span><span class="p">,</span> <span class="s1">&#39;Mid-Semester Test&#39;</span><span class="p">,</span> <span class="s1">&#39;Final Exam&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/d1da58ce9a1a9bf0b981ac5e28a3dea4092f10e271759c06885e5b27bee9c7f1.png"><img alt="../_images/d1da58ce9a1a9bf0b981ac5e28a3dea4092f10e271759c06885e5b27bee9c7f1.png" src="../_images/d1da58ce9a1a9bf0b981ac5e28a3dea4092f10e271759c06885e5b27bee9c7f1.png" style="width: 672px; height: 466px;" /></a>
+</div>
+</div>
+<p>Alternatively, we can examine the histogram of these columns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Project Phase 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Project Phase 2&#39;</span><span class="p">,</span> <span class="s1">&#39;Mid-Semester Test&#39;</span><span class="p">,</span> <span class="s1">&#39;Final Exam&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/126c590a6d3782ee4b6edc1715923f3a553f08c18d96895e4ef2d6cf08a2f994.png"><img alt="../_images/126c590a6d3782ee4b6edc1715923f3a553f08c18d96895e4ef2d6cf08a2f994.png" src="../_images/126c590a6d3782ee4b6edc1715923f3a553f08c18d96895e4ef2d6cf08a2f994.png" style="width: 665px; height: 486px;" /></a>
+</div>
+</div>
+</section>
+</section>
+<section id="saving-a-dataframe">
+<h2>Saving a DataFrame<a class="headerlink" href="#saving-a-dataframe" title="Link to this heading">#</a></h2>
+<p>Pandas allows for saving DataFrame objects in various formats, including CSV, Excel, JSON, HTML, and SQL. Let’s save <code class="docutils literal notranslate"><span class="pre">grades</span></code> as a new file in CSV format with all the modifications we performed. Before saving, let’s shorten the long column names and then take a peak at the final data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Project Phase 1&#39;</span><span class="p">:</span> <span class="s1">&#39;Project 1&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;Project Phase 2&#39;</span><span class="p">:</span> <span class="s1">&#39;Project 2&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;Mid-Semester Test&#39;</span><span class="p">:</span> <span class="s1">&#39;Test&#39;</span><span class="p">},</span> 
+              <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">grades</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Gender</th>
+      <th>Project 1</th>
+      <th>Project 2</th>
+      <th>Test</th>
+      <th>Final Exam</th>
+      <th>Grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Male</td>
+      <td>18.25</td>
+      <td>15.5</td>
+      <td>94</td>
+      <td>61.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Female</td>
+      <td>17.75</td>
+      <td>30.0</td>
+      <td>79</td>
+      <td>62.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Male</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>78</td>
+      <td>15.0</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Male</td>
+      <td>20.00</td>
+      <td>25.0</td>
+      <td>69</td>
+      <td>65.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Male</td>
+      <td>18.75</td>
+      <td>30.0</td>
+      <td>96</td>
+      <td>51.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Male</td>
+      <td>17.00</td>
+      <td>23.5</td>
+      <td>80</td>
+      <td>59.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Unknown</td>
+      <td>19.75</td>
+      <td>19.5</td>
+      <td>82</td>
+      <td>76.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Male</td>
+      <td>20.00</td>
+      <td>28.0</td>
+      <td>95</td>
+      <td>44.0</td>
+      <td>PA</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Male</td>
+      <td>18.00</td>
+      <td>23.0</td>
+      <td>50</td>
+      <td>33.0</td>
+      <td>NN</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Female</td>
+      <td>20.00</td>
+      <td>30.0</td>
+      <td>92</td>
+      <td>63.0</td>
+      <td>PA</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grades</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;grades_saved.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can now open this CSV file in Excel (or your favorite text editor) to see its contents.</p>
+<hr class="docutils" />
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Welcome to your Jupyter Book</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#series-and-data-frames">Series and Data Frames</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-data-course-grades">Loading Data: Course Grades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-exploration">Data Exploration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preview">Preview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sorting">Sorting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-specific-columns">Selecting specific columns</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-for-particular-values">Filtering for particular values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#group-by">Group By</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-manipulation">Data Manipulation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-missing-values">Handling missing values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-irregular-cardinality">Handling irregular cardinality</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detecting-outliers">Detecting outliers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-a-dataframe">Saving a DataFrame</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

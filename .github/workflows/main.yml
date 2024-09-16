@@ -14,14 +14,14 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      # Step 2: Install Unzip Tool
-      - name: Install unzip
-        run: sudo apt-get install unzip
+      # Step 2: Combine the split ZIP parts into a single file
+      - name: Combine split ZIP parts
+        run: cat html_site_part_*.zip > html_site_combined.zip
 
-      # Step 3: Unzip the uploaded HTML folder to the root
-      - name: Unzip HTML folder to root
-        run: unzip html.zip -d ./  # Unzips the content directly into the root of the repo
-
+      # Step 3: Unzip the combined file into the root directory
+      - name: Unzip combined ZIP file to root
+        run: unzip html_site_combined.zip -d ./
+        
       # Step 4: Deploy to GitHub Pages (if using GitHub Pages from the 'gh-pages' branch)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

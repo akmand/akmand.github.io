@@ -1,0 +1,609 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Machine Learning Tutorials with Scikit-Learn &#8212; Tutorials on Data Science with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ml/README';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Data Preparation for Predictive Modeling" href="Data_Prep_for_Predictive_Modelling.html" />
+    <link rel="prev" title="Predicting Age in Census Data" href="../stats/regression_case_study_predicting_age_in_census_data.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Tutorials on Data Science with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to D. Akman’s Tutorials on Data Science with Python!
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python/README.html">Python Basics (PB) Tutorial Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB1_nb_intro.html">Introduction to Jupyter Notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB2_nb_markdown.html">Notebook Markdown Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB3_intro_to_python.html">Introduction to Python Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB4_numpy.html">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB5_pandas.html">Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB6_matplotlib.html">Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB7_seaborn.html">Seaborn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB8_python_vs_r.html">Python vs. R</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../stats/README.html">Statistics Tutorials/ OpenIntro Labs for Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch1n2_intro_to_data.html">Introduction to data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch3_probability.html">Probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch4_normal_distribution.html">Normal distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch5_confidence_intervals.html">Foundations for statistical inference - Confidence intervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch5_sampling_distributions.html">Foundations for statistical inference - Sampling distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch6_inf_for_categorical_data.html">Inference for categorical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch7_inf_for_numerical_data.html">Inference for numerical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch8_simple_regression.html">Introduction to linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch9_multiple_regression.html">Multiple linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/regression_case_study_predicting_age_in_census_data.html">Predicting Age in Census Data<a class="anchor-link" href="#Predicting-Age-in-Census-Data"></a></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Machine Learning Tutorials with Scikit-Learn</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="Data_Prep_for_Predictive_Modelling.html">Data Preparation for Predictive Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK0_Scikit_Learn_Introduction.html">SK Part 0: Introduction to Predictive Modeling with Python and Scikit-Learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK1_Basic_Modelling.html">SK Part 1: Basic Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK2_Feature_Selection.html">SK Part 2: Feature Selection and Ranking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK3_Model_Evaluation.html">SK Part 3: Model Evaluation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="SK4_HyperParameter_Tuning.html">SK Part 4: Cross-Validation and Hyper-parameter Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK5_Advanced_Topics.html">SK Part 5: Pipelines, Statistical Model Comparison, and Model Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK6_Clustering.html">SK Part 6: K-Means Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK7_Neural_Networks.html">SK Part 7: Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK8_LightGBM.html">Light GBM &amp; Parameter Tuning with Optuna</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK9_Forecasting.html">Forecasting Fundamentals with Python &amp; Facebook Prophet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Case_Study1_Predicting_Income_Status.html">Predicting Income Status</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Case_Study2_Maintenance_Predictive_Modelling.html">Predicting Optimal Machine Maintenance Cycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Case_Study3_Hotel_Prediction.html">Hotel Prediction with Hybrid Collaborative Filtering with SVD</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Decision_Trees_InfoGain_Computation.html">Information Gain Computation in Python</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/ml/README.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Machine Learning Tutorials with Scikit-Learn</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk0-scikit-learn-introduction-ipynb">SK0_Scikit_Learn_Introduction.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk1-basic-modelling-ipynb">SK1_Basic_Modelling.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk2-feature-selection-ipynb">SK2_Feature_Selection.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk3-model-evaluation-ipynb">SK3_Model_Evaluation.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk4-hyperparameter-tuning-ipynb">SK4_HyperParameter_Tuning.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk5-advanced-topics-ipynb">SK5_Advanced_Topics.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk6-clustering-ipynb">SK6_Clustering.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk7-neural-networks-ipynb">SK7_Neural_Networks.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk8-lightgbm-ipynb">SK8_LightGBM.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk9-forecasting-ipynb">SK9_Forecasting.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study1-predicting-income-status-ipynb">Case_Study1_Predicting_Income_Status.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study2-maintenance-predictive-modelling-ipynb">Case_Study2_Maintenance_Predictive_Modelling.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-prep-for-predictive-modelling-ipynb">Data_Prep_for_Predictive_Modelling.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-trees-infogain-computation-ipynb">Decision_Trees_InfoGain_Computation.ipynb</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p><img alt="Python" src="https://img.shields.io/badge/Python-3.x-blue.svg" />
+<img alt="License" src="https://img.shields.io/badge/License-MIT-brightgreen.svg" /></p>
+<section class="tex2jax_ignore mathjax_ignore" id="machine-learning-tutorials-with-scikit-learn">
+<h1>Machine Learning Tutorials with Scikit-Learn<a class="headerlink" href="#machine-learning-tutorials-with-scikit-learn" title="Link to this heading">#</a></h1>
+<p>Welcome to the Machine Learning Tutorials repository! This collection of Jupyter notebooks is designed to help you get started with machine learning using Python and Scikit-Learn. Whether you’re a beginner or looking to deepen your understanding, these tutorials cover a range of topics from basic concepts to advanced techniques. These notebooks were written by yours truly, David Akman, and are my own work for the most part, except SK5 - Advanced Topics, for which my good friend <a class="reference external" href="https://www.linkedin.com/in/yong-kai-wong/">Chuck Wong</a> contributed. They have been tested with Python 3.11.</p>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
+<section id="sk0-scikit-learn-introduction-ipynb">
+<h3>SK0_Scikit_Learn_Introduction.ipynb<a class="headerlink" href="#sk0-scikit-learn-introduction-ipynb" title="Link to this heading">#</a></h3>
+<p>This notebook introduces Scikit-Learn, covering its installation, data structures, and basic usage. It includes a simple example to illustrate how to create, train, and evaluate a machine learning model using Scikit-Learn.</p>
+</section>
+<section id="sk1-basic-modelling-ipynb">
+<h3>SK1_Basic_Modelling.ipynb<a class="headerlink" href="#sk1-basic-modelling-ipynb" title="Link to this heading">#</a></h3>
+<p>Focusing on basic machine learning models, this notebook guides users through the process of training and testing models. It explains key concepts like data splitting, model training, and performance evaluation using a linear regression example.</p>
+</section>
+<section id="sk2-feature-selection-ipynb">
+<h3>SK2_Feature_Selection.ipynb<a class="headerlink" href="#sk2-feature-selection-ipynb" title="Link to this heading">#</a></h3>
+<p>Feature selection techniques are critical for improving model performance. This notebook covers various methods such as univariate selection, recursive feature elimination, and tree-based selection, with practical examples demonstrating their implementation.</p>
+</section>
+<section id="sk3-model-evaluation-ipynb">
+<h3>SK3_Model_Evaluation.ipynb<a class="headerlink" href="#sk3-model-evaluation-ipynb" title="Link to this heading">#</a></h3>
+<p>This notebook dives into model evaluation metrics for classification and regression models, including accuracy, precision, recall, F1-score, and mean squared error. It also explains cross-validation and its importance in assessing model performance.</p>
+</section>
+<section id="sk4-hyperparameter-tuning-ipynb">
+<h3>SK4_HyperParameter_Tuning.ipynb<a class="headerlink" href="#sk4-hyperparameter-tuning-ipynb" title="Link to this heading">#</a></h3>
+<p>Hyperparameter tuning is essential for optimising machine learning models. This notebook explores grid search and random search techniques using Scikit-Learn’s <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> and <code class="docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code> classes, showing how to enhance model performance through proper tuning.</p>
+</section>
+<section id="sk5-advanced-topics-ipynb">
+<h3>SK5_Advanced_Topics.ipynb<a class="headerlink" href="#sk5-advanced-topics-ipynb" title="Link to this heading">#</a></h3>
+<p>Covering advanced machine learning topics, this notebook discusses model pipelines, statistical model comparison,  model deployment, and saving to and loading models from local storage.</p>
+</section>
+<section id="sk6-clustering-ipynb">
+<h3>SK6_Clustering.ipynb<a class="headerlink" href="#sk6-clustering-ipynb" title="Link to this heading">#</a></h3>
+<p>This notebook explains clustering, an unsupervised learning technique, using algorithms including K-means and spectral clustering. Practical examples and visualisations illustrate how these algorithms work and their applications.</p>
+</section>
+<section id="sk7-neural-networks-ipynb">
+<h3>SK7_Neural_Networks.ipynb<a class="headerlink" href="#sk7-neural-networks-ipynb" title="Link to this heading">#</a></h3>
+<p>Introducing neural networks, this notebook covers the basics of building and training neural networks using Scikit-Learn and Tensorflow. It includes an example of a simple neural network for classification tasks.</p>
+</section>
+<section id="sk8-lightgbm-ipynb">
+<h3>SK8_LightGBM.ipynb<a class="headerlink" href="#sk8-lightgbm-ipynb" title="Link to this heading">#</a></h3>
+<p>LightGBM is a powerful gradient boosting framework. This notebook provides an introduction to LightGBM, demonstrating how to train and evaluate models using this library. Practical examples highlight its efficiency and performance benefits. This notebook also covers hyperparameter finetuning using Optuna (best in the business) and feature importance using the popular SHAP module.</p>
+</section>
+<section id="sk9-forecasting-ipynb">
+<h3>SK9_Forecasting.ipynb<a class="headerlink" href="#sk9-forecasting-ipynb" title="Link to this heading">#</a></h3>
+<p>Focusing on time series forecasting, this notebook covers essential techniques and models for making predictions based on temporal data using the Facebook Prophet Python module.</p>
+</section>
+<section id="case-study1-predicting-income-status-ipynb">
+<h3>Case_Study1_Predicting_Income_Status.ipynb<a class="headerlink" href="#case-study1-predicting-income-status-ipynb" title="Link to this heading">#</a></h3>
+<p>This case study uses a real-world dataset to predict income status based on various features. It demonstrates the complete machine learning workflow, from data preprocessing and feature selection to model training, evaluation, and interpretation.</p>
+</section>
+<section id="case-study2-maintenance-predictive-modelling-ipynb">
+<h3>Case_Study2_Maintenance_Predictive_Modelling.ipynb<a class="headerlink" href="#case-study2-maintenance-predictive-modelling-ipynb" title="Link to this heading">#</a></h3>
+<p>This notebook presents a case study on predictive maintenance, showcasing how to predict equipment failures using historical data. It covers data preparation, model building, evaluation, and practical considerations for deployment.</p>
+</section>
+<section id="data-prep-for-predictive-modelling-ipynb">
+<h3>Data_Prep_for_Predictive_Modelling.ipynb<a class="headerlink" href="#data-prep-for-predictive-modelling-ipynb" title="Link to this heading">#</a></h3>
+<p>Data preparation is a critical step in the machine learning process. This notebook covers techniques for cleaning, transforming, and preparing data for predictive modeling, ensuring that the dataset is ready for analysis and model building.</p>
+</section>
+<section id="decision-trees-infogain-computation-ipynb">
+<h3>Decision_Trees_InfoGain_Computation.ipynb<a class="headerlink" href="#decision-trees-infogain-computation-ipynb" title="Link to this heading">#</a></h3>
+<p>Focusing on decision trees, this notebook explains how to compute information gain, an important concept for understanding tree-based models. It includes detailed examples and step-by-step calculations to illustrate the process.</p>
+</section>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./ml"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../stats/regression_case_study_predicting_age_in_census_data.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Predicting Age in Census Data<a href="#Predicting-Age-in-Census-Data" class="anchor-link"></a></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Data_Prep_for_Predictive_Modelling.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Data Preparation for Predictive Modeling</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk0-scikit-learn-introduction-ipynb">SK0_Scikit_Learn_Introduction.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk1-basic-modelling-ipynb">SK1_Basic_Modelling.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk2-feature-selection-ipynb">SK2_Feature_Selection.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk3-model-evaluation-ipynb">SK3_Model_Evaluation.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk4-hyperparameter-tuning-ipynb">SK4_HyperParameter_Tuning.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk5-advanced-topics-ipynb">SK5_Advanced_Topics.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk6-clustering-ipynb">SK6_Clustering.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk7-neural-networks-ipynb">SK7_Neural_Networks.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk8-lightgbm-ipynb">SK8_LightGBM.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sk9-forecasting-ipynb">SK9_Forecasting.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study1-predicting-income-status-ipynb">Case_Study1_Predicting_Income_Status.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study2-maintenance-predictive-modelling-ipynb">Case_Study2_Maintenance_Predictive_Modelling.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-prep-for-predictive-modelling-ipynb">Data_Prep_for_Predictive_Modelling.ipynb</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-trees-infogain-computation-ipynb">Decision_Trees_InfoGain_Computation.ipynb</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By D. Akman
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

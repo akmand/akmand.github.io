@@ -1,0 +1,3013 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Predicting Age in Census Data &#8212; Tutorials on Data Science with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'stats/regression_case_study_predicting_age_in_census_data';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Machine Learning Tutorials with Scikit-Learn" href="../ml/README.html" />
+    <link rel="prev" title="Multiple linear regression" href="ch9_multiple_regression.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Tutorials on Data Science with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to D. Akman’s Tutorials on Data Science with Python!
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python/README.html">Python Basics (PB) Tutorial Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB1_nb_intro.html">INTRODUCTION TO JUPYTER NOTEBOOKS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB2_nb_markdown.html">NOTEBOOK MARKDOWN TUTORIAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB3_intro_to_python.html">Introduction to Python Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB4_numpy.html">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB5_pandas.html">Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB6_matplotlib.html">Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB7_seaborn.html">Seaborn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB8_python_vs_r.html">Python vs. R</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Statistics Tutorials/ OpenIntro Labs for Python</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ch1n2_intro_to_data.html">Introduction to data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch3_probability.html">Probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch4_normal_distribution.html">Normal distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5_confidence_intervals.html">Foundations for statistical inference - Confidence intervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5_sampling_distributions.html">Foundations for statistical inference - Sampling distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch6_inf_for_categorical_data.html">Inference for categorical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch7_inf_for_numerical_data.html">Inference for numerical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch8_simple_regression.html">Introduction to linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch9_multiple_regression.html">Multiple linear regression</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Predicting Age in Census Data<a class="anchor-link" href="#Predicting-Age-in-Census-Data"></a></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml/README.html">Machine Learning Tutorials with Scikit-Learn</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ml/Data_Prep_for_Predictive_Modelling.html">Data Preparation for Predictive Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK0_Scikit_Learn_Introduction.html">SK Part 0: Introduction to Predictive Modeling with Python and Scikit-Learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK1_Basic_Modelling.html">SK Part 1: Basic Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK2_Feature_Selection.html">SK Part 2: Feature Selection and Ranking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK3_Model_Evaluation.html">SK Part 3: Model Evaluation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK4_HyperParameter_Tuning.html">SK Part 4: Cross-Validation and Hyper-parameter Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK5_Advanced_Topics.html">SK Part 5: Pipelines, Statistical Model Comparison, and Model Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK6_Clustering.html">SK Part 6: K-Means Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK7_Neural_Networks.html">SK Part 7: Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK8_LightGBM.html">Light GBM &amp; Parameter Tuning with Optuna</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK9_Forecasting.html">Forecasting Fundamentals with Python &amp; Facebook Prophet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/Case_Study1_Predicting_Income_Status.html">Predicting Income Status</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../ml/Case_Study2_Maintenance_Predictive_Modelling.html">Predicting Optimal Machine Maintenance Cycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/Case_Study3_Hotel_Prediction.html">Hotel Prediction with Hybrid Collaborative Filtering with SVD</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../ml/Decision_Trees_InfoGain_Computation.html">Information Gain Computation in Python</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/stats/regression_case_study_predicting_age_in_census_data.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Predicting Age in Census Data<a href="#Predicting-Age-in-Census-Data" class="anchor-link"></a></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction<a class="anchor-link" href="#Introduction"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview<a class="anchor-link" href="#Overview"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-source">Data Source<a class="anchor-link" href="#Data-Source"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#project-objective">Project Objective<a class="anchor-link" href="#Project-Objective"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#target-feature">Target Feature<a class="anchor-link" href="#Target-Feature"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#descriptive-features">Descriptive Features<a class="anchor-link" href="#Descriptive-Features"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">Data Preparation<a class="anchor-link" href="#Data-Preparation"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminaries">Preliminaries<a class="anchor-link" href="#Preliminaries"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-cleaning-and-transformation">Data Cleaning and Transformation<a class="anchor-link" href="#Data-Cleaning-and-Transformation"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-for-missing-values">Checking for Missing Values<a class="anchor-link" href="#Checking-for-Missing-Values">¶</a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-statistics">Summary Statistics<a class="anchor-link" href="#Summary-Statistics"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-features">Continuous Features<a class="anchor-link" href="#Continuous-Features">¶</a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixing-column-names">Fixing Column Names<a class="anchor-link" href="#Fixing-Column-Names"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-features">Categorical Features<a class="anchor-link" href="#Categorical-Features"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dependent-variable">Dependent Variable<a class="anchor-link" href="#Dependent-Variable"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-exploration">Data Exploration<a class="anchor-link" href="#Data-Exploration"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-visualisation">Univariate Visualisation<a class="anchor-link" href="#Univariate-Visualisation"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-visualisation">Multivariate Visualisation<a class="anchor-link" href="#Multivariate-Visualisation"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#scatterplot-of-numeric-features-and-age">Scatterplot of Numeric Features and Age<a class="anchor-link" href="#Scatterplot-of-Numeric-Features-and-Age"></a></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-attributes-by-age">Categorical Attributes by Age<a class="anchor-link" href="#Categorical-Attributes-by-Age"></a></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#facet-plots">Facet plots<a class="anchor-link" href="#Facet-plots"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-modeling-and-performance-evaluation">Statistical Modeling and Performance Evaluation<a class="anchor-link" href="#Statistical-Modeling-and-Performance-Evaluation"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-model">Full Model<a class="anchor-link" href="#Full-Model"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-model-diagnostic-checks">Full Model Diagnostic Checks<a class="anchor-link" href="#Full-Model-Diagnostic-Checks"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#backwards-feature-selection">Backwards Feature Selection<a class="anchor-link" href="#Backwards-Feature-Selection"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reduced-model-diagnostic-checks">Reduced Model Diagnostic Checks<a class="anchor-link" href="#Reduced-Model-Diagnostic-Checks"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-and-conclusions">Summary and Conclusions<a class="anchor-link" href="#Summary-and-Conclusions"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References<a class="anchor-link" href="#References"></a></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="predicting-age-in-census-data">
+<h1>Predicting Age in Census Data<a href="#Predicting-Age-in-Census-Data" class="anchor-link"></a><a class="headerlink" href="#predicting-age-in-census-data" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a href="#Introduction" class="anchor-link"></a><a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The objective of this toy project is to predict the age of an individual
+with the 1994 US Census Data using multiple linear regression. We use
+the <code class="docutils literal notranslate"><span class="pre">Statsmodels</span></code> and <code class="docutils literal notranslate"><span class="pre">Patsy</span></code> modules for this task with Pyhon version
+&gt;= 3.6. The dataset was sourced from the UCI Machine Learning
+Repository at <a class="reference external" href="https://archive.ics.uci.edu/ml/datasets/adult">https://archive.ics.uci.edu/ml/datasets/adult</a> (Lichman,
+2013).</p>
+<p>This report is organized as follows:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#Overview"><span class="xref myst">Overview</span></a> section describes the dataset used and the
+features in this dataset.</p></li>
+<li><p><a class="reference internal" href="#Data-Preparation"><span class="xref myst">Data Preparation</span></a> section covers data cleaning
+and data preparation steps.</p></li>
+<li><p><a class="reference internal" href="#Data-Exploration"><span class="xref myst">Data Exploration</span></a> section explores dataset
+features and their inter-relationships.</p></li>
+<li><p><a class="reference internal" href="#Statistical-Modeling-and-Performance-Evaluation"><span class="xref myst">Statistical Modeling and Performance
+Evaluation</span></a>
+section first fits a full multiple linear regression model and
+performs diagnostic checks. Next, we perform backwards variable
+selection using p-values to obtain a reduced model, after which we
+perform another set of diagnostic checks on the reduced model.</p></li>
+<li><p><a class="reference internal" href="#Summary-and-Conclusions"><span class="xref myst">Summary and Conclusions</span></a> section provides
+a summary of our work and presents our findings.</p></li>
+</ul>
+</section>
+<section id="overview">
+<h2>Overview<a href="#Overview" class="anchor-link"></a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<section id="data-source">
+<h3>Data Source<a href="#Data-Source" class="anchor-link"></a><a class="headerlink" href="#data-source" title="Link to this heading">#</a></h3>
+<p>The UCI Machine Learning Repository provides five datasets, but only
+<code class="docutils literal notranslate"><span class="pre">adult.data</span></code>, <code class="docutils literal notranslate"><span class="pre">adult.test</span></code>, and <code class="docutils literal notranslate"><span class="pre">adult.names</span></code> were useful in this
+project. The <code class="docutils literal notranslate"><span class="pre">adult.data</span></code> and <code class="docutils literal notranslate"><span class="pre">adult.test</span></code> are the training and test
+datasets respectively. The <code class="docutils literal notranslate"><span class="pre">adult.names</span></code> file contains the details of
+the variables (a.k.a. features or attributes). The training dataset has
+32,561 observations (a.k.a. instances or records) and the test dataset
+has 16,281 observations. Both datasets consist of 14 descriptive (a.k.a.
+independent) features and one target (a.k.a. response or dependent)
+feature. In this project, we combine both training and test data into
+one.</p>
+</section>
+<section id="project-objective">
+<h3>Project Objective<a href="#Project-Objective" class="anchor-link"></a><a class="headerlink" href="#project-objective" title="Link to this heading">#</a></h3>
+<p>Our goal is to see if we can predict an individual’s age within an
+acceptable margin of error using multiple linear regression primarily
+with just main affects.</p>
+</section>
+<section id="target-feature">
+<h3>Target Feature<a href="#Target-Feature" class="anchor-link"></a><a class="headerlink" href="#target-feature" title="Link to this heading">#</a></h3>
+<p>Our target feature is <code class="docutils literal notranslate"><span class="pre">age</span></code>, which is a continuous numerical feature.
+Hence, our project is on a regression problem.</p>
+</section>
+<section id="descriptive-features">
+<h3>Descriptive Features<a href="#Descriptive-Features" class="anchor-link"></a><a class="headerlink" href="#descriptive-features" title="Link to this heading">#</a></h3>
+<p>The variable descriptions below are from the <code class="docutils literal notranslate"><span class="pre">adult.names</span></code> file:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">workclass</span></code></strong>: Private, Self-emp-not-inc, Self-emp-inc,
+Federal-gov, Local-gov, State-gov, Without-pay, Never-worked.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">fnlwgt</span></code></strong>: continuous.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">education</span></code></strong>: Bachelors, Some-college, 11th, HS-grad,
+Prof-school, Assoc-acdm, Assoc-voc, 9th, 7th-8th, 12th, Masters,
+1st-4th, 10th, Doctorate, 5th-6th, Preschool.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">education-num</span></code></strong>: continuous.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">marital-status</span></code></strong>: Married-civ-spouse, Divorced, Never-married,
+Separated, Widowed, Married-spouse-absent, Married-AF-spouse.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">occupation</span></code></strong>: Tech-support, Craft-repair, Other-service, Sales,
+Exec-managerial, Prof-specialty, Handlers-cleaners,
+Machine-op-*inspct, Adm-clerical, Farming-fishing,
+Transport-moving, Priv-house-serv, Protective-serv, Armed-Forces.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">relationship</span></code></strong>: Wife, Own-child, Husband, Not-in-family,
+Other-relative, Unmarried.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">race</span></code></strong>: White, Asian-Pac-Islander, Amer-Indian-Eskimo, Other,
+Black.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">sex</span></code></strong>: Female, Male.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">capital-gain</span></code></strong>: continuous.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">capital-loss</span></code></strong>: continuous.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">hours-per-week</span></code></strong>: continuous.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">native-country</span></code></strong>: United-States, Cambodia, England, Puerto-Rico,
+Canada, Germany, Outlying-US(Guam-USVI-etc), India, Japan, Greece,
+South, China, Cuba, Iran, Honduras, Philippines, Italy, Poland,
+Jamaica, Vietnam, Mexico, Portugal, Ireland, France,
+Dominican-Republic, Laos, Ecuador, Taiwan, Haiti, Columbia, Hungary,
+Guatemala, Nicaragua, Scotland, Thailand, Yugoslavia, El Salvador,
+Trinadad&amp;Tobago, Peru, Hong, Holand-Netherlands.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">income</span></code></strong>: binary, 1: earns over \<span class="math notranslate nohighlight">\(50k a year, 0: earns less
+than \\\)</span>50k a year.</p></li>
+</ul>
+<p>Most of the descriptive features are self-explanatory, except <code class="docutils literal notranslate"><span class="pre">fnlwgt</span></code>
+which stands for “Final Weight” defined by the US Census. This weight is
+an “estimate of the number of units in the target population that the
+responding unit represents” (Lichman, 2013). This feature aims to
+allocate similar weights to people with similar demographic
+characteristics.</p>
+</section>
+</section>
+<section id="data-preparation">
+<h2>Data Preparation<a href="#Data-Preparation" class="anchor-link"></a><a class="headerlink" href="#data-preparation" title="Link to this heading">#</a></h2>
+<section id="preliminaries">
+<h3>Preliminaries<a href="#Preliminaries" class="anchor-link"></a><a class="headerlink" href="#preliminaries" title="Link to this heading">#</a></h3>
+<p>For further information on how to prepare your data for statistical modeling, please refer to <a class="reference external" href="https://www.featureranking.com/tutorials/machine-learning-tutorials/data-preparation-for-machine-learning/">this page</a>
+on our website.</p>
+<p>First, let’s import all the common modules we will be using.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Importing modules</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span>
+<span class="kn">import</span> <span class="nn">patsy</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="c1">###</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="c1">###</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline 
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;seaborn-v0_8&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We read the training and test datasets directly from the data URLs.
+Also, since the datasets do not contain the attribute names, they are
+explicitly specified during data loading process. The <code class="docutils literal notranslate"><span class="pre">adultData</span></code>
+dataset is read first and then it is concatenated with <code class="docutils literal notranslate"><span class="pre">adultTest</span></code> as
+just <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Gettting data from the web</span>
+<span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.test&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Specifying the attribute names</span>
+<span class="n">attributeNames</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;age&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;workclass&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;fnlwgt&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;education&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;education-num&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;marital-status&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;occupation&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;relationship&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;race&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;sex&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;capital-gain&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;capital-loss&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;hours-per-week&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;native-country&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;income&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Read in data</span>
+<span class="n">adultData</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">attributeNames</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">adultTest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">attributeNames</span><span class="p">,</span> <span class="n">skiprows</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Join the two datasets together</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">adultData</span><span class="p">,</span><span class="n">adultTest</span><span class="p">])</span>
+
+<span class="c1"># we will not need the datasets below anymore, so let&#39;s delete them to save memory</span>
+<span class="k">del</span> <span class="n">adultData</span><span class="p">,</span> <span class="n">adultTest</span>
+
+<span class="c1"># Display randomly selected 10 rows</span>
+<span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>workclass</th>
+      <th>fnlwgt</th>
+      <th>education</th>
+      <th>education-num</th>
+      <th>marital-status</th>
+      <th>occupation</th>
+      <th>relationship</th>
+      <th>race</th>
+      <th>sex</th>
+      <th>capital-gain</th>
+      <th>capital-loss</th>
+      <th>hours-per-week</th>
+      <th>native-country</th>
+      <th>income</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>77</th>
+      <td>67</td>
+      <td>?</td>
+      <td>212759</td>
+      <td>10th</td>
+      <td>6</td>
+      <td>Married-civ-spouse</td>
+      <td>?</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>30807</th>
+      <td>62</td>
+      <td>Self-emp-not-inc</td>
+      <td>224520</td>
+      <td>HS-grad</td>
+      <td>9</td>
+      <td>Married-civ-spouse</td>
+      <td>Sales</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>0</td>
+      <td>90</td>
+      <td>United-States</td>
+      <td>&gt;50K</td>
+    </tr>
+    <tr>
+      <th>23838</th>
+      <td>32</td>
+      <td>Private</td>
+      <td>262153</td>
+      <td>HS-grad</td>
+      <td>9</td>
+      <td>Divorced</td>
+      <td>Craft-repair</td>
+      <td>Unmarried</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>0</td>
+      <td>35</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>24124</th>
+      <td>41</td>
+      <td>Private</td>
+      <td>39581</td>
+      <td>Some-college</td>
+      <td>10</td>
+      <td>Divorced</td>
+      <td>Adm-clerical</td>
+      <td>Not-in-family</td>
+      <td>Black</td>
+      <td>Female</td>
+      <td>0</td>
+      <td>0</td>
+      <td>24</td>
+      <td>El-Salvador</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>22731</th>
+      <td>66</td>
+      <td>?</td>
+      <td>186032</td>
+      <td>Assoc-voc</td>
+      <td>11</td>
+      <td>Widowed</td>
+      <td>?</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Female</td>
+      <td>2964</td>
+      <td>0</td>
+      <td>30</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>2975</th>
+      <td>27</td>
+      <td>Private</td>
+      <td>37933</td>
+      <td>Some-college</td>
+      <td>10</td>
+      <td>Never-married</td>
+      <td>Adm-clerical</td>
+      <td>Unmarried</td>
+      <td>Black</td>
+      <td>Female</td>
+      <td>0</td>
+      <td>0</td>
+      <td>40</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>4457</th>
+      <td>31</td>
+      <td>State-gov</td>
+      <td>93589</td>
+      <td>HS-grad</td>
+      <td>9</td>
+      <td>Divorced</td>
+      <td>Protective-serv</td>
+      <td>Own-child</td>
+      <td>Other</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>0</td>
+      <td>40</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>32318</th>
+      <td>34</td>
+      <td>Private</td>
+      <td>117963</td>
+      <td>Bachelors</td>
+      <td>13</td>
+      <td>Married-civ-spouse</td>
+      <td>Craft-repair</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>0</td>
+      <td>40</td>
+      <td>United-States</td>
+      <td>&gt;50K</td>
+    </tr>
+    <tr>
+      <th>12685</th>
+      <td>61</td>
+      <td>Self-emp-not-inc</td>
+      <td>176965</td>
+      <td>Prof-school</td>
+      <td>15</td>
+      <td>Married-civ-spouse</td>
+      <td>Prof-specialty</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>0</td>
+      <td>50</td>
+      <td>United-States</td>
+      <td>&gt;50K</td>
+    </tr>
+    <tr>
+      <th>2183</th>
+      <td>47</td>
+      <td>Private</td>
+      <td>156926</td>
+      <td>Bachelors</td>
+      <td>13</td>
+      <td>Married-civ-spouse</td>
+      <td>Prof-specialty</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>0</td>
+      <td>40</td>
+      <td>United-States</td>
+      <td>&gt;50K.</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Note</strong>: Alternatively, you can download the datasets from UCI
+Repository as <code class="docutils literal notranslate"><span class="pre">txt</span></code> files to your computer and then read them in as
+below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">adultData</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;adult.data.txt&#39;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">attributeNames</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">adultTest</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;adult.test.txt&#39;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">attributeNames</span><span class="p">,</span> <span class="n">skiprows</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="data-cleaning-and-transformation">
+<h3>Data Cleaning and Transformation<a href="#Data-Cleaning-and-Transformation" class="anchor-link"></a><a class="headerlink" href="#data-cleaning-and-transformation" title="Link to this heading">#</a></h3>
+<p>We first confirm that the feature types match the descriptions outlined
+in the documentation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of the dataset is </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data types are below where &#39;object&#39; indicates a string type: &quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape of the dataset is (48842, 15) 
+
+Data types are below where &#39;object&#39; indicates a string type: 
+age                int64
+workclass         object
+fnlwgt             int64
+education         object
+education-num      int64
+marital-status    object
+occupation        object
+relationship      object
+race              object
+sex               object
+capital-gain       int64
+capital-loss       int64
+hours-per-week     int64
+native-country    object
+income            object
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="checking-for-missing-values">
+<h3>Checking for Missing Values<a href="#Checking-for-Missing-Values" class="anchor-link">¶</a><a class="headerlink" href="#checking-for-missing-values" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of missing values for each feature:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of missing values for each feature:
+age               0
+workclass         0
+fnlwgt            0
+education         0
+education-num     0
+marital-status    0
+occupation        0
+relationship      0
+race              0
+sex               0
+capital-gain      0
+capital-loss      0
+hours-per-week    0
+native-country    0
+income            0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>On surface, no attribute contains any missing values, though we shall
+see below that the missing values are coded with a question mark. We
+will address this issue later.</p>
+</section>
+<section id="summary-statistics">
+<h3>Summary Statistics<a href="#Summary-Statistics" class="anchor-link"></a><a class="headerlink" href="#summary-statistics" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&lt;b&gt;Table 1: Summary of continuous features&lt;/b&gt;&#39;</span><span class="p">))</span>
+<span class="n">data</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;int64&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><b>Table 1: Summary of continuous features</b></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>fnlwgt</th>
+      <th>education-num</th>
+      <th>capital-gain</th>
+      <th>capital-loss</th>
+      <th>hours-per-week</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>48842.000000</td>
+      <td>4.884200e+04</td>
+      <td>48842.000000</td>
+      <td>48842.000000</td>
+      <td>48842.000000</td>
+      <td>48842.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>38.643585</td>
+      <td>1.896641e+05</td>
+      <td>10.078089</td>
+      <td>1079.067626</td>
+      <td>87.502314</td>
+      <td>40.422382</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>13.710510</td>
+      <td>1.056040e+05</td>
+      <td>2.570973</td>
+      <td>7452.019058</td>
+      <td>403.004552</td>
+      <td>12.391444</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>17.000000</td>
+      <td>1.228500e+04</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>28.000000</td>
+      <td>1.175505e+05</td>
+      <td>9.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>40.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>37.000000</td>
+      <td>1.781445e+05</td>
+      <td>10.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>40.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>48.000000</td>
+      <td>2.376420e+05</td>
+      <td>12.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>45.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>90.000000</td>
+      <td>1.490400e+06</td>
+      <td>16.000000</td>
+      <td>99999.000000</td>
+      <td>4356.000000</td>
+      <td>99.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&lt;b&gt;Table 2: Summary of categorical features&lt;/b&gt;&#39;</span><span class="p">))</span>
+<span class="n">data</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><b>Table 2: Summary of categorical features</b></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>workclass</th>
+      <th>education</th>
+      <th>marital-status</th>
+      <th>occupation</th>
+      <th>relationship</th>
+      <th>race</th>
+      <th>sex</th>
+      <th>native-country</th>
+      <th>income</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>48842</td>
+      <td>48842</td>
+      <td>48842</td>
+      <td>48842</td>
+      <td>48842</td>
+      <td>48842</td>
+      <td>48842</td>
+      <td>48842</td>
+      <td>48842</td>
+    </tr>
+    <tr>
+      <th>unique</th>
+      <td>9</td>
+      <td>16</td>
+      <td>7</td>
+      <td>15</td>
+      <td>6</td>
+      <td>5</td>
+      <td>2</td>
+      <td>42</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td>Private</td>
+      <td>HS-grad</td>
+      <td>Married-civ-spouse</td>
+      <td>Prof-specialty</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td>33906</td>
+      <td>15784</td>
+      <td>22379</td>
+      <td>6172</td>
+      <td>19716</td>
+      <td>41762</td>
+      <td>32650</td>
+      <td>43832</td>
+      <td>24720</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Table 2 shows the feature <code class="docutils literal notranslate"><span class="pre">income</span></code> has four categories (or a cardinality
+of 4). It was supposed to be 2 since income must be binary. We shall
+explain how to fix this cardinality issue later.</p>
+</section>
+<section id="continuous-features">
+<h3>Continuous Features<a href="#Continuous-Features" class="anchor-link">¶</a><a class="headerlink" href="#continuous-features" title="Link to this heading">#</a></h3>
+<p>As discussed earlier, the <code class="docutils literal notranslate"><span class="pre">fnlwgt</span></code> variable has no predictive power, so
+it is removed. In addition, since we have an education categorical
+feature, we will go ahead and remove the <code class="docutils literal notranslate"><span class="pre">education-num</span></code> feature as it
+relays the same information and therefore redundant.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fnlwgt&#39;</span><span class="p">,</span> <span class="s1">&#39;education-num&#39;</span><span class="p">])</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    48842.000000
+mean        38.643585
+std         13.710510
+min         17.000000
+25%         28.000000
+50%         37.000000
+75%         48.000000
+max         90.000000
+Name: age, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>The range of <code class="docutils literal notranslate"><span class="pre">age</span></code> appears reasonable as the minimum and maximum ages
+are 17 and 90 respectively.</p>
+<p>Next, we define <code class="docutils literal notranslate"><span class="pre">capital</span> <span class="pre">=</span> <span class="pre">capital-gain</span> <span class="pre">-</span> <span class="pre">capital-loss</span></code> and then remove
+the individual gain and loss variables. The summary statistic for
+<code class="docutils literal notranslate"><span class="pre">capital</span></code> is displayed below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;capital&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;capital-gain&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;capital-loss&#39;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;capital-gain&#39;</span><span class="p">,</span> <span class="s1">&#39;capital-loss&#39;</span><span class="p">])</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;capital&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    48842.000000
+mean       991.565313
+std       7475.549906
+min      -4356.000000
+25%          0.000000
+50%          0.000000
+75%          0.000000
+max      99999.000000
+Name: capital, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="fixing-column-names">
+<h3>Fixing Column Names<a href="#Fixing-Column-Names" class="anchor-link"></a><a class="headerlink" href="#fixing-column-names" title="Link to this heading">#</a></h3>
+<p>Some column names contain a minus sign, which can be problematic when
+modeling. Basically, when we write the regression formula, a minus sign
+will mean “exclude this variable”, which is clearly not our intent here.
+For this reason, we modify the column names so that the minus signs are
+replaced with an underscore sign.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">colname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">colname</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)]</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>workclass</th>
+      <th>education</th>
+      <th>marital_status</th>
+      <th>occupation</th>
+      <th>relationship</th>
+      <th>race</th>
+      <th>sex</th>
+      <th>hours_per_week</th>
+      <th>native_country</th>
+      <th>income</th>
+      <th>capital</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39</td>
+      <td>State-gov</td>
+      <td>Bachelors</td>
+      <td>Never-married</td>
+      <td>Adm-clerical</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>40</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+      <td>2174</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>50</td>
+      <td>Self-emp-not-inc</td>
+      <td>Bachelors</td>
+      <td>Married-civ-spouse</td>
+      <td>Exec-managerial</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>13</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>38</td>
+      <td>Private</td>
+      <td>HS-grad</td>
+      <td>Divorced</td>
+      <td>Handlers-cleaners</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>40</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>53</td>
+      <td>Private</td>
+      <td>11th</td>
+      <td>Married-civ-spouse</td>
+      <td>Handlers-cleaners</td>
+      <td>Husband</td>
+      <td>Black</td>
+      <td>Male</td>
+      <td>40</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>28</td>
+      <td>Private</td>
+      <td>Bachelors</td>
+      <td>Married-civ-spouse</td>
+      <td>Prof-specialty</td>
+      <td>Wife</td>
+      <td>Black</td>
+      <td>Female</td>
+      <td>40</td>
+      <td>Cuba</td>
+      <td>&lt;=50K</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="categorical-features">
+<h3>Categorical Features<a href="#Categorical-Features" class="anchor-link"></a><a class="headerlink" href="#categorical-features" title="Link to this heading">#</a></h3>
+<p>Let’s have a look at the unique values of the categorical columns. In
+<code class="docutils literal notranslate"><span class="pre">Pandas</span></code>, string types are of data type “object”, and usually these
+would be the categorical features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">categoricalColumns</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">dtypes</span><span class="o">==</span><span class="nb">object</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">categoricalColumns</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unique values for &#39;</span> <span class="o">+</span> <span class="n">col</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Unique values for workclass
+[&#39; State-gov&#39; &#39; Self-emp-not-inc&#39; &#39; Private&#39; &#39; Federal-gov&#39; &#39; Local-gov&#39;
+ &#39; ?&#39; &#39; Self-emp-inc&#39; &#39; Without-pay&#39; &#39; Never-worked&#39;]
+
+Unique values for education
+[&#39; Bachelors&#39; &#39; HS-grad&#39; &#39; 11th&#39; &#39; Masters&#39; &#39; 9th&#39; &#39; Some-college&#39;
+ &#39; Assoc-acdm&#39; &#39; Assoc-voc&#39; &#39; 7th-8th&#39; &#39; Doctorate&#39; &#39; Prof-school&#39;
+ &#39; 5th-6th&#39; &#39; 10th&#39; &#39; 1st-4th&#39; &#39; Preschool&#39; &#39; 12th&#39;]
+
+Unique values for marital_status
+[&#39; Never-married&#39; &#39; Married-civ-spouse&#39; &#39; Divorced&#39;
+ &#39; Married-spouse-absent&#39; &#39; Separated&#39; &#39; Married-AF-spouse&#39; &#39; Widowed&#39;]
+
+Unique values for occupation
+[&#39; Adm-clerical&#39; &#39; Exec-managerial&#39; &#39; Handlers-cleaners&#39; &#39; Prof-specialty&#39;
+ &#39; Other-service&#39; &#39; Sales&#39; &#39; Craft-repair&#39; &#39; Transport-moving&#39;
+ &#39; Farming-fishing&#39; &#39; Machine-op-inspct&#39; &#39; Tech-support&#39; &#39; ?&#39;
+ &#39; Protective-serv&#39; &#39; Armed-Forces&#39; &#39; Priv-house-serv&#39;]
+
+Unique values for relationship
+[&#39; Not-in-family&#39; &#39; Husband&#39; &#39; Wife&#39; &#39; Own-child&#39; &#39; Unmarried&#39;
+ &#39; Other-relative&#39;]
+
+Unique values for race
+[&#39; White&#39; &#39; Black&#39; &#39; Asian-Pac-Islander&#39; &#39; Amer-Indian-Eskimo&#39; &#39; Other&#39;]
+
+Unique values for sex
+[&#39; Male&#39; &#39; Female&#39;]
+
+Unique values for native_country
+[&#39; United-States&#39; &#39; Cuba&#39; &#39; Jamaica&#39; &#39; India&#39; &#39; ?&#39; &#39; Mexico&#39; &#39; South&#39;
+ &#39; Puerto-Rico&#39; &#39; Honduras&#39; &#39; England&#39; &#39; Canada&#39; &#39; Germany&#39; &#39; Iran&#39;
+ &#39; Philippines&#39; &#39; Italy&#39; &#39; Poland&#39; &#39; Columbia&#39; &#39; Cambodia&#39; &#39; Thailand&#39;
+ &#39; Ecuador&#39; &#39; Laos&#39; &#39; Taiwan&#39; &#39; Haiti&#39; &#39; Portugal&#39; &#39; Dominican-Republic&#39;
+ &#39; El-Salvador&#39; &#39; France&#39; &#39; Guatemala&#39; &#39; China&#39; &#39; Japan&#39; &#39; Yugoslavia&#39;
+ &#39; Peru&#39; &#39; Outlying-US(Guam-USVI-etc)&#39; &#39; Scotland&#39; &#39; Trinadad&amp;Tobago&#39;
+ &#39; Greece&#39; &#39; Nicaragua&#39; &#39; Vietnam&#39; &#39; Hong&#39; &#39; Ireland&#39; &#39; Hungary&#39;
+ &#39; Holand-Netherlands&#39;]
+
+Unique values for income
+[&#39; &lt;=50K&#39; &#39; &gt;50K&#39; &#39; &lt;=50K.&#39; &#39; &gt;50K.&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Some categorical attributes contain excessive white spaces, which makes
+life hard when filtering data. We will apply the <code class="docutils literal notranslate"><span class="pre">strip()</span></code> function to
+remove extra white spaces.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">categoricalColumns</span><span class="p">:</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>WARNING:</strong> The <code class="docutils literal notranslate"><span class="pre">Statsmodels</span></code> module does not play nice when you have a
+minus sign in levels of categorical variables, especially when you try
+to some sort of automatic variable selection. The reason is that the
+minus sign has a special meaning in the underlying <code class="docutils literal notranslate"><span class="pre">Patsy</span></code> module: it
+means remove this feature. So, we will replace all the minus signs in
+categorical variable level names with an underscore sign. In addition, a
+dot sign is not allowed either.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">categoricalColumns</span><span class="p">:</span>
+    <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>workclass</th>
+      <th>education</th>
+      <th>marital_status</th>
+      <th>occupation</th>
+      <th>relationship</th>
+      <th>race</th>
+      <th>sex</th>
+      <th>hours_per_week</th>
+      <th>native_country</th>
+      <th>income</th>
+      <th>capital</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39</td>
+      <td>State_gov</td>
+      <td>Bachelors</td>
+      <td>Never_married</td>
+      <td>Adm_clerical</td>
+      <td>Not_in_family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>40</td>
+      <td>United_States</td>
+      <td>&lt;=50K</td>
+      <td>2174</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>50</td>
+      <td>Self_emp_not_inc</td>
+      <td>Bachelors</td>
+      <td>Married_civ_spouse</td>
+      <td>Exec_managerial</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>13</td>
+      <td>United_States</td>
+      <td>&lt;=50K</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>38</td>
+      <td>Private</td>
+      <td>HS_grad</td>
+      <td>Divorced</td>
+      <td>Handlers_cleaners</td>
+      <td>Not_in_family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>40</td>
+      <td>United_States</td>
+      <td>&lt;=50K</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>53</td>
+      <td>Private</td>
+      <td>11th</td>
+      <td>Married_civ_spouse</td>
+      <td>Handlers_cleaners</td>
+      <td>Husband</td>
+      <td>Black</td>
+      <td>Male</td>
+      <td>40</td>
+      <td>United_States</td>
+      <td>&lt;=50K</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>28</td>
+      <td>Private</td>
+      <td>Bachelors</td>
+      <td>Married_civ_spouse</td>
+      <td>Prof_specialty</td>
+      <td>Wife</td>
+      <td>Black</td>
+      <td>Female</td>
+      <td>40</td>
+      <td>Cuba</td>
+      <td>&lt;=50K</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">workclass</span></code>, <code class="docutils literal notranslate"><span class="pre">occupation</span></code>, and <code class="docutils literal notranslate"><span class="pre">native-country</span></code> features contain
+some missing values encoded as “?”. These observations comprise 7.4% of
+the total number of observations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;workclass&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;?&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;occupation&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;?&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;native_country&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;?&#39;</span><span class="p">)</span>
+<span class="n">mask</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False    92.588346
+True      7.411654
+Name: proportion, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now remove the rows with missing occupation, workclass, and
+native-country where missing values are encoded as “?”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;workclass&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;?&quot;</span><span class="p">]</span> 
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;occupation&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;?&quot;</span><span class="p">]</span> 
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;native_country&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;?&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since <code class="docutils literal notranslate"><span class="pre">native-country</span></code> is too granular and unbalanced, we group
+countries as “Other” and “United_States”. Likewise, we also categorize
+races as “Other” and “White”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;native_country&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;United_States&#39;</span><span class="p">,</span> <span class="s1">&#39;native_country&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Other&#39;</span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;White&#39;</span><span class="p">,</span> <span class="s1">&#39;race&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Other&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>TIP 1</strong>: As a general comment, sometimes numerical features in a
+dataset actually represent categorical features. As an example, suppose
+each state of Australia is encoded as an integer between 1 and 8, say as
+<code class="docutils literal notranslate"><span class="pre">StateID</span></code> column in a dataframe called <code class="docutils literal notranslate"><span class="pre">df</span></code>. This would still be a
+categorical variable. For your code to work correctly in such cases, you
+need to change the data type of this column from numeric to string as
+follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;StateID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;StateID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>TIP 2</strong>: If you have a string column, say named <code class="docutils literal notranslate"><span class="pre">col</span></code>, that is
+actually real-valued, you can change its data type as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;col&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;col&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="dependent-variable">
+<h3>Dependent Variable<a href="#Dependent-Variable" class="anchor-link"></a><a class="headerlink" href="#dependent-variable" title="Link to this heading">#</a></h3>
+<p>We need to correct the levels of the <code class="docutils literal notranslate"><span class="pre">income</span></code> categorical feature, which
+is our dependent variable, to make sure it is binary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Before correction, the number of unique income labels are: &#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;income&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;income&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;income&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;After removing the dot, the number of unique income labels are: &#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;income&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Before correction, the number of unique income labels are: 
+income
+&lt;=50K     22654
+&lt;=50K.    11360
+&gt;50K       7508
+&gt;50K.      3700
+Name: count, dtype: int64
+
+After removing the dot, the number of unique income labels are: 
+income
+&lt;=50K    34014
+&gt;50K     11208
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>WARNING:</strong> The <code class="docutils literal notranslate"><span class="pre">Statsmodels</span></code> module does not play nice when you have
+mathematical symbols such as “-”, “+”, “&lt;” and “&gt;” in levels of
+categorical variables (try it and you will get a syntax error). For this
+reason, we will re-code income as <code class="docutils literal notranslate"><span class="pre">low</span></code> and <code class="docutils literal notranslate"><span class="pre">high</span></code> as below using the
+<code class="docutils literal notranslate"><span class="pre">replace()</span></code> function in <code class="docutils literal notranslate"><span class="pre">Pandas</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;income&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;income&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s1">&#39;&lt;=50K&#39;</span><span class="p">:</span> <span class="s1">&#39;low&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;50K&#39;</span><span class="p">:</span> <span class="s1">&#39;high&#39;</span><span class="p">})</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;income&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>income
+low     34014
+high    11208
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="data-exploration">
+<h2>Data Exploration<a href="#Data-Exploration" class="anchor-link"></a><a class="headerlink" href="#data-exploration" title="Link to this heading">#</a></h2>
+<p>Our dataset can now be considered “clean” and ready for visualisation
+and statistical modeling.</p>
+<section id="univariate-visualisation">
+<h3>Univariate Visualisation<a href="#Univariate-Visualisation" class="anchor-link"></a><a class="headerlink" href="#univariate-visualisation" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;native_country&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span> <span class="o">=</span> <span class="mi">90</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 1: Bar Chart of Native Country&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/27c32b243f2abe6c4288e0e43c1a45fd3ee16855676dd241d9f4d9c44de078f8.png"><img alt="../_images/27c32b243f2abe6c4288e0e43c1a45fd3ee16855676dd241d9f4d9c44de078f8.png" src="../_images/27c32b243f2abe6c4288e0e43c1a45fd3ee16855676dd241d9f4d9c44de078f8.png" style="width: 790px; height: 563px;" /></a>
+</div>
+</div>
+<p>Let’s display a boxplot and histogram for <code class="docutils literal notranslate"><span class="pre">age</span></code>. Figure 2 shows that
+this variable is right-skewed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get a box plot of age</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Figure 2: Box Plot of Age&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/df0775a3edb6b623502e625a6d78f3a80410f741a607df0ab5c651a4c4a46f65.png"><img alt="../_images/df0775a3edb6b623502e625a6d78f3a80410f741a607df0ab5c651a4c4a46f65.png" src="../_images/df0775a3edb6b623502e625a6d78f3a80410f741a607df0ab5c651a4c4a46f65.png" style="width: 685px; height: 467px;" /></a>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get a histogram of age with kernel density estimate</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> <span class="n">kde</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Figure 3: Histogram of Age&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/e3f8a323ab395bce0b82f5279adfe2de23cf12a1686d83493a3551f68ced8e87.png"><img alt="../_images/e3f8a323ab395bce0b82f5279adfe2de23cf12a1686d83493a3551f68ced8e87.png" src="../_images/e3f8a323ab395bce0b82f5279adfe2de23cf12a1686d83493a3551f68ced8e87.png" style="width: 704px; height: 509px;" /></a>
+</div>
+</div>
+</section>
+<section id="multivariate-visualisation">
+<h3>Multivariate Visualisation<a href="#Multivariate-Visualisation" class="anchor-link"></a><a class="headerlink" href="#multivariate-visualisation" title="Link to this heading">#</a></h3>
+<section id="scatterplot-of-numeric-features-and-age">
+<h4>Scatterplot of Numeric Features and Age<a href="#Scatterplot-of-Numeric-Features-and-Age" class="anchor-link"></a><a class="headerlink" href="#scatterplot-of-numeric-features-and-age" title="Link to this heading">#</a></h4>
+<p>The scatterplot in Figure 4 shows no clear correlation between the age
+and hours_per_week numeric variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># store the values of hours-per-week</span>
+<span class="n">hpw</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;hours_per_week&#39;</span><span class="p">]</span>
+
+<span class="c1"># get a scatter plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">hpw</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 4: Scatterplot of hours per week and age&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;hours_per_week&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/703e22f76662d7cda71d504338206865eb39972e2b059cac5510f4f10ae27a3b.png"><img alt="../_images/703e22f76662d7cda71d504338206865eb39972e2b059cac5510f4f10ae27a3b.png" src="../_images/703e22f76662d7cda71d504338206865eb39972e2b059cac5510f4f10ae27a3b.png" style="width: 685px; height: 509px;" /></a>
+</div>
+</div>
+</section>
+<section id="categorical-attributes-by-age">
+<h4>Categorical Attributes by Age<a href="#Categorical-Attributes-by-Age" class="anchor-link"></a><a class="headerlink" href="#categorical-attributes-by-age" title="Link to this heading">#</a></h4>
+<p>We can see that the distribution of age between each gender is similar.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating a boxplot</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;sex&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 5: Boxplot of age by gender&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/9eba2fb98b2c7fa3b7e3ba57858b23b083c8cfa406e2eeba8dd67e3ec53de8ce.png"><img alt="../_images/9eba2fb98b2c7fa3b7e3ba57858b23b083c8cfa406e2eeba8dd67e3ec53de8ce.png" src="../_images/9eba2fb98b2c7fa3b7e3ba57858b23b083c8cfa406e2eeba8dd67e3ec53de8ce.png" style="width: 685px; height: 509px;" /></a>
+</div>
+</div>
+<p>The distribution of married women and single women differ but have a
+similar median as seen in Figure 6. The whiskers suggest that women
+above the age of 70 are more likely to be single.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Storing a list of booleans corresponding to whether the person is female and a wife or Not_in_family</span>
+<span class="n">family_female_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;relationship&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;Not_in_family&#39;</span><span class="p">,</span><span class="s1">&#39;Wife&#39;</span><span class="p">]))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;sex&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;Female&#39;</span><span class="p">]))</span>
+
+<span class="c1"># Using the list of booleans previously found to select the index of rows</span>
+<span class="n">family_female</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">family_female_mask</span><span class="p">]</span>
+
+<span class="c1"># Creating the boxplot</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;relationship&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">family_female</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 6: Boxplot of female relationship status by age&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/0b82b5cac4f8e45888ec2e7175a4465365570b6550bbc35774c1f78d88342615.png"><img alt="../_images/0b82b5cac4f8e45888ec2e7175a4465365570b6550bbc35774c1f78d88342615.png" src="../_images/0b82b5cac4f8e45888ec2e7175a4465365570b6550bbc35774c1f78d88342615.png" style="width: 685px; height: 509px;" /></a>
+</div>
+</div>
+</section>
+<section id="facet-plots">
+<h4>Facet plots<a href="#Facet-plots" class="anchor-link"></a><a class="headerlink" href="#facet-plots" title="Link to this heading">#</a></h4>
+<p>From Figure 7, we see that generally the distribution of male bachelors
+and high school graduates is somewhat comparable within each
+relationship level.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Getting the index of those who have completed their Bachelors or HS graduate</span>
+<span class="n">edu_mask</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;education&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;Bachelors&#39;</span><span class="p">,</span><span class="s1">&#39;HS_grad&#39;</span><span class="p">])</span>
+
+<span class="c1"># Getting the index of those who are male and Not_in_family or a Husband</span>
+<span class="n">family_male_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;relationship&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;Not_in_family&#39;</span><span class="p">,</span><span class="s1">&#39;Husband&#39;</span><span class="p">]))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;sex&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;Male&#39;</span><span class="p">]))</span>
+
+<span class="c1"># Selecting the rows of those who are Not_in_family, husband or wife and </span>
+<span class="c1"># have completed either a Bachelors or just graduated high school</span>
+<span class="n">education_relationship</span> <span class="o">=</span> <span class="n">data</span><span class="p">[(</span><span class="n">edu_mask</span> <span class="o">&amp;</span> <span class="n">family_female_mask</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">edu_mask</span> <span class="o">&amp;</span> <span class="n">family_male_mask</span><span class="p">)]</span>
+
+<span class="c1"># Creating the boxplot</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;relationship&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;education&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">education_relationship</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 7: Boxplot of age broken down by relationship and education&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/6f97d4e0d49d1c290239f8aebb931d3e0e2d6f76fa14c9408b167cde7bbe6abd.png"><img alt="../_images/6f97d4e0d49d1c290239f8aebb931d3e0e2d6f76fa14c9408b167cde7bbe6abd.png" src="../_images/6f97d4e0d49d1c290239f8aebb931d3e0e2d6f76fa14c9408b167cde7bbe6abd.png" style="width: 686px; height: 509px;" /></a>
+</div>
+</div>
+<p>Although there is no clear overall pattern, we observe in Figure 8 that
+no government worker under the age of 40 earns over \$50k a year
+unless they work more than 20 hours a week.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Getting the index of those who work in the government</span>
+<span class="n">gov_mask</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;workclass&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;Federal_gov&#39;</span><span class="p">,</span><span class="s1">&#39;Local_gov&#39;</span><span class="p">,</span><span class="s1">&#39;State_gov&#39;</span><span class="p">])</span>
+
+<span class="c1"># creating a dataframe of those who work in the government</span>
+<span class="n">gov</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">gov_mask</span><span class="p">]</span>
+
+<span class="c1"># creating a scatterplot</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;hours_per_week&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;income&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">gov</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 8: Scatterplot of hours per week by age coloured by income for government workers&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/45157c4b3c59da7a215e65bddeb0190a5f4e8dafa07099a32b34f4dc52f63104.png"><img alt="../_images/45157c4b3c59da7a215e65bddeb0190a5f4e8dafa07099a32b34f4dc52f63104.png" src="../_images/45157c4b3c59da7a215e65bddeb0190a5f4e8dafa07099a32b34f4dc52f63104.png" style="width: 857px; height: 509px;" /></a>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="statistical-modeling-and-performance-evaluation">
+<h2>Statistical Modeling and Performance Evaluation<a href="#Statistical-Modeling-and-Performance-Evaluation" class="anchor-link"></a><a class="headerlink" href="#statistical-modeling-and-performance-evaluation" title="Link to this heading">#</a></h2>
+<section id="full-model">
+<h3>Full Model<a href="#Full-Model" class="anchor-link"></a><a class="headerlink" href="#full-model" title="Link to this heading">#</a></h3>
+<p>We begin by fitting a multiple linear regression that predicts <code class="docutils literal notranslate"><span class="pre">age</span></code>
+using all of the available features. We call this the full model. First
+let’s take a quick peak at the clean data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>workclass</th>
+      <th>education</th>
+      <th>marital_status</th>
+      <th>occupation</th>
+      <th>relationship</th>
+      <th>race</th>
+      <th>sex</th>
+      <th>hours_per_week</th>
+      <th>native_country</th>
+      <th>income</th>
+      <th>capital</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39</td>
+      <td>State_gov</td>
+      <td>Bachelors</td>
+      <td>Never_married</td>
+      <td>Adm_clerical</td>
+      <td>Not_in_family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>40</td>
+      <td>United_States</td>
+      <td>low</td>
+      <td>2174</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>50</td>
+      <td>Self_emp_not_inc</td>
+      <td>Bachelors</td>
+      <td>Married_civ_spouse</td>
+      <td>Exec_managerial</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>13</td>
+      <td>United_States</td>
+      <td>low</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>38</td>
+      <td>Private</td>
+      <td>HS_grad</td>
+      <td>Divorced</td>
+      <td>Handlers_cleaners</td>
+      <td>Not_in_family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>40</td>
+      <td>United_States</td>
+      <td>low</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>53</td>
+      <td>Private</td>
+      <td>11th</td>
+      <td>Married_civ_spouse</td>
+      <td>Handlers_cleaners</td>
+      <td>Husband</td>
+      <td>Other</td>
+      <td>Male</td>
+      <td>40</td>
+      <td>United_States</td>
+      <td>low</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>28</td>
+      <td>Private</td>
+      <td>Bachelors</td>
+      <td>Married_civ_spouse</td>
+      <td>Prof_specialty</td>
+      <td>Wife</td>
+      <td>Other</td>
+      <td>Female</td>
+      <td>40</td>
+      <td>Other</td>
+      <td>low</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>When constructing the regression formula, we can manually add all the
+independent features. On the other hand, if there are lots of
+independent variables, we can get smart and use some string function
+tricks as below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># short and sweet</span>
+<span class="n">formula_string_indep_vars</span> <span class="o">=</span> <span class="s1">&#39; + &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;age&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">formula_string</span> <span class="o">=</span> <span class="s1">&#39;age ~ &#39;</span> <span class="o">+</span> <span class="n">formula_string_indep_vars</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;formula_string: &#39;</span><span class="p">,</span> <span class="n">formula_string</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>formula_string:  age ~ workclass + education + marital_status + occupation + relationship + race + sex + hours_per_week + native_country + income + capital
+</pre></div>
+</div>
+</div>
+</div>
+<p>The formula string above works just fine with the <code class="docutils literal notranslate"><span class="pre">Statsmodels</span></code> module.
+The problem, however, is that we cannot do automatic variable selection
+with this formula. What we need for this purpose is “one-hot-encoding”
+of categorical features. For more information on this encoding, please
+refer to <a class="reference external" href="https://www.featureranking.com/tutorials/machine-learning-tutorials/data-preparation-for-machine-learning/">this
+page</a>.</p>
+<p>In the code chunk below, we first use the <code class="docutils literal notranslate"><span class="pre">get_dummies()</span></code> function in
+<code class="docutils literal notranslate"><span class="pre">Pandas</span></code> for one-hot-encoding of categorical features and then we
+construct a new formula string with the encoded features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># one-hot-encoding of categorical features</span>
+<span class="c1"># for this to work correctly, variable data types (numeric or categorical)</span>
+<span class="c1"># must be correctly specified within the Pandas dataframe</span>
+<span class="n">data_encoded</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">data_encoded</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>hours_per_week</th>
+      <th>capital</th>
+      <th>workclass_Local_gov</th>
+      <th>workclass_Private</th>
+      <th>workclass_Self_emp_inc</th>
+      <th>workclass_Self_emp_not_inc</th>
+      <th>workclass_State_gov</th>
+      <th>workclass_Without_pay</th>
+      <th>education_11th</th>
+      <th>...</th>
+      <th>occupation_Transport_moving</th>
+      <th>relationship_Not_in_family</th>
+      <th>relationship_Other_relative</th>
+      <th>relationship_Own_child</th>
+      <th>relationship_Unmarried</th>
+      <th>relationship_Wife</th>
+      <th>race_White</th>
+      <th>sex_Male</th>
+      <th>native_country_United_States</th>
+      <th>income_low</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39</td>
+      <td>40</td>
+      <td>2174</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>...</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>50</td>
+      <td>13</td>
+      <td>0</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>...</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>38</td>
+      <td>40</td>
+      <td>0</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>...</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>53</td>
+      <td>40</td>
+      <td>0</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>...</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>28</td>
+      <td>40</td>
+      <td>0</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>...</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 52 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">formula_string_indep_vars_encoded</span> <span class="o">=</span> <span class="s1">&#39; + &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_encoded</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;age&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">formula_string_encoded</span> <span class="o">=</span> <span class="s1">&#39;age ~ &#39;</span> <span class="o">+</span> <span class="n">formula_string_indep_vars_encoded</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;formula_string_encoded: &#39;</span><span class="p">,</span> <span class="n">formula_string_encoded</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>formula_string_encoded:  age ~ hours_per_week + capital + workclass_Local_gov + workclass_Private + workclass_Self_emp_inc + workclass_Self_emp_not_inc + workclass_State_gov + workclass_Without_pay + education_11th + education_12th + education_1st_4th + education_5th_6th + education_7th_8th + education_9th + education_Assoc_acdm + education_Assoc_voc + education_Bachelors + education_Doctorate + education_HS_grad + education_Masters + education_Preschool + education_Prof_school + education_Some_college + marital_status_Married_AF_spouse + marital_status_Married_civ_spouse + marital_status_Married_spouse_absent + marital_status_Never_married + marital_status_Separated + marital_status_Widowed + occupation_Armed_Forces + occupation_Craft_repair + occupation_Exec_managerial + occupation_Farming_fishing + occupation_Handlers_cleaners + occupation_Machine_op_inspct + occupation_Other_service + occupation_Priv_house_serv + occupation_Prof_specialty + occupation_Protective_serv + occupation_Sales + occupation_Tech_support + occupation_Transport_moving + relationship_Not_in_family + relationship_Other_relative + relationship_Own_child + relationship_Unmarried + relationship_Wife + race_White + sex_Male + native_country_United_States + income_low
+</pre></div>
+</div>
+</div>
+</div>
+<p>For fun, let’s add two interaction terms to our full model. Let’s add
+the interaction of the <code class="docutils literal notranslate"><span class="pre">capital</span></code> feature with <code class="docutils literal notranslate"><span class="pre">hours_per_week</span></code> and
+<code class="docutils literal notranslate"><span class="pre">race_White</span></code> respectively.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">formula_string_encoded</span> <span class="o">=</span> <span class="n">formula_string_encoded</span> <span class="o">+</span> <span class="s1">&#39; + hours_per_week:capital + race_White:capital&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Also, let’s add the square of the <code class="docutils literal notranslate"><span class="pre">hours_per_week</span></code> feature to illustrate
+how we can add higher order terms to our linear regression.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">formula_string_encoded</span> <span class="o">=</span> <span class="n">formula_string_encoded</span> <span class="o">+</span> <span class="s1">&#39; + np.power(hours_per_week, 2)&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;formula_string_encoded: &#39;</span><span class="p">,</span> <span class="n">formula_string_encoded</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>formula_string_encoded:  age ~ hours_per_week + capital + workclass_Local_gov + workclass_Private + workclass_Self_emp_inc + workclass_Self_emp_not_inc + workclass_State_gov + workclass_Without_pay + education_11th + education_12th + education_1st_4th + education_5th_6th + education_7th_8th + education_9th + education_Assoc_acdm + education_Assoc_voc + education_Bachelors + education_Doctorate + education_HS_grad + education_Masters + education_Preschool + education_Prof_school + education_Some_college + marital_status_Married_AF_spouse + marital_status_Married_civ_spouse + marital_status_Married_spouse_absent + marital_status_Never_married + marital_status_Separated + marital_status_Widowed + occupation_Armed_Forces + occupation_Craft_repair + occupation_Exec_managerial + occupation_Farming_fishing + occupation_Handlers_cleaners + occupation_Machine_op_inspct + occupation_Other_service + occupation_Priv_house_serv + occupation_Prof_specialty + occupation_Protective_serv + occupation_Sales + occupation_Tech_support + occupation_Transport_moving + relationship_Not_in_family + relationship_Other_relative + relationship_Own_child + relationship_Unmarried + relationship_Wife + race_White + sex_Male + native_country_United_States + income_low + hours_per_week:capital + race_White:capital + np.power(hours_per_week, 2)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now that we have defined our statistical model formula as a Python
+string, we fit an OLS (ordinary least squares) model to our encoded
+data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_full</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">formula</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="n">formula_string_encoded</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_encoded</span><span class="p">)</span>
+<span class="c1">###</span>
+<span class="n">model_full_fitted</span> <span class="o">=</span> <span class="n">model_full</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="c1">###</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model_full_fitted</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                    age   R-squared:                       0.406
+Model:                            OLS   Adj. R-squared:                  0.405
+Method:                 Least Squares   F-statistic:                     571.3
+Date:                Tue, 23 Jul 2024   Prob (F-statistic):               0.00
+Time:                        00:54:41   Log-Likelihood:            -1.6914e+05
+No. Observations:               45222   AIC:                         3.384e+05
+Df Residuals:                   45167   BIC:                         3.389e+05
+Df Model:                          54                                         
+Covariance Type:            nonrobust                                         
+================================================================================================================
+                                                   coef    std err          t      P&gt;|t|      [0.025      0.975]
+----------------------------------------------------------------------------------------------------------------
+Intercept                                       58.8565      0.845     69.635      0.000      57.200      60.513
+workclass_Local_gov[T.True]                     -0.5831      0.336     -1.737      0.082      -1.241       0.075
+workclass_Private[T.True]                       -3.1473      0.285    -11.057      0.000      -3.705      -2.589
+workclass_Self_emp_inc[T.True]                   1.5929      0.381      4.183      0.000       0.847       2.339
+workclass_Self_emp_not_inc[T.True]               1.8802      0.331      5.675      0.000       1.231       2.530
+workclass_State_gov[T.True]                     -1.9111      0.362     -5.284      0.000      -2.620      -1.202
+workclass_Without_pay[T.True]                    7.5036      2.247      3.340      0.001       3.100      11.908
+education_11th[T.True]                          -3.2940      0.387     -8.509      0.000      -4.053      -2.535
+education_12th[T.True]                          -2.4467      0.516     -4.744      0.000      -3.458      -1.436
+education_1st_4th[T.True]                        5.2143      0.756      6.897      0.000       3.732       6.696
+education_5th_6th[T.True]                        4.0178      0.575      6.983      0.000       2.890       5.146
+education_7th_8th[T.True]                        6.8474      0.462     14.827      0.000       5.942       7.753
+education_9th[T.True]                            1.5526      0.490      3.170      0.002       0.593       2.512
+education_Assoc_acdm[T.True]                    -2.0829      0.399     -5.226      0.000      -2.864      -1.302
+education_Assoc_voc[T.True]                     -1.8617      0.377     -4.941      0.000      -2.600      -1.123
+education_Bachelors[T.True]                     -1.5288      0.329     -4.643      0.000      -2.174      -0.883
+education_Doctorate[T.True]                      3.3921      0.554      6.118      0.000       2.305       4.479
+education_HS_grad[T.True]                       -0.6005      0.305     -1.968      0.049      -1.199      -0.003
+education_Masters[T.True]                        1.2709      0.379      3.349      0.001       0.527       2.015
+education_Preschool[T.True]                      4.8391      1.244      3.891      0.000       2.401       7.277
+education_Prof_school[T.True]                    0.4821      0.503      0.958      0.338      -0.504       1.468
+education_Some_college[T.True]                  -2.1039      0.313     -6.717      0.000      -2.718      -1.490
+marital_status_Married_AF_spouse[T.True]       -15.3973      1.896     -8.121      0.000     -19.114     -11.681
+marital_status_Married_civ_spouse[T.True]       -6.1876      0.605    -10.225      0.000      -7.374      -5.002
+marital_status_Married_spouse_absent[T.True]    -2.5870      0.457     -5.667      0.000      -3.482      -1.692
+marital_status_Never_married[T.True]           -11.9959      0.170    -70.591      0.000     -12.329     -11.663
+marital_status_Separated[T.True]                -2.9265      0.302     -9.687      0.000      -3.519      -2.334
+marital_status_Widowed[T.True]                  13.5010      0.318     42.520      0.000      12.879      14.123
+occupation_Armed_Forces[T.True]                 -6.4631      2.742     -2.357      0.018     -11.838      -1.089
+occupation_Craft_repair[T.True]                 -1.4627      0.208     -7.025      0.000      -1.871      -1.055
+occupation_Exec_managerial[T.True]               0.5189      0.204      2.544      0.011       0.119       0.919
+occupation_Farming_fishing[T.True]              -0.0065      0.322     -0.020      0.984      -0.638       0.625
+occupation_Handlers_cleaners[T.True]            -2.6262      0.277     -9.466      0.000      -3.170      -2.082
+occupation_Machine_op_inspct[T.True]            -1.2234      0.244     -5.024      0.000      -1.701      -0.746
+occupation_Other_service[T.True]                -1.4299      0.207     -6.895      0.000      -1.836      -1.023
+occupation_Priv_house_serv[T.True]               3.0495      0.692      4.406      0.000       1.693       4.406
+occupation_Prof_specialty[T.True]               -0.7470      0.216     -3.459      0.001      -1.170      -0.324
+occupation_Protective_serv[T.True]              -1.7801      0.371     -4.800      0.000      -2.507      -1.053
+occupation_Sales[T.True]                        -0.8718      0.203     -4.288      0.000      -1.270      -0.473
+occupation_Tech_support[T.True]                 -1.2322      0.307     -4.015      0.000      -1.834      -0.631
+occupation_Transport_moving[T.True]              0.2230      0.268      0.832      0.406      -0.303       0.749
+relationship_Not_in_family[T.True]              -4.0503      0.603     -6.716      0.000      -5.232      -2.868
+relationship_Other_relative[T.True]             -6.8905      0.590    -11.689      0.000      -8.046      -5.735
+relationship_Own_child[T.True]                 -11.9082      0.600    -19.862      0.000     -13.083     -10.733
+relationship_Unmarried[T.True]                  -6.1890      0.624     -9.919      0.000      -7.412      -4.966
+relationship_Wife[T.True]                       -3.9954      0.273    -14.611      0.000      -4.531      -3.459
+race_White[T.True]                              -1.0056      0.145     -6.919      0.000      -1.290      -0.721
+sex_Male[T.True]                                -0.1782      0.146     -1.223      0.221      -0.464       0.107
+native_country_United_States[T.True]             1.4129      0.185      7.647      0.000       1.051       1.775
+income_low[T.True]                              -2.4367      0.138    -17.616      0.000      -2.708      -2.166
+hours_per_week                                  -0.1571      0.014    -11.106      0.000      -0.185      -0.129
+capital                                          0.0001   3.22e-05      3.492      0.000    4.93e-05       0.000
+race_White[T.True]:capital                    3.006e-05   2.12e-05      1.418      0.156   -1.15e-05    7.16e-05
+hours_per_week:capital                       -2.148e-06   5.02e-07     -4.283      0.000   -3.13e-06   -1.17e-06
+np.power(hours_per_week, 2)                      0.0010      0.000      6.350      0.000       0.001       0.001
+==============================================================================
+Omnibus:                     3966.388   Durbin-Watson:                   2.001
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             5729.860
+Skew:                           0.703   Prob(JB):                         0.00
+Kurtosis:                       4.033   Cond. No.                     2.26e+07
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 2.26e+07. This might indicate that there are
+strong multicollinearity or other numerical problems.
+</pre></div>
+</div>
+</div>
+</div>
+<p>The full model has an adjusted R-squared value of 0.405, which means
+that only 40% of the variance is explained by the model. By looking at
+the p-values, we observe that the majority of them are highly
+significant, though there are a few insignificant variables at a 5%
+level.</p>
+<p>Let’s define a new data frame for actual age vs. predicted age and the
+residuals for the full model. We will use this data frame when plotting
+predicted values and the regression residuals.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">residuals_full</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;actual&#39;</span><span class="p">:</span> <span class="n">data_encoded</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> 
+                               <span class="s1">&#39;predicted&#39;</span><span class="p">:</span> <span class="n">model_full_fitted</span><span class="o">.</span><span class="n">fittedvalues</span><span class="p">,</span> 
+                               <span class="s1">&#39;residual&#39;</span><span class="p">:</span> <span class="n">model_full_fitted</span><span class="o">.</span><span class="n">resid</span><span class="p">})</span>
+<span class="n">residuals_full</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>actual</th>
+      <th>predicted</th>
+      <th>residual</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39</td>
+      <td>32.570133</td>
+      <td>6.429867</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>50</td>
+      <td>49.455511</td>
+      <td>0.544489</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>38</td>
+      <td>41.508711</td>
+      <td>-3.508711</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>53</td>
+      <td>37.683573</td>
+      <td>15.316427</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>28</td>
+      <td>36.097893</td>
+      <td>-8.097893</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>37</td>
+      <td>40.570690</td>
+      <td>-3.570690</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>49</td>
+      <td>44.495664</td>
+      <td>4.504336</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>52</td>
+      <td>49.611524</td>
+      <td>2.388476</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>31</td>
+      <td>35.683539</td>
+      <td>-4.683539</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>42</td>
+      <td>44.318118</td>
+      <td>-2.318118</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Let’s plot actual age values vs. predicted values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_line</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="o">**</span><span class="n">kargs</span><span class="p">):</span>
+    <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">],</span> <span class="p">[</span><span class="n">xmin</span><span class="o">*</span><span class="n">slope</span><span class="o">+</span><span class="n">intercept</span><span class="p">,</span> <span class="n">xmax</span><span class="o">*</span><span class="n">slope</span><span class="o">+</span><span class="n">intercept</span><span class="p">],</span> <span class="o">**</span><span class="n">kargs</span><span class="p">)</span>
+
+<span class="c1"># Creating scatter plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">residuals_full</span><span class="p">[</span><span class="s1">&#39;actual&#39;</span><span class="p">],</span> <span class="n">residuals_full</span><span class="p">[</span><span class="s1">&#39;predicted&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">);</span>
+<span class="n">plot_line</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">slope</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">intercept</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Actual Age&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Predicted Age&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 9: Scatter plot of actual vs. predicted age for the Full Model&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/08d6d03854b0a6e53bd1b2bad95f89867fa0fa8fda24edcc12c24a4bdfe92fc7.png"><img alt="../_images/08d6d03854b0a6e53bd1b2bad95f89867fa0fa8fda24edcc12c24a4bdfe92fc7.png" src="../_images/08d6d03854b0a6e53bd1b2bad95f89867fa0fa8fda24edcc12c24a4bdfe92fc7.png" style="width: 685px; height: 509px;" /></a>
+</div>
+</div>
+<p>From Figure 9, we observe that the model never produces a prediction
+above 80 even though the oldest person in the dataset is 90.</p>
+<p>We will now check the diagnostics for the full model.</p>
+</section>
+<section id="full-model-diagnostic-checks">
+<h3>Full Model Diagnostic Checks<a href="#Full-Model-Diagnostic-Checks" class="anchor-link"></a><a class="headerlink" href="#full-model-diagnostic-checks" title="Link to this heading">#</a></h3>
+<p>We would like to check whether there are indications of violations of
+the regression assumptions, which are</p>
+<ol class="arabic simple">
+<li><p>linearity of the relationship between target variable and the
+independent variables</p></li>
+<li><p>constant variance of the errors</p></li>
+<li><p>normality of the residual distribution</p></li>
+<li><p>statistical independence of the residuals</p></li>
+</ol>
+<p>Let’s first get a scatter plot of residuals (as a function of predicted
+<code class="docutils literal notranslate"><span class="pre">age</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">residuals_full</span><span class="p">[</span><span class="s1">&#39;predicted&#39;</span><span class="p">],</span> <span class="n">residuals_full</span><span class="p">[</span><span class="s1">&#39;residual&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Predicted Age&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Residuals&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 10(a): Scatterplot of residuals vs. predicted age for Full Model&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/e6c7c51af6829cc0dcf23ce4ef902aec94351cdc9deecc4ad6093a010a5154b7.png"><img alt="../_images/e6c7c51af6829cc0dcf23ce4ef902aec94351cdc9deecc4ad6093a010a5154b7.png" src="../_images/e6c7c51af6829cc0dcf23ce4ef902aec94351cdc9deecc4ad6093a010a5154b7.png" style="width: 699px; height: 510px;" /></a>
+</div>
+</div>
+<p>From Figure 10(a), we see that, rather than being mostly random and
+centered around 0, the residuals exhibit a banding pattern, especially
+when predicted age is below 50. This pattern indicates that the constant
+variability assumption of linear regression is not quite satisfied in
+this case.</p>
+<p>Let’s now plot actual age vs. residuals.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">residuals_full</span><span class="p">[</span><span class="s1">&#39;actual&#39;</span><span class="p">],</span> <span class="n">residuals_full</span><span class="p">[</span><span class="s1">&#39;residual&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Actual Age&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Residuals&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 10(b): Scatterplot of residuals vs. actual age for Full Model&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/edb1a33f3811b29a859d7d200f69dad86a0ef9b41dfac619f51bd1fa91d3a773.png"><img alt="../_images/edb1a33f3811b29a859d7d200f69dad86a0ef9b41dfac619f51bd1fa91d3a773.png" src="../_images/edb1a33f3811b29a859d7d200f69dad86a0ef9b41dfac619f51bd1fa91d3a773.png" style="width: 693px; height: 510px;" /></a>
+</div>
+</div>
+<p>We notice that the model overestimates younger ages and underestimates
+older ages. In particular, for those younger than the age of 30, the
+model predicts much older ages. Also, for those above the age of 80, the
+model predicts significantly younger ages.</p>
+<p>Let’s overlay the histograms of actual vs. predicted age on the same
+plot.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">residuals_full</span><span class="p">[</span><span class="s1">&#39;actual&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;actual&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">residuals_full</span><span class="p">[</span><span class="s1">&#39;predicted&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;predicted&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Age&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 11: Histograms of actual age vs. predicted age for Full Model&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/4bb0607af1e9d8d7769e8200890c8e54c39dd2e32ab70b2f4adef271b0753a7b.png"><img alt="../_images/4bb0607af1e9d8d7769e8200890c8e54c39dd2e32ab70b2f4adef271b0753a7b.png" src="../_images/4bb0607af1e9d8d7769e8200890c8e54c39dd2e32ab70b2f4adef271b0753a7b.png" style="width: 710px; height: 509px;" /></a>
+</div>
+</div>
+<p>We notice that their distributions are quite different. In particular,
+the model’s predictions are highly clustered around mid-40’s.</p>
+<p>Let’s now have look at the histogram of the residuals.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">residuals_full</span><span class="p">[</span><span class="s1">&#39;residual&#39;</span><span class="p">],</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Residual&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 12: Histogram of residuals for Full Model&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/9e7b94ca251aa3ea663dbff4452931dd4f5850ef6c7671f052b5d1e49043790e.png"><img alt="../_images/9e7b94ca251aa3ea663dbff4452931dd4f5850ef6c7671f052b5d1e49043790e.png" src="../_images/9e7b94ca251aa3ea663dbff4452931dd4f5850ef6c7671f052b5d1e49043790e.png" style="width: 708px; height: 509px;" /></a>
+</div>
+</div>
+<p>From Figure 12, the histogram of residuals looks somewhat symmetric,
+though slightly right-skewed. Nonetheless, it seems the normality
+assumption of linear regression is not significantly violated in this
+particular case.</p>
+</section>
+<section id="backwards-feature-selection">
+<h3>Backwards Feature Selection<a href="#Backwards-Feature-Selection" class="anchor-link"></a><a class="headerlink" href="#backwards-feature-selection" title="Link to this heading">#</a></h3>
+<p>We now perform backwards feature selection using p-values. It appears
+<code class="docutils literal notranslate"><span class="pre">Statsmodels</span></code> does not have any canned code for automatic feature
+selection, so we wrote one ourselves.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">formula_string_encoded</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;age ~ hours_per_week + capital + workclass_Local_gov + workclass_Private + workclass_Self_emp_inc + workclass_Self_emp_not_inc + workclass_State_gov + workclass_Without_pay + education_11th + education_12th + education_1st_4th + education_5th_6th + education_7th_8th + education_9th + education_Assoc_acdm + education_Assoc_voc + education_Bachelors + education_Doctorate + education_HS_grad + education_Masters + education_Preschool + education_Prof_school + education_Some_college + marital_status_Married_AF_spouse + marital_status_Married_civ_spouse + marital_status_Married_spouse_absent + marital_status_Never_married + marital_status_Separated + marital_status_Widowed + occupation_Armed_Forces + occupation_Craft_repair + occupation_Exec_managerial + occupation_Farming_fishing + occupation_Handlers_cleaners + occupation_Machine_op_inspct + occupation_Other_service + occupation_Priv_house_serv + occupation_Prof_specialty + occupation_Protective_serv + occupation_Sales + occupation_Tech_support + occupation_Transport_moving + relationship_Not_in_family + relationship_Other_relative + relationship_Own_child + relationship_Unmarried + relationship_Wife + race_White + sex_Male + native_country_United_States + income_low + hours_per_week:capital + race_White:capital + np.power(hours_per_week, 2)&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="c1">## create the patsy model description from formula</span>
+<span class="n">patsy_description</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">ModelDesc</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="n">formula_string_encoded</span><span class="p">)</span>
+
+<span class="c1"># initialize feature-selected fit to full model</span>
+<span class="n">linreg_fit</span> <span class="o">=</span> <span class="n">model_full_fitted</span>
+
+<span class="c1"># do backwards elimination using p-values</span>
+<span class="n">p_val_cutoff</span> <span class="o">=</span> <span class="mf">0.05</span>
+
+<span class="c1">## WARNING 1: The code below assumes that the Intercept term is present in the model.</span>
+<span class="c1">## WARNING 2: It will work only with main effects and two-way interactions, if any.</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Performing backwards feature selection using p-values:&#39;</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+
+    <span class="c1"># uncomment the line below if you would like to see the regression summary</span>
+    <span class="c1"># in each step:</span>
+    <span class="c1"># ### print(linreg_fit.summary())</span>
+
+    <span class="n">pval_series</span> <span class="o">=</span> <span class="n">linreg_fit</span><span class="o">.</span><span class="n">pvalues</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="s1">&#39;Intercept&#39;</span><span class="p">)</span>
+    <span class="n">pval_series</span> <span class="o">=</span> <span class="n">pval_series</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">term</span> <span class="o">=</span> <span class="n">pval_series</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pval</span> <span class="o">=</span> <span class="n">pval_series</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pval</span> <span class="o">&lt;</span> <span class="n">p_val_cutoff</span><span class="p">):</span>
+        <span class="k">break</span>
+        
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Removing term &quot;</span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="s1">&quot; with p-value </span><span class="si">{</span><span class="n">pval</span><span class="si">:</span><span class="s1">.4</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">term_components</span> <span class="o">=</span> <span class="n">term</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">term_components</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span> <span class="c1">## this is a main effect term</span>
+
+        <span class="n">term_to_remove</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\[.*?\]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">term_components</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        
+        <span class="n">patsy_description</span><span class="o">.</span><span class="n">rhs_termlist</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">patsy</span><span class="o">.</span><span class="n">Term</span><span class="p">([</span><span class="n">patsy</span><span class="o">.</span><span class="n">EvalFactor</span><span class="p">(</span><span class="n">term_to_remove</span><span class="p">)]))</span>    
+
+
+    <span class="k">else</span><span class="p">:</span> <span class="c1">## this is an interaction term</span>
+        
+        <span class="n">term_to_remove1</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\[.*?\]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">term_components</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">term_to_remove2</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\[.*?\]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">term_components</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">patsy_description</span><span class="o">.</span><span class="n">rhs_termlist</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">patsy</span><span class="o">.</span><span class="n">Term</span><span class="p">([</span><span class="n">patsy</span><span class="o">.</span><span class="n">EvalFactor</span><span class="p">(</span><span class="n">term_to_remove1</span><span class="p">),</span> 
+                                                          <span class="n">patsy</span><span class="o">.</span><span class="n">EvalFactor</span><span class="p">(</span><span class="n">term_to_remove2</span><span class="p">)]))</span>    
+
+    <span class="n">linreg_fit</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="n">patsy_description</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_encoded</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="c1">#########</span>
+<span class="c1">## this is the clean fit after backwards elimination</span>
+<span class="n">model_reduced_fitted</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span> <span class="o">=</span> <span class="n">patsy_description</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data_encoded</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="c1">#########</span>
+
+<span class="c1">#########</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">***&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model_reduced_fitted</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;***&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Regression number of terms: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">model_reduced_fitted</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">exog_names</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Regression F-distribution p-value: </span><span class="si">{</span><span class="n">model_reduced_fitted</span><span class="o">.</span><span class="n">f_pvalue</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Regression R-squared: </span><span class="si">{</span><span class="n">model_reduced_fitted</span><span class="o">.</span><span class="n">rsquared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Regression Adjusted R-squared: </span><span class="si">{</span><span class="n">model_reduced_fitted</span><span class="o">.</span><span class="n">rsquared_adj</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Performing backwards feature selection using p-values:
+
+Removing term &quot;occupation_Farming_fishing[T.True]&quot; with p-value 0.984
+
+Removing term &quot;occupation_Transport_moving[T.True]&quot; with p-value 0.3774
+
+Removing term &quot;education_Prof_school[T.True]&quot; with p-value 0.3591
+
+Removing term &quot;sex_Male[T.True]&quot; with p-value 0.2642
+
+Removing term &quot;race_White[T.True]:capital&quot; with p-value 0.1615
+
+Removing term &quot;workclass_Local_gov[T.True]&quot; with p-value 0.09358
+
+***
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                    age   R-squared:                       0.406
+Model:                            OLS   Adj. R-squared:                  0.405
+Method:                 Least Squares   F-statistic:                     642.5
+Date:                Tue, 23 Jul 2024   Prob (F-statistic):               0.00
+Time:                        00:54:44   Log-Likelihood:            -1.6914e+05
+No. Observations:               45222   AIC:                         3.384e+05
+Df Residuals:                   45173   BIC:                         3.388e+05
+Df Model:                          48                                         
+Covariance Type:            nonrobust                                         
+================================================================================================================
+                                                   coef    std err          t      P&gt;|t|      [0.025      0.975]
+----------------------------------------------------------------------------------------------------------------
+Intercept                                       58.5679      0.790     74.140      0.000      57.020      60.116
+workclass_Private[T.True]                       -2.7499      0.172    -15.951      0.000      -3.088      -2.412
+workclass_Self_emp_inc[T.True]                   1.9866      0.307      6.477      0.000       1.385       2.588
+workclass_Self_emp_not_inc[T.True]               2.2638      0.236      9.610      0.000       1.802       2.726
+workclass_State_gov[T.True]                     -1.5082      0.278     -5.422      0.000      -2.053      -0.963
+workclass_Without_pay[T.True]                    7.8647      2.233      3.522      0.000       3.488      12.242
+education_11th[T.True]                          -3.4571      0.348     -9.931      0.000      -4.139      -2.775
+education_12th[T.True]                          -2.6152      0.487     -5.373      0.000      -3.569      -1.661
+education_1st_4th[T.True]                        5.0367      0.736      6.843      0.000       3.594       6.479
+education_5th_6th[T.True]                        3.8423      0.549      6.994      0.000       2.766       4.919
+education_7th_8th[T.True]                        6.6783      0.429     15.573      0.000       5.838       7.519
+education_9th[T.True]                            1.3880      0.459      3.021      0.003       0.487       2.289
+education_Assoc_acdm[T.True]                    -2.2605      0.352     -6.419      0.000      -2.951      -1.570
+education_Assoc_voc[T.True]                     -2.0396      0.329     -6.208      0.000      -2.684      -1.396
+education_Bachelors[T.True]                     -1.7276      0.262     -6.588      0.000      -2.242      -1.214
+education_Doctorate[T.True]                      3.1805      0.503      6.321      0.000       2.194       4.167
+education_HS_grad[T.True]                       -0.7660      0.250     -3.061      0.002      -1.257      -0.275
+education_Masters[T.True]                        1.0459      0.314      3.326      0.001       0.430       1.662
+education_Preschool[T.True]                      4.6321      1.231      3.764      0.000       2.220       7.044
+education_Some_college[T.True]                  -2.2759      0.256     -8.882      0.000      -2.778      -1.774
+marital_status_Married_AF_spouse[T.True]       -15.3512      1.896     -8.097      0.000     -19.067     -11.635
+marital_status_Married_civ_spouse[T.True]       -6.2001      0.605    -10.247      0.000      -7.386      -5.014
+marital_status_Married_spouse_absent[T.True]    -2.5991      0.456     -5.696      0.000      -3.494      -1.705
+marital_status_Never_married[T.True]           -12.0107      0.169    -70.961      0.000     -12.342     -11.679
+marital_status_Separated[T.True]                -2.9334      0.302     -9.711      0.000      -3.525      -2.341
+marital_status_Widowed[T.True]                  13.5172      0.317     42.689      0.000      12.897      14.138
+occupation_Armed_Forces[T.True]                 -6.1629      2.732     -2.256      0.024     -11.517      -0.808
+occupation_Craft_repair[T.True]                 -1.5761      0.173     -9.121      0.000      -1.915      -1.237
+occupation_Exec_managerial[T.True]               0.4658      0.180      2.581      0.010       0.112       0.819
+occupation_Handlers_cleaners[T.True]            -2.7455      0.253    -10.860      0.000      -3.241      -2.250
+occupation_Machine_op_inspct[T.True]            -1.3151      0.219     -6.001      0.000      -1.745      -0.886
+occupation_Other_service[T.True]                -1.4980      0.185     -8.090      0.000      -1.861      -1.135
+occupation_Priv_house_serv[T.True]               3.0454      0.686      4.443      0.000       1.702       4.389
+occupation_Prof_specialty[T.True]               -0.7794      0.191     -4.078      0.000      -1.154      -0.405
+occupation_Protective_serv[T.True]              -1.9512      0.353     -5.527      0.000      -2.643      -1.259
+occupation_Sales[T.True]                        -0.9336      0.179     -5.223      0.000      -1.284      -0.583
+occupation_Tech_support[T.True]                 -1.2731      0.294     -4.331      0.000      -1.849      -0.697
+relationship_Not_in_family[T.True]              -3.9907      0.601     -6.645      0.000      -5.168      -2.814
+relationship_Other_relative[T.True]             -6.8363      0.587    -11.650      0.000      -7.986      -5.686
+relationship_Own_child[T.True]                 -11.8623      0.597    -19.867      0.000     -13.033     -10.692
+relationship_Unmarried[T.True]                  -6.0981      0.618     -9.875      0.000      -7.308      -4.888
+relationship_Wife[T.True]                       -3.8670      0.240    -16.083      0.000      -4.338      -3.396
+race_White[T.True]                              -0.9984      0.144     -6.919      0.000      -1.281      -0.716
+native_country_United_States[T.True]             1.4226      0.185      7.708      0.000       1.061       1.784
+income_low[T.True]                              -2.4513      0.137    -17.895      0.000      -2.720      -2.183
+hours_per_week                                  -0.1575      0.014    -11.164      0.000      -0.185      -0.130
+capital                                          0.0001    2.6e-05      5.345      0.000    8.81e-05       0.000
+hours_per_week:capital                        -2.13e-06   5.01e-07     -4.247      0.000   -3.11e-06   -1.15e-06
+np.power(hours_per_week, 2)                      0.0010      0.000      6.379      0.000       0.001       0.001
+==============================================================================
+Omnibus:                     3959.253   Durbin-Watson:                   2.001
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             5717.587
+Skew:                           0.702   Prob(JB):                         0.00
+Kurtosis:                       4.032   Cond. No.                     2.25e+07
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 2.25e+07. This might indicate that there are
+strong multicollinearity or other numerical problems.
+***
+Regression number of terms: 49
+Regression F-distribution p-value: 0.0000
+Regression R-squared: 0.4057
+Regression Adjusted R-squared: 0.4051
+</pre></div>
+</div>
+</div>
+</div>
+<p>Similar to what we did for the full model, let’s define a new data frame
+for actual age vs. predicted age and the residuals for the reduced
+model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">residuals_reduced</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;actual&#39;</span><span class="p">:</span> <span class="n">data_encoded</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> 
+                                  <span class="s1">&#39;predicted&#39;</span><span class="p">:</span> <span class="n">model_reduced_fitted</span><span class="o">.</span><span class="n">fittedvalues</span><span class="p">,</span> 
+                                  <span class="s1">&#39;residual&#39;</span><span class="p">:</span> <span class="n">model_reduced_fitted</span><span class="o">.</span><span class="n">resid</span><span class="p">})</span>
+<span class="n">residuals_reduced</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>actual</th>
+      <th>predicted</th>
+      <th>residual</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39</td>
+      <td>32.690335</td>
+      <td>6.309665</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>50</td>
+      <td>49.461020</td>
+      <td>0.538980</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>38</td>
+      <td>41.558042</td>
+      <td>-3.558042</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>53</td>
+      <td>37.655981</td>
+      <td>15.344019</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>28</td>
+      <td>36.062133</td>
+      <td>-8.062133</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>37</td>
+      <td>40.504922</td>
+      <td>-3.504922</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>49</td>
+      <td>44.397983</td>
+      <td>4.602017</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>52</td>
+      <td>49.654315</td>
+      <td>2.345685</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>31</td>
+      <td>35.544969</td>
+      <td>-4.544969</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>42</td>
+      <td>44.329267</td>
+      <td>-2.329267</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get a scatter plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">residuals_reduced</span><span class="p">[</span><span class="s1">&#39;actual&#39;</span><span class="p">],</span> <span class="n">residuals_reduced</span><span class="p">[</span><span class="s1">&#39;predicted&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">);</span>
+<span class="n">plot_line</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">slope</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">intercept</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Age&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Predicted Age&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 13: Scatter plot of actual vs. predicted age for Reduced Model&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/93ab845b623986df755a2e51f685d1b3e9ee8a999dee3cc6b66844b60574a319.png"><img alt="../_images/93ab845b623986df755a2e51f685d1b3e9ee8a999dee3cc6b66844b60574a319.png" src="../_images/93ab845b623986df755a2e51f685d1b3e9ee8a999dee3cc6b66844b60574a319.png" style="width: 692px; height: 509px;" /></a>
+</div>
+</div>
+<p>This model returns an Adjusted R-squared of 0.404, meaning the reduced
+model still explains about 40% of the variance, but with 6 less
+variables. Looking at the p-values, they are all significant at the 5%
+level, as expected. From Figure 13, we still have the same issues with
+our model. That is, the model overestimates younger ages and
+underestimates older ages. We will now perform the diagnostic checks on
+this reduced model.</p>
+</section>
+<section id="reduced-model-diagnostic-checks">
+<h3>Reduced Model Diagnostic Checks<a href="#Reduced-Model-Diagnostic-Checks" class="anchor-link"></a><a class="headerlink" href="#reduced-model-diagnostic-checks" title="Link to this heading">#</a></h3>
+<p>Let’s first get a scatter plot of residuals (as a function of predicted
+age).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">residuals_reduced</span><span class="p">[</span><span class="s1">&#39;predicted&#39;</span><span class="p">],</span> <span class="n">residuals_reduced</span><span class="p">[</span><span class="s1">&#39;residual&#39;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Predicted Age&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Residuals&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 14: Scatter plot of residuals vs. predicted age for Reduced Model&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/71d5b8b33f61a7c4289a92bf889b30b31170d4a574654e46f92b71635fa745e0.png"><img alt="../_images/71d5b8b33f61a7c4289a92bf889b30b31170d4a574654e46f92b71635fa745e0.png" src="../_images/71d5b8b33f61a7c4289a92bf889b30b31170d4a574654e46f92b71635fa745e0.png" style="width: 714px; height: 509px;" /></a>
+</div>
+</div>
+<p>Figure 14 looks very similar to Figure 10(a), suggesting that the
+residuals exhibit the same banding pattern.</p>
+<p>Let’s now have look at the histogram of the residuals for the reduced
+model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">residuals_reduced</span><span class="p">[</span><span class="s1">&#39;residual&#39;</span><span class="p">],</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Residual&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 15: Histogram of residuals for Reduced Model&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/ee8c80e62ad6a921148ad3ebecbd12bb9ded9902a545fef4fc3e0fda9690c279.png"><img alt="../_images/ee8c80e62ad6a921148ad3ebecbd12bb9ded9902a545fef4fc3e0fda9690c279.png" src="../_images/ee8c80e62ad6a921148ad3ebecbd12bb9ded9902a545fef4fc3e0fda9690c279.png" style="width: 708px; height: 509px;" /></a>
+</div>
+</div>
+<p>From Figure 15, there is again a somewhat symmetric histogram around
+zero, which suggests that the residuals are somewhat normally
+distributed.</p>
+</section>
+</section>
+<section id="summary-and-conclusions">
+<h2>Summary and Conclusions<a href="#Summary-and-Conclusions" class="anchor-link"></a><a class="headerlink" href="#summary-and-conclusions" title="Link to this heading">#</a></h2>
+<p>Using our independent variables, we were able to get a full model with
+an Adjusted R-squared value of about 40%. After backwards variable
+selection with a p-value cutoff value of 0.05, we were able to maintain
+the same performance but with 6 less variables. Our final model has 49
+variables all together with a model p-value of 0.</p>
+<p>Diagnostic checks with residual scatter plots indicate that, rather than
+being random and centered around 0, the residuals exhibit a banding
+pattern, especially when predicted age is below 50. This pattern
+indicates that the constant variability assumption of linear regression
+is not quite satisfied in this case. On the other hand, residual
+histograms suggest that there are no significant violations of the
+normality assumption on the residuals.</p>
+<p>The final multiple linear regression model has an Adjusted R-squared
+value of about 40%, which is pretty low. So, it appears that the
+variables we used are not quite adequate for accurately predicting the
+age of an individual in the 1994 US Census dataset within a multiple
+linear regression framework. A good next step might involve adding some
+more interaction terms and maybe some other higher order terms to see if
+this would result in some improvement for the Adjusted R-squared value.
+Nonetheless, it might be the case that nonlinear models such as a neural
+network might be more appropriate for the task at hand rather than a
+linear regression model.</p>
+<p>Our regression model appears to predict age correctly within $\pm40$
+years in general, though this is clearly a huge margin of error for the
+model to be useful for any practical purposes. Furthermore, our model
+has some rather significant issues. Specifically, our model consistently
+overestimates younger ages and underestimates older ages. In particular,
+for those younger than the age of 30, the model predicts much older
+ages. Also, for those above the age of 80, the model predicts
+significantly younger ages.</p>
+</section>
+<section id="references">
+<h2>References<a href="#References" class="anchor-link"></a><a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Lichman, M. (2013). UCI Machine Learning Repository [online].
+Available at <a class="reference external" href="https://archive.ics.uci.edu/ml/datasets/adult">https://archive.ics.uci.edu/ml/datasets/adult</a>
+[Accessed 2022-10-07]</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./stats"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ch9_multiple_regression.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Multiple linear regression</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../ml/README.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Machine Learning Tutorials with Scikit-Learn</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction<a class="anchor-link" href="#Introduction"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview<a class="anchor-link" href="#Overview"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-source">Data Source<a class="anchor-link" href="#Data-Source"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#project-objective">Project Objective<a class="anchor-link" href="#Project-Objective"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#target-feature">Target Feature<a class="anchor-link" href="#Target-Feature"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#descriptive-features">Descriptive Features<a class="anchor-link" href="#Descriptive-Features"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">Data Preparation<a class="anchor-link" href="#Data-Preparation"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminaries">Preliminaries<a class="anchor-link" href="#Preliminaries"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-cleaning-and-transformation">Data Cleaning and Transformation<a class="anchor-link" href="#Data-Cleaning-and-Transformation"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-for-missing-values">Checking for Missing Values<a class="anchor-link" href="#Checking-for-Missing-Values">¶</a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-statistics">Summary Statistics<a class="anchor-link" href="#Summary-Statistics"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-features">Continuous Features<a class="anchor-link" href="#Continuous-Features">¶</a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixing-column-names">Fixing Column Names<a class="anchor-link" href="#Fixing-Column-Names"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-features">Categorical Features<a class="anchor-link" href="#Categorical-Features"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dependent-variable">Dependent Variable<a class="anchor-link" href="#Dependent-Variable"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-exploration">Data Exploration<a class="anchor-link" href="#Data-Exploration"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-visualisation">Univariate Visualisation<a class="anchor-link" href="#Univariate-Visualisation"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multivariate-visualisation">Multivariate Visualisation<a class="anchor-link" href="#Multivariate-Visualisation"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#scatterplot-of-numeric-features-and-age">Scatterplot of Numeric Features and Age<a class="anchor-link" href="#Scatterplot-of-Numeric-Features-and-Age"></a></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#categorical-attributes-by-age">Categorical Attributes by Age<a class="anchor-link" href="#Categorical-Attributes-by-Age"></a></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#facet-plots">Facet plots<a class="anchor-link" href="#Facet-plots"></a></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-modeling-and-performance-evaluation">Statistical Modeling and Performance Evaluation<a class="anchor-link" href="#Statistical-Modeling-and-Performance-Evaluation"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-model">Full Model<a class="anchor-link" href="#Full-Model"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-model-diagnostic-checks">Full Model Diagnostic Checks<a class="anchor-link" href="#Full-Model-Diagnostic-Checks"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#backwards-feature-selection">Backwards Feature Selection<a class="anchor-link" href="#Backwards-Feature-Selection"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reduced-model-diagnostic-checks">Reduced Model Diagnostic Checks<a class="anchor-link" href="#Reduced-Model-Diagnostic-Checks"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-and-conclusions">Summary and Conclusions<a class="anchor-link" href="#Summary-and-Conclusions"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References<a class="anchor-link" href="#References"></a></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By D. Akman
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,2126 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Predicting Melbourne House Prices &#8212; Tutorials on Data Science with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'stats/Phase1_Report_Sample';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Tutorials on Data Science with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to D. Akman’s Tutorials on Data Science with Python!
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python/README.html">Python Basics (PB) Tutorial Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB1_nb_intro.html">INTRODUCTION TO JUPYTER NOTEBOOKS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB2_nb_markdown.html">NOTEBOOK MARKDOWN TUTORIAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB3_intro_to_python.html">Introduction to Python Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB4_numpy.html">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB5_pandas.html">Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB6_matplotlib.html">Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB7_seaborn.html">Seaborn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB8_python_vs_r.html">Python vs. R</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="README.html">Statistics Tutorials/ OpenIntro Labs for Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="ch1n2_intro_to_data.html">Introduction to data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch3_probability.html">Probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch4_normal_distribution.html">Normal distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5_confidence_intervals.html">Foundations for statistical inference - Confidence intervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5_sampling_distributions.html">Foundations for statistical inference - Sampling distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch6_inf_for_categorical_data.html">Inference for categorical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch7_inf_for_numerical_data.html">Inference for numerical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch8_simple_regression.html">Introduction to linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch9_multiple_regression.html">Multiple linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_case_study_predicting_age_in_census_data.html">Predicting Age in Census Data<a class="anchor-link" href="#Predicting-Age-in-Census-Data"></a></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml/README.html">Machine Learning Tutorials with Scikit-Learn</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ml/Data_Prep_for_Predictive_Modelling.html">Data Preparation for Predictive Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK0_Scikit_Learn_Introduction.html">SK Part 0: Introduction to Predictive Modeling with Python and Scikit-Learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK1_Basic_Modelling.html">SK Part 1: Basic Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK2_Feature_Selection.html">SK Part 2: Feature Selection and Ranking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK3_Model_Evaluation.html">SK Part 3: Model Evaluation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK4_HyperParameter_Tuning.html">SK Part 4: Cross-Validation and Hyper-parameter Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK5_Advanced_Topics.html">SK Part 5: Pipelines, Statistical Model Comparison, and Model Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK6_Clustering.html">SK Part 6: K-Means Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK7_Neural_Networks.html">SK Part 7: Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK8_LightGBM.html">Light GBM &amp; Parameter Tuning with Optuna</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK9_Forecasting.html">Forecasting Fundamentals with Python &amp; Facebook Prophet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/Case_Study1_Predicting_Income_Status.html">Predicting Income Status</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../ml/Case_Study2_Maintenance_Predictive_Modelling.html">Predicting Optimal Machine Maintenance Cycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/Case_Study3_Hotel_Prediction.html">Hotel Prediction with Hybrid Collaborative Filtering with SVD</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../ml/Decision_Trees_InfoGain_Computation.html">Information Gain Computation in Python</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/stats/Phase1_Report_Sample.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Predicting Melbourne House Prices</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-1-data-preparation-visualisation">Phase 1: Data Preparation &amp; Visualisation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#group-name">Group Name:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#name-s-id-s-of-group-members">Name(s) &amp; ID(s) of Group Members:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction <a id="itr"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-source">Dataset Source</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-details">Dataset Details</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-features">Dataset Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#target-feature">Target Feature</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#goals-and-objectives">Goals and Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-cleaning-and-preprocessing">Data Cleaning and Preprocessing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-cleaning-steps">Data Cleaning Steps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-sampling">Random Sampling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-exploration-and-visualisation">Data Exploration and Visualisation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-visualisation">Univariate Visualisation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bar-chart-of-region-name">Bar Chart  of Region Name</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bar-chart-of-method">Bar Chart of Method</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#boxplot-histogram-of-price">Boxplot &amp; Histogram of Price</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-variable-visualisation">Two-Variable Visualisation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#scatterplot-of-price-and-distance-from-cbd">Scatterplot of price and distance from CBD</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#boxplot-of-price-by-house-type">Boxplot of Price by House Type</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#boxplot-of-price-by-number-of-rooms">Boxplot of Price by Number of Rooms</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#three-variable-visualisation">Three-Variable Visualisation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#boxplot-of-price-broken-down-by-method-and-house-type">Boxplot of Price broken down by Method and House Type</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#scatterplot-of-price-by-distance-from-central-business-district-cbd-and-house-type">Scatterplot of Price by Distance from Central Business District (CBD) and House Type</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#barplot-of-price-by-month-and-year-sold">Barplot of Price by Month and Year Sold</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-and-conclusions">Summary and Conclusions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="predicting-melbourne-house-prices">
+<h1>Predicting Melbourne House Prices<a class="headerlink" href="#predicting-melbourne-house-prices" title="Link to this heading">#</a></h1>
+<section id="phase-1-data-preparation-visualisation">
+<h2>Phase 1: Data Preparation &amp; Visualisation<a class="headerlink" href="#phase-1-data-preparation-visualisation" title="Link to this heading">#</a></h2>
+<section id="group-name">
+<h3>Group Name:<a class="headerlink" href="#group-name" title="Link to this heading">#</a></h3>
+</section>
+<section id="name-s-id-s-of-group-members">
+<h3>Name(s) &amp; ID(s) of Group Members:<a class="headerlink" href="#name-s-id-s-of-group-members" title="Link to this heading">#</a></h3>
+</section>
+<section id="id1">
+<h3><a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<hr class="docutils" />
+<p>(Credit: A. C. &amp; I. P.)</p>
+<p><strong>DISCLAIMER:</strong> Please do not assume this report is 100% accurate nor it fully satisfies all the project requirements for full credit.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#itr"><span class="xref myst">Introduction</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#Dataset-Source"><span class="xref myst">Dataset Source</span></a></p></li>
+<li><p><a class="reference internal" href="#Dataset-Details"><span class="xref myst">Dataset Details</span></a></p></li>
+<li><p><a class="reference internal" href="#Dataset-Features"><span class="xref myst">Dataset Features</span></a></p></li>
+<li><p><a class="reference internal" href="#Target-Feature"><span class="xref myst">Target Feature</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#Goals-and-Objectives"><span class="xref myst">Goals and Objectives</span></a></p></li>
+<li><p><a class="reference internal" href="#Data-Cleaning-and-Preprocessing"><span class="xref myst">Data Cleaning and Preprocessing</span></a></p></li>
+<li><p><a class="reference internal" href="#Data-Exploration-and-Visualisation"><span class="xref myst">Data Exploration and Visualisation</span></a></p></li>
+<li><p><a class="reference internal" href="#Summary-and-Conclusion"><span class="xref myst">Summary and Conclusion</span></a></p></li>
+<li><p><a class="reference internal" href="#References"><span class="xref myst">References</span></a></p></li>
+</ul>
+</section>
+<section id="introduction">
+<h2>Introduction <a id='itr'></a><a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<section id="dataset-source">
+<h3>Dataset Source<a class="headerlink" href="#dataset-source" title="Link to this heading">#</a></h3>
+<p>The Melbourne House Prices dataset used in study was sourced from Kaggle (Becker, 2021). This dataset contains prices of houses sold in Melbourne between January 2016 and September 2017.</p>
+</section>
+<section id="dataset-details">
+<h3>Dataset Details<a class="headerlink" href="#dataset-details" title="Link to this heading">#</a></h3>
+<p>The dataset is about the housing market in Melbourne and contains information about the house sale price, location, and the brokering real estate agency. Additional features included in this dataset are the date of sale, year built, number of rooms &amp; bathrooms, distance to city center, land size, suburb, and the number of properties within the suburb. These features seem to be sufficient for an attempt for predictive modeling of Melbourne house prices as a regression problem.</p>
+<p>This dataset has a total of 20 features (excluding the street address of houses) and 13580 observations. Houses with no price information have already been removed from the dataset.</p>
+<p><strong>Dataset Retrieval</strong></p>
+<ul class="simple">
+<li><p>We read in the dataset from our GitHub repository and load the modules we will use throughout this report.</p></li>
+<li><p>We display 10 randomly sampled rows from this dataset.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> 
+
+<span class="c1">###</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline 
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;seaborn-v0_8&quot;</span><span class="p">)</span>
+<span class="c1">###</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># name of the dataset to be imported from our GitHub account</span>
+<span class="n">df_name</span> <span class="o">=</span> <span class="s1">&#39;melbourne_house_prices.csv&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_url</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/akmand/datasets/master/&#39;</span> <span class="o">+</span> <span class="n">df_name</span>
+<span class="n">url_content</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">df_url</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+<span class="n">melb_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">url_content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">melb_df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Suburb</th>
+      <th>Rooms</th>
+      <th>Type</th>
+      <th>Method</th>
+      <th>SellerG</th>
+      <th>Distance</th>
+      <th>Postcode</th>
+      <th>Bedroom2</th>
+      <th>Bathroom</th>
+      <th>Car</th>
+      <th>Landsize</th>
+      <th>BuildingArea</th>
+      <th>YearBuilt</th>
+      <th>CouncilArea</th>
+      <th>Lattitude</th>
+      <th>Longtitude</th>
+      <th>Regionname</th>
+      <th>Propertycount</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>8563</th>
+      <td>12/11/2016</td>
+      <td>Doncaster</td>
+      <td>4</td>
+      <td>h</td>
+      <td>S</td>
+      <td>Ray</td>
+      <td>13.9</td>
+      <td>3108</td>
+      <td>4</td>
+      <td>2</td>
+      <td>2.0</td>
+      <td>806</td>
+      <td>170.0</td>
+      <td>1975.0</td>
+      <td>Manningham</td>
+      <td>-37.79390</td>
+      <td>145.13920</td>
+      <td>Eastern Metropolitan</td>
+      <td>9028</td>
+      <td>1468000</td>
+    </tr>
+    <tr>
+      <th>3552</th>
+      <td>24/06/2017</td>
+      <td>Reservoir</td>
+      <td>1</td>
+      <td>u</td>
+      <td>PI</td>
+      <td>Stockdale</td>
+      <td>12.0</td>
+      <td>3073</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0</td>
+      <td>60.0</td>
+      <td>1980.0</td>
+      <td>Darebin</td>
+      <td>-37.71408</td>
+      <td>145.00441</td>
+      <td>Northern Metropolitan</td>
+      <td>21650</td>
+      <td>270000</td>
+    </tr>
+    <tr>
+      <th>11403</th>
+      <td>26/07/2016</td>
+      <td>Moorabbin</td>
+      <td>4</td>
+      <td>h</td>
+      <td>S</td>
+      <td>Buxton</td>
+      <td>14.6</td>
+      <td>3189</td>
+      <td>4</td>
+      <td>1</td>
+      <td>2.0</td>
+      <td>592</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Kingston</td>
+      <td>-37.94070</td>
+      <td>145.04820</td>
+      <td>Southern Metropolitan</td>
+      <td>2555</td>
+      <td>921000</td>
+    </tr>
+    <tr>
+      <th>8475</th>
+      <td>19/11/2016</td>
+      <td>Windsor</td>
+      <td>2</td>
+      <td>u</td>
+      <td>SP</td>
+      <td>Jellis</td>
+      <td>5.1</td>
+      <td>3181</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1.0</td>
+      <td>0</td>
+      <td>111.0</td>
+      <td>2007.0</td>
+      <td>Port Phillip</td>
+      <td>-37.85630</td>
+      <td>144.99160</td>
+      <td>Southern Metropolitan</td>
+      <td>4380</td>
+      <td>1200000</td>
+    </tr>
+    <tr>
+      <th>9442</th>
+      <td>8/10/2016</td>
+      <td>Parkville</td>
+      <td>1</td>
+      <td>u</td>
+      <td>S</td>
+      <td>Jellis</td>
+      <td>2.6</td>
+      <td>3052</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Melbourne</td>
+      <td>-37.78640</td>
+      <td>144.94090</td>
+      <td>Northern Metropolitan</td>
+      <td>2309</td>
+      <td>352500</td>
+    </tr>
+    <tr>
+      <th>12848</th>
+      <td>14/05/2016</td>
+      <td>Elwood</td>
+      <td>3</td>
+      <td>t</td>
+      <td>S</td>
+      <td>Chisholm</td>
+      <td>7.7</td>
+      <td>3184</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Port Phillip</td>
+      <td>-37.88080</td>
+      <td>144.98930</td>
+      <td>Southern Metropolitan</td>
+      <td>8989</td>
+      <td>940000</td>
+    </tr>
+    <tr>
+      <th>3034</th>
+      <td>1/07/2017</td>
+      <td>Bentleigh</td>
+      <td>3</td>
+      <td>h</td>
+      <td>SP</td>
+      <td>hockingstuart</td>
+      <td>11.4</td>
+      <td>3204</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>401</td>
+      <td>114.0</td>
+      <td>1970.0</td>
+      <td>Glen Eira</td>
+      <td>-37.92999</td>
+      <td>145.04932</td>
+      <td>Southern Metropolitan</td>
+      <td>6795</td>
+      <td>1045000</td>
+    </tr>
+    <tr>
+      <th>4320</th>
+      <td>3/06/2017</td>
+      <td>South Morang</td>
+      <td>4</td>
+      <td>h</td>
+      <td>S</td>
+      <td>Harcourts</td>
+      <td>20.5</td>
+      <td>3752</td>
+      <td>4</td>
+      <td>3</td>
+      <td>2.0</td>
+      <td>624</td>
+      <td>410.0</td>
+      <td>2005.0</td>
+      <td>Whittlesea</td>
+      <td>-37.63485</td>
+      <td>145.07272</td>
+      <td>Northern Metropolitan</td>
+      <td>7969</td>
+      <td>915000</td>
+    </tr>
+    <tr>
+      <th>5879</th>
+      <td>8/04/2017</td>
+      <td>Altona</td>
+      <td>3</td>
+      <td>h</td>
+      <td>SP</td>
+      <td>hockingstuart</td>
+      <td>13.8</td>
+      <td>3018</td>
+      <td>3</td>
+      <td>1</td>
+      <td>2.0</td>
+      <td>577</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Hobsons Bay</td>
+      <td>-37.86400</td>
+      <td>144.81610</td>
+      <td>Western Metropolitan</td>
+      <td>5301</td>
+      <td>840000</td>
+    </tr>
+    <tr>
+      <th>8112</th>
+      <td>27/11/2016</td>
+      <td>Port Melbourne</td>
+      <td>2</td>
+      <td>u</td>
+      <td>S</td>
+      <td>Chisholm</td>
+      <td>3.8</td>
+      <td>3207</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0</td>
+      <td>100.0</td>
+      <td>2000.0</td>
+      <td>Port Phillip</td>
+      <td>-37.84240</td>
+      <td>144.94490</td>
+      <td>Southern Metropolitan</td>
+      <td>8648</td>
+      <td>735000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="dataset-features">
+<h3>Dataset Features<a class="headerlink" href="#dataset-features" title="Link to this heading">#</a></h3>
+<p>The features in our dataset are described in the table below. These descriptions are taken from the Kaggle data source.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># !pip install tabulate</span>
+
+<span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span><span class="s1">&#39;Data Type&#39;</span><span class="p">,</span><span class="s1">&#39;Units&#39;</span><span class="p">,</span><span class="s1">&#39;Description&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Suburb&#39;</span><span class="p">,</span><span class="s1">&#39;Nominal categorical&#39;</span><span class="p">,</span><span class="s1">&#39;NA&#39;</span><span class="p">,</span><span class="s1">&#39;Suburb of house sold&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Rooms&#39;</span><span class="p">,</span><span class="s1">&#39;Numeric&#39;</span><span class="p">,</span><span class="s1">&#39;NA&#39;</span><span class="p">,</span><span class="s1">&#39;Number of rooms&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Type&#39;</span><span class="p">,</span><span class="s1">&#39;Nominal categorical&#39;</span><span class="p">,</span><span class="s1">&#39;NA&#39;</span><span class="p">,</span><span class="s1">&#39;br - bedroom(s); h - house, cottage, villa, semi, terrace; </span><span class="se">\</span>
+<span class="s1">          </span><span class="se">\n</span><span class="s1">u - unit, duplex; t - townhouse; dev site - development site; </span><span class="se">\n</span><span class="s1">o res - other residential.&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">,</span><span class="s1">&#39;Numeric&#39;</span><span class="p">,</span><span class="s1">&#39;AUD&#39;</span><span class="p">,</span><span class="s1">&#39;Price of house sold&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Method&#39;</span><span class="p">,</span><span class="s1">&#39;Nominal categorical&#39;</span><span class="p">,</span><span class="s1">&#39;NA&#39;</span><span class="p">,</span><span class="s1">&#39;S - property sold; SP - property sold prior; </span><span class="se">\</span>
+<span class="s1">         </span><span class="se">\n</span><span class="s1">PI - property passed in; PN - sold prior not disclosed; SN - </span><span class="se">\</span>
+<span class="s1">          </span><span class="se">\n</span><span class="s1">sold not disclosed; NB - no bid; VB - vendor bid; W - withdrawn </span><span class="se">\</span>
+<span class="s1">          </span><span class="se">\n</span><span class="s1">prior to auction; SA - sold after auction; SS - sold after auction </span><span class="se">\</span>
+<span class="s1">          </span><span class="se">\n</span><span class="s1">price not disclosed. N/A - price or highest bid not available.&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;SellerG&#39;</span><span class="p">,</span><span class="s1">&#39;Nominal categorical&#39;</span><span class="p">,</span><span class="s1">&#39;NA&#39;</span><span class="p">,</span><span class="s1">&#39;Real estate agent&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span><span class="s1">&#39;dd/mm/yyyy&#39;</span><span class="p">,</span><span class="s1">&#39;Date sold&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Distance&#39;</span><span class="p">,</span><span class="s1">&#39;Numeric&#39;</span><span class="p">,</span><span class="s1">&#39;KM&#39;</span><span class="p">,</span><span class="s1">&#39;Distance from Central Business District&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Bathroom&#39;</span><span class="p">,</span><span class="s1">&#39;Numeric&#39;</span><span class="p">,</span><span class="s1">&#39;NA&#39;</span><span class="p">,</span><span class="s1">&#39;Number of bathrooms&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Car&#39;</span><span class="p">,</span><span class="s1">&#39;Numeric&#39;</span><span class="p">,</span><span class="s1">&#39;NA&#39;</span><span class="p">,</span><span class="s1">&#39;Number of carspots&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Landsize&#39;</span><span class="p">,</span><span class="s1">&#39;Numeric&#39;</span><span class="p">,</span><span class="s1">&#39;Square Meter&#39;</span><span class="p">,</span><span class="s1">&#39;Land size&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Building area&#39;</span><span class="p">,</span><span class="s1">&#39;Numeric&#39;</span><span class="p">,</span><span class="s1">&#39;Square Meter&#39;</span><span class="p">,</span><span class="s1">&#39;Building size&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Year built&#39;</span><span class="p">,</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span><span class="s1">&#39;year&#39;</span><span class="p">,</span><span class="s1">&#39;Year the house was built&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Council area&#39;</span><span class="p">,</span><span class="s1">&#39;Nominal categorical&#39;</span><span class="p">,</span><span class="s1">&#39;NA&#39;</span><span class="p">,</span><span class="s1">&#39;Governing council for the area&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Lattitude&#39;</span><span class="p">,</span><span class="s1">&#39;Numeric&#39;</span><span class="p">,</span><span class="s1">&#39;Degree&#39;</span><span class="p">,</span><span class="s1">&#39;Lattitude&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Longtitude&#39;</span><span class="p">,</span><span class="s1">&#39;Numeric&#39;</span><span class="p">,</span><span class="s1">&#39;Degree&#39;</span><span class="p">,</span><span class="s1">&#39;Longtitude&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Region name&#39;</span><span class="p">,</span><span class="s1">&#39;Nominal categorical&#39;</span><span class="p">,</span><span class="s1">&#39;NA&#39;</span><span class="p">,</span><span class="s1">&#39;General Region (West, North West, etc)&#39;</span><span class="p">],</span>
+         <span class="p">[</span><span class="s1">&#39;Property count&#39;</span><span class="p">,</span><span class="s1">&#39;Numeric&#39;</span><span class="p">,</span><span class="s1">&#39;NA&#39;</span><span class="p">,</span><span class="s1">&#39;Number of properties that exist in the suburb&#39;</span><span class="p">]]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s1">&#39;firstrow&#39;</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s1">&#39;fancy_grid&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>╒════════════════╤═════════════════════╤══════════════╤═══════════════════════════════════════════════════════════════════════════════╕
+│ Name           │ Data Type           │ Units        │ Description                                                                   │
+╞════════════════╪═════════════════════╪══════════════╪═══════════════════════════════════════════════════════════════════════════════╡
+│ Suburb         │ Nominal categorical │ NA           │ Suburb of house sold                                                          │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Rooms          │ Numeric             │ NA           │ Number of rooms                                                               │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Type           │ Nominal categorical │ NA           │ br - bedroom(s); h - house, cottage, villa, semi, terrace;                    │
+│                │                     │              │ u - unit, duplex; t - townhouse; dev site - development site;                 │
+│                │                     │              │ o res - other residential.                                                    │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Price          │ Numeric             │ AUD          │ Price of house sold                                                           │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Method         │ Nominal categorical │ NA           │ S - property sold; SP - property sold prior;                                  │
+│                │                     │              │ PI - property passed in; PN - sold prior not disclosed; SN -                  │
+│                │                     │              │ sold not disclosed; NB - no bid; VB - vendor bid; W - withdrawn               │
+│                │                     │              │ prior to auction; SA - sold after auction; SS - sold after auction            │
+│                │                     │              │ price not disclosed. N/A - price or highest bid not available.                │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ SellerG        │ Nominal categorical │ NA           │ Real estate agent                                                             │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Date           │ Date                │ dd/mm/yyyy   │ Date sold                                                                     │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Distance       │ Numeric             │ KM           │ Distance from Central Business District                                       │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Bathroom       │ Numeric             │ NA           │ Number of bathrooms                                                           │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Car            │ Numeric             │ NA           │ Number of carspots                                                            │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Landsize       │ Numeric             │ Square Meter │ Land size                                                                     │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Building area  │ Numeric             │ Square Meter │ Building size                                                                 │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Year built     │ Date                │ year         │ Year the house was built                                                      │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Council area   │ Nominal categorical │ NA           │ Governing council for the area                                                │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Lattitude      │ Numeric             │ Degree       │ Lattitude                                                                     │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Longtitude     │ Numeric             │ Degree       │ Longtitude                                                                    │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Region name    │ Nominal categorical │ NA           │ General Region (West, North West, etc)                                        │
+├────────────────┼─────────────────────┼──────────────┼───────────────────────────────────────────────────────────────────────────────┤
+│ Property count │ Numeric             │ NA           │ Number of properties that exist in the suburb                                 │
+╘════════════════╧═════════════════════╧══════════════╧═══════════════════════════════════════════════════════════════════════════════╛
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="target-feature">
+<h3>Target Feature<a class="headerlink" href="#target-feature" title="Link to this heading">#</a></h3>
+<p>For this project, the target feature in this dataset will be the house price in Australian dollars. That is, the price of Melbourne houses will be predicted based on the explanatory/ descriptive variables.</p>
+</section>
+</section>
+<section id="goals-and-objectives">
+<h2>Goals and Objectives<a class="headerlink" href="#goals-and-objectives" title="Link to this heading">#</a></h2>
+<p>Melbourne has a very active housing market as demand for housing throughout the city is usually well above the supply. For this reason, a model that can accurately predict a house’s selling price in Melbourne would have many real-world uses. For instance, real estate agents can provide better service to their customers using this predictive model. Likewise, banks lending out money to home buyers can better estimate the financial aspects of this home loan. Perhaps more importantly as potential home buyers, we as individuals can better figure out if we are being ripped off or we are getting a good deal provided that our predictive model is a reliable one.</p>
+<p>Thus, the main objective of this project is two-fold: (1) predict the price of a house sold in Melbourne based on publicly available features of the house, and (2) which features seem to be the best predictors of the house sale price. A secondary objective is to perform some exploratory data analysis by basic descriptive statistics &amp; data visualisation plots to gain some insight into the patterns and relationships existing in the data subsequent to some data cleaning &amp; preprocessing, which is the subject of this Phase 1 report.</p>
+<p>At this point, we make the important assumption that rows in our dataset are not correlated. That is, we assume that house price observations are independent of one another in this dataset. Of course, this is not a very realistic assumption, however, this assumption allows us to circumvent time series aspects of the underlying dynamics of house prices and also to resort to rather classical predictive models such as multiple linear regression.</p>
+</section>
+<section id="data-cleaning-and-preprocessing">
+<h2>Data Cleaning and Preprocessing<a class="headerlink" href="#data-cleaning-and-preprocessing" title="Link to this heading">#</a></h2>
+<p>In this section, we describe the data cleaning and preprocessing steps undertaken for this project.</p>
+<section id="data-cleaning-steps">
+<h3>Data Cleaning Steps<a class="headerlink" href="#data-cleaning-steps" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Drop irrelevant features in our dataset</p></li>
+<li><p>Check and rename/ modify some column names</p></li>
+<li><p>Check for missing values</p></li>
+<li><p>Remove all the rows with missing values</p></li>
+<li><p>Random sampling of the dataset for 5000 rows</p></li>
+</ul>
+<p>Let’s first display all the columns in our dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">melb_df</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;Date&#39;, &#39;Suburb&#39;, &#39;Rooms&#39;, &#39;Type&#39;, &#39;Method&#39;, &#39;SellerG&#39;, &#39;Distance&#39;,
+       &#39;Postcode&#39;, &#39;Bedroom2&#39;, &#39;Bathroom&#39;, &#39;Car&#39;, &#39;Landsize&#39;, &#39;BuildingArea&#39;,
+       &#39;YearBuilt&#39;, &#39;CouncilArea&#39;, &#39;Lattitude&#39;, &#39;Longtitude&#39;, &#39;Regionname&#39;,
+       &#39;Propertycount&#39;, &#39;Price&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Postcode</span></code> is very similar to the <code class="docutils literal notranslate"><span class="pre">Suburb</span></code> feature, thus it is considered redundant for the model and removed. <code class="docutils literal notranslate"><span class="pre">Bedroom2</span></code> is just the number of bedrooms based on other source, which is also the same as <code class="docutils literal notranslate"><span class="pre">Rooms</span></code> feature, thus it is also considered redundant and removed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#drop irrelevant/repeated columns/features</span>
+<span class="n">melb_df</span> <span class="o">=</span> <span class="n">melb_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Postcode&quot;</span><span class="p">,</span> <span class="s2">&quot;Bedroom2&quot;</span><span class="p">])</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>As this is not a time series project, the <code class="docutils literal notranslate"><span class="pre">Date</span></code> feature is transformed into <code class="docutils literal notranslate"><span class="pre">Months</span></code> and <code class="docutils literal notranslate"><span class="pre">Years</span></code> features for the model. After transforming, the original <code class="docutils literal notranslate"><span class="pre">Date</span></code> feature is removed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert Date feature from string to Pandas&#39; datatime dtype</span>
+<span class="n">melb_df</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">melb_df</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">],</span> <span class="n">dayfirst</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">###</span>
+<span class="c1"># Create Year and Month features</span>
+<span class="n">melb_df</span><span class="p">[</span><span class="s1">&#39;year_sold&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">melb_df</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+<span class="n">melb_df</span><span class="p">[</span><span class="s1">&#39;month_sold&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">melb_df</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+<span class="c1">###</span>
+<span class="c1"># Remove Date as we will not need it anymore</span>
+<span class="n">melb_df</span> <span class="o">=</span> <span class="n">melb_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">])</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Some of the columns are not labelled properly, which will be problematic when modelling. We will make all column names lower case and replace any spaces with underscores for consistency. We will also remove any white spaces before &amp; after column names.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># make column names lower case and also remove any white spaces</span>
+<span class="c1"># before &amp; after the column names using the strip() function</span>
+<span class="n">melb_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">melb_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+<span class="n">columns_mapping</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;sellerg&#39;</span><span class="p">:</span> <span class="s1">&#39;real_estate&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;landsize&#39;</span><span class="p">:</span> <span class="s1">&#39;land_size&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;buildingarea&#39;</span><span class="p">:</span> <span class="s1">&#39;building_area&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;yearbuilt&#39;</span><span class="p">:</span> <span class="s1">&#39;year_built&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;councilarea&#39;</span><span class="p">:</span> <span class="s1">&#39;council&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;regionname&#39;</span><span class="p">:</span> <span class="s1">&#39;region&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;propertycount&#39;</span><span class="p">:</span> <span class="s1">&#39;property_count&#39;</span>    
+<span class="p">}</span>
+
+<span class="c1"># rename columns</span>
+<span class="n">melb_df</span> <span class="o">=</span> <span class="n">melb_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="n">columns_mapping</span><span class="p">)</span>
+<span class="n">melb_df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>suburb</th>
+      <th>rooms</th>
+      <th>type</th>
+      <th>method</th>
+      <th>real_estate</th>
+      <th>distance</th>
+      <th>bathroom</th>
+      <th>car</th>
+      <th>land_size</th>
+      <th>building_area</th>
+      <th>year_built</th>
+      <th>council</th>
+      <th>lattitude</th>
+      <th>longtitude</th>
+      <th>region</th>
+      <th>property_count</th>
+      <th>price</th>
+      <th>year_sold</th>
+      <th>month_sold</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>8563</th>
+      <td>Doncaster</td>
+      <td>4</td>
+      <td>h</td>
+      <td>S</td>
+      <td>Ray</td>
+      <td>13.9</td>
+      <td>2</td>
+      <td>2.0</td>
+      <td>806</td>
+      <td>170.0</td>
+      <td>1975.0</td>
+      <td>Manningham</td>
+      <td>-37.79390</td>
+      <td>145.13920</td>
+      <td>Eastern Metropolitan</td>
+      <td>9028</td>
+      <td>1468000</td>
+      <td>2016</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>3552</th>
+      <td>Reservoir</td>
+      <td>1</td>
+      <td>u</td>
+      <td>PI</td>
+      <td>Stockdale</td>
+      <td>12.0</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0</td>
+      <td>60.0</td>
+      <td>1980.0</td>
+      <td>Darebin</td>
+      <td>-37.71408</td>
+      <td>145.00441</td>
+      <td>Northern Metropolitan</td>
+      <td>21650</td>
+      <td>270000</td>
+      <td>2017</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>11403</th>
+      <td>Moorabbin</td>
+      <td>4</td>
+      <td>h</td>
+      <td>S</td>
+      <td>Buxton</td>
+      <td>14.6</td>
+      <td>1</td>
+      <td>2.0</td>
+      <td>592</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Kingston</td>
+      <td>-37.94070</td>
+      <td>145.04820</td>
+      <td>Southern Metropolitan</td>
+      <td>2555</td>
+      <td>921000</td>
+      <td>2016</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>8475</th>
+      <td>Windsor</td>
+      <td>2</td>
+      <td>u</td>
+      <td>SP</td>
+      <td>Jellis</td>
+      <td>5.1</td>
+      <td>2</td>
+      <td>1.0</td>
+      <td>0</td>
+      <td>111.0</td>
+      <td>2007.0</td>
+      <td>Port Phillip</td>
+      <td>-37.85630</td>
+      <td>144.99160</td>
+      <td>Southern Metropolitan</td>
+      <td>4380</td>
+      <td>1200000</td>
+      <td>2016</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>9442</th>
+      <td>Parkville</td>
+      <td>1</td>
+      <td>u</td>
+      <td>S</td>
+      <td>Jellis</td>
+      <td>2.6</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Melbourne</td>
+      <td>-37.78640</td>
+      <td>144.94090</td>
+      <td>Northern Metropolitan</td>
+      <td>2309</td>
+      <td>352500</td>
+      <td>2016</td>
+      <td>10</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Next we check the data types and observe that they match the intended data types, thus no change is needed here.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check for data types</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of the dataset = </span><span class="si">{</span><span class="n">melb_df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data types are below where &#39;object&#39; indicates a string type: &quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">melb_df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape of the dataset = (13580, 19) 
+
+Data types are below where &#39;object&#39; indicates a string type: 
+suburb             object
+rooms               int64
+type               object
+method             object
+real_estate        object
+distance          float64
+bathroom            int64
+car               float64
+land_size           int64
+building_area     float64
+year_built        float64
+council            object
+lattitude         float64
+longtitude        float64
+region             object
+property_count      int64
+price               int64
+year_sold           int32
+month_sold          int32
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>The unique values for all columns with categorical data types are displayed to check for any white spaces and other data quality issues. It turns out that the data is already clean, and no futher data cleaning steps are necessary here.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&lt;b&gt;Table 1: Summary of categorical features&lt;/b&gt;&#39;</span><span class="p">))</span>
+<span class="n">melb_df</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><b>Table 1: Summary of categorical features</b></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>unique</th>
+      <th>top</th>
+      <th>freq</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>suburb</th>
+      <td>13580</td>
+      <td>314</td>
+      <td>Reservoir</td>
+      <td>359</td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td>13580</td>
+      <td>3</td>
+      <td>h</td>
+      <td>9449</td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td>13580</td>
+      <td>5</td>
+      <td>S</td>
+      <td>9022</td>
+    </tr>
+    <tr>
+      <th>real_estate</th>
+      <td>13580</td>
+      <td>268</td>
+      <td>Nelson</td>
+      <td>1565</td>
+    </tr>
+    <tr>
+      <th>council</th>
+      <td>12211</td>
+      <td>33</td>
+      <td>Moreland</td>
+      <td>1163</td>
+    </tr>
+    <tr>
+      <th>region</th>
+      <td>13580</td>
+      <td>8</td>
+      <td>Southern Metropolitan</td>
+      <td>4695</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># To see all unique values for categorical data types</span>
+<span class="n">categoricalColumns</span> <span class="o">=</span> <span class="n">melb_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">melb_df</span><span class="o">.</span><span class="n">dtypes</span><span class="o">==</span><span class="nb">object</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">categoricalColumns</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unique values for &#39;</span> <span class="o">+</span> <span class="n">col</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">melb_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Unique values for suburb
+[&#39;Aberfeldie&#39; &#39;Airport West&#39; &#39;Albanvale&#39; &#39;Albert Park&#39; &#39;Albion&#39;
+ &#39;Altona Meadows&#39; &#39;Altona North&#39; &#39;Armadale&#39; &#39;Ascot Vale&#39; &#39;Ashburton&#39;
+ &#39;Balwyn&#39; &#39;Balwyn North&#39; &#39;Bayswater&#39; &#39;Bayswater North&#39; &#39;Beaumaris&#39;
+ &#39;Bentleigh&#39; &#39;Bentleigh East&#39; &#39;Berwick&#39; &#39;Black Rock&#39; &#39;Blackburn&#39;
+ &#39;Blackburn North&#39; &#39;Blackburn South&#39; &#39;Bonbeach&#39; &#39;Box Hill&#39; &#39;Brighton East&#39;
+ &#39;Broadmeadows&#39; &#39;Brooklyn&#39; &#39;Brunswick&#39; &#39;Brunswick East&#39; &#39;Brunswick West&#39;
+ &#39;Bulleen&#39; &#39;Bundoora&#39; &#39;Burnside Heights&#39; &#39;Burwood East&#39; &#39;Camberwell&#39;
+ &#39;Carnegie&#39; &#39;Caroline Springs&#39; &#39;Cheltenham&#39; &#39;Clayton South&#39; &#39;Coburg&#39;
+ &#39;Craigieburn&#39; &#39;Croydon&#39; &#39;Deer Park&#39; &#39;Delahey&#39; &#39;Derrimut&#39; &#39;Diamond Creek&#39;
+ &#39;Doncaster&#39; &#39;Doncaster East&#39; &#39;Donvale&#39; &#39;Doreen&#39; &#39;Edithvale&#39; &#39;Epping&#39;
+ &#39;Essendon&#39; &#39;Fawkner&#39; &#39;Ferntree Gully&#39; &#39;Fitzroy&#39; &#39;Fitzroy North&#39;
+ &#39;Flemington&#39; &#39;Forest Hill&#39; &#39;Frankston&#39; &#39;Frankston South&#39; &#39;Gladstone Park&#39;
+ &#39;Glen Huntly&#39; &#39;Glen Iris&#39; &#39;Glen Waverley&#39; &#39;Glenroy&#39; &#39;Greensborough&#39;
+ &#39;Hampton&#39; &#39;Hampton East&#39; &#39;Hawthorn East&#39; &#39;Heidelberg&#39;
+ &#39;Heidelberg Heights&#39; &#39;Highett&#39; &#39;Hoppers Crossing&#39; &#39;Huntingdale&#39;
+ &#39;Ivanhoe East&#39; &#39;Jacana&#39; &#39;Kealba&#39; &#39;Keilor Downs&#39; &#39;Keilor East&#39; &#39;Kew&#39;
+ &#39;Kew East&#39; &#39;Keysborough&#39; &#39;Lalor&#39; &#39;Malvern&#39; &#39;Maribyrnong&#39; &#39;Meadow Heights&#39;
+ &#39;Melton&#39; &#39;Melton West&#39; &#39;Mentone&#39; &#39;Mill Park&#39; &#39;Mitcham&#39; &#39;Moonee Ponds&#39;
+ &#39;Mooroolbark&#39; &#39;Mount Waverley&#39; &#39;Mulgrave&#39; &#39;Murrumbeena&#39; &#39;New Gisborne&#39;
+ &#39;Newport&#39; &#39;Niddrie&#39; &#39;North Melbourne&#39; &#39;Northcote&#39; &#39;Notting Hill&#39;
+ &#39;Oak Park&#39; &#39;Oakleigh&#39; &#39;Oakleigh East&#39; &#39;Oakleigh South&#39; &#39;Ormond&#39;
+ &#39;Plumpton&#39; &#39;Port Melbourne&#39; &#39;Prahran&#39; &#39;Preston&#39; &#39;Reservoir&#39; &#39;Richmond&#39;
+ &#39;Ringwood&#39; &#39;Ringwood North&#39; &#39;Rosanna&#39; &#39;Roxburgh Park&#39; &#39;Sandringham&#39;
+ &#39;Seddon&#39; &#39;South Melbourne&#39; &#39;South Morang&#39; &#39;Springvale&#39; &#39;St Albans&#39;
+ &#39;St Helena&#39; &#39;St Kilda&#39; &#39;Strathmore&#39; &#39;Sunbury&#39; &#39;Sunshine North&#39;
+ &#39;Sunshine West&#39; &#39;Surrey Hills&#39; &#39;Taylors Lakes&#39; &#39;Templestowe&#39;
+ &#39;Templestowe Lower&#39; &#39;The Basin&#39; &#39;Thomastown&#39; &#39;Vermont&#39; &#39;Vermont South&#39;
+ &#39;Wantirna&#39; &#39;Wantirna South&#39; &#39;Werribee&#39; &#39;West Footscray&#39; &#39;Westmeadows&#39;
+ &#39;Wheelers Hill&#39; &#39;Williamstown&#39; &#39;Wollert&#39; &#39;Yarraville&#39; &#39;Altona&#39;
+ &#39;Aspendale&#39; &#39;Aspendale Gardens&#39; &#39;Avondale Heights&#39; &#39;Boronia&#39; &#39;Braybrook&#39;
+ &#39;Brighton&#39; &#39;Burwood&#39; &#39;Carrum Downs&#39; &#39;Chelsea&#39; &#39;Clayton&#39; &#39;Clifton Hill&#39;
+ &#39;Coburg North&#39; &#39;Collingwood&#39; &#39;Dandenong North&#39; &#39;Dingley Village&#39;
+ &#39;Doveton&#39; &#39;Eltham&#39; &#39;Elwood&#39; &#39;Essendon North&#39; &#39;Fairfield&#39; &#39;Gisborne&#39;
+ &#39;Greenvale&#39; &#39;Hallam&#39; &#39;Hawthorn&#39; &#39;Heidelberg West&#39; &#39;Hillside&#39; &#39;Keilor&#39;
+ &#39;Kingsville&#39; &#39;Mont Albert&#39; &#39;Montmorency&#39; &#39;Moorabbin&#39; &#39;Mordialloc&#39;
+ &#39;Narre Warren&#39; &#39;Parkdale&#39; &#39;Pascoe Vale&#39; &#39;Point Cook&#39; &#39;Princes Hill&#39;
+ &#39;Ringwood East&#39; &#39;Scoresby&#39; &#39;South Yarra&#39; &#39;Sunshine&#39; &#39;Thornbury&#39; &#39;Toorak&#39;
+ &#39;Viewbank&#39; &#39;Wallan&#39; &#39;Watsonia&#39; &#39;Watsonia North&#39; &#39;West Melbourne&#39;
+ &#39;Williams Landing&#39; &#39;Williamstown North&#39; &#39;Windsor&#39; &#39;Alphington&#39; &#39;Attwood&#39;
+ &#39;Canterbury&#39; &#39;Carlton&#39; &#39;Carlton North&#39; &#39;Cremorne&#39; &#39;Eltham North&#39;
+ &#39;Footscray&#39; &#39;Hadfield&#39; &#39;Heathmont&#39; &#39;Hurstbridge&#39; &#39;Keilor Lodge&#39;
+ &#39;Maidstone&#39; &#39;Malvern East&#39; &#39;Melton South&#39; &#39;Mernda&#39; &#39;Middle Park&#39;
+ &#39;North Warrandyte&#39; &#39;Seaford&#39; &#39;Waterways&#39; &#39;Balaclava&#39; &#39;Briar Hill&#39;
+ &#39;Burnside&#39; &#39;Caulfield East&#39; &#39;Coolaroo&#39; &#39;Croydon Hills&#39; &#39;Croydon North&#39;
+ &#39;Dallas&#39; &#39;Dandenong&#39; &#39;Gowanbrae&#39; &#39;Springvale South&#39; &#39;Tullamarine&#39;
+ &#39;Warrandyte&#39; &#39;Bellfield&#39; &#39;Caulfield South&#39; &#39;Chadstone&#39; &#39;Chelsea Heights&#39;
+ &#39;Cranbourne&#39; &#39;Frankston North&#39; &#39;Hampton Park&#39; &#39;Ivanhoe&#39; &#39;Keilor Park&#39;
+ &#39;Kilsyth&#39; &#39;Kings Park&#39; &#39;Kooyong&#39; &#39;Langwarrin&#39; &#39;McKinnon&#39; &#39;Monbulk&#39;
+ &#39;Nunawading&#39; &#39;Spotswood&#39; &#39;Tarneit&#39; &#39;Abbotsford&#39; &#39;Ardeer&#39; &#39;Ashwood&#39;
+ &#39;Campbellfield&#39; &#39;Clarinda&#39; &#39;Eaglemont&#39; &#39;Elsternwick&#39; &#39;Kensington&#39;
+ &#39;Mount Evelyn&#39; &#39;Strathmore Heights&#39; &#39;Truganina&#39; &#39;Wyndham Vale&#39;
+ &#39;Yallambie&#39; &#39;Bullengarook&#39; &#39;Cairnlea&#39; &#39;Carrum&#39; &#39;Caulfield&#39;
+ &#39;Caulfield North&#39; &#39;Chirnside Park&#39; &#39;Deepdene&#39; &#39;Diggers Rest&#39;
+ &#39;East Melbourne&#39; &#39;Hughesdale&#39; &#39;Kurunjang&#39; &#39;Lower Plenty&#39; &#39;Rowville&#39;
+ &#39;Southbank&#39; &#39;Sydenham&#39; &#39;Travancore&#39; &#39;Wonga Park&#39; &#39;Beaconsfield&#39;
+ &#39;Brookfield&#39; &#39;Cranbourne North&#39; &#39;Emerald&#39; &#39;Endeavour Hills&#39; &#39;Knoxfield&#39;
+ &#39;Melbourne&#39; &#39;Noble Park&#39; &#39;Ripponlea&#39; &#39;Seabrook&#39; &#39;Seaholme&#39;
+ &#39;South Kingsville&#39; &#39;Whittlesea&#39; &#39;Pakenham&#39; &#39;Taylors Hill&#39; &#39;Yarra Glen&#39;
+ &#39;Essendon West&#39; &#39;Kingsbury&#39; &#39;Officer&#39; &#39;Bacchus Marsh&#39; &#39;Montrose&#39;
+ &#39;Parkville&#39; &#39;Healesville&#39; &#39;Rockbank&#39; &#39;Skye&#39; &#39;Beaconsfield Upper&#39;
+ &#39;Riddells Creek&#39; &#39;Sandhurst&#39; &#39;Silvan&#39; &#39;Burnley&#39; &#39;Croydon South&#39;
+ &#39;Gardenvale&#39; &#39;Upwey&#39; &#39;Docklands&#39;]
+
+Unique values for type
+[&#39;h&#39; &#39;t&#39; &#39;u&#39;]
+
+Unique values for method
+[&#39;S&#39; &#39;VB&#39; &#39;SP&#39; &#39;PI&#39; &#39;SA&#39;]
+
+Unique values for real_estate
+[&#39;Rendina&#39; &#39;Brad&#39; &#39;Harcourts&#39; &#39;Bells&#39; &#39;Cayzer&#39; &#39;YPA&#39; &#39;Barlow&#39; &#39;Sweeney&#39;
+ &#39;hockingstuart&#39; &#39;Kay&#39; &#39;Nelson&#39; &#39;Buxton&#39; &#39;Jellis&#39; &#39;Marshall&#39; &#39;iTRAK&#39;
+ &#39;McGrath&#39; &#39;Obrien&#39; &#39;Woodards&#39; &#39;Barry&#39; &#39;Ray&#39; &#39;Fletchers&#39; &#39;Philip&#39;
+ &#39;Chambers&#39; &#39;Luxton&#39; &#39;Noel&#39; &#39;HAR&#39; &quot;O&#39;Brien&quot; &#39;C21&#39; &#39;One&#39; &#39;Purplebricks&#39;
+ &#39;Stockdale&#39; &#39;Morrison&#39; &#39;ASL&#39; &#39;The&#39; &#39;Hodges&#39; &#39;Love&#39; &#39;Eview&#39; &#39;Darren&#39;
+ &#39;Triwest&#39; &#39;FN&#39; &#39;Miles&#39; &#39;Kelly&#39; &#39;Area&#39; &#39;Melbourne&#39; &#39;SN&#39; &#39;Raine&#39; &#39;Williams&#39;
+ &#39;Frank&#39; &#39;RT&#39; &#39;Weston&#39; &#39;RW&#39; &#39;Carter&#39; &#39;Sell&#39; &#39;iSell&#39; &#39;Buckingham&#39;
+ &#39;Considine&#39; &#39;Jas&#39; &#39;Village&#39; &#39;Greg&#39; &#39;Lindellas&#39; &#39;Douglas&#39; &#39;Nick&#39; &#39;Darras&#39;
+ &#39;Peter&#39; &#39;Parkes&#39; &#39;REMAX&#39; &#39;Roger&#39; &#39;Follett&#39; &#39;Prof.&#39; &#39;Reliance&#39; &#39;LLC&#39; &#39;LJ&#39;
+ &#39;Biggin&#39; &#39;Collins&#39; &#39;buyMyplace&#39; &#39;Le&#39; &#39;Leeburn&#39; &#39;Garvey&#39; &#39;Joseph&#39;
+ &#39;Chisholm&#39; &#39;S&amp;L&#39; &#39;Walshe&#39; &#39;Harrington&#39; &#39;Mason&#39; &#39;Schroeder&#39; &quot;Abercromby&#39;s&quot;
+ &#39;Charlton&#39; &#39;Daniel&#39; &#39;Gardiner&#39; &#39;L&#39; &#39;Gary&#39; &#39;Domain&#39; &#39;McDonald&#39; &#39;Hoskins&#39;
+ &#39;McLennan&#39; &#39;Del&#39; &#39;Millership&#39; &#39;Alexkarbon&#39; &#39;Meadows&#39; &#39;Tim&#39; &#39;Max&#39; &#39;Jason&#39;
+ &#39;McNaughton&#39; &#39;PRD&#39; &#39;Bullen&#39; &#39;RE&#39; &#39;Rexhepi&#39; &#39;William&#39; &#39;Ace&#39; &#39;Ryder&#39;
+ &#39;Point&#39; &#39;Red&#39; &#39;Edward&#39; &#39;Boutique&#39; &#39;TRUE&#39; &#39;M.J&#39; &#39;GL&#39; &#39;VICProp&#39; &#39;Keatings&#39;
+ &#39;JRW&#39; &#39;Leading&#39; &#39;Caine&#39; &#39;Burnham&#39; &#39;Appleby&#39; &#39;Castran&#39; &#39;Scott&#39; &#39;Moonee&#39;
+ &#39;Peake&#39; &#39;Thomson&#39; &#39;Nicholson&#39; &#39;LITTLE&#39; &#39;Kaye&#39; &#39;Nicholls&#39; &#39;Bowman&#39; &#39;J&#39;
+ &#39;R&amp;H&#39; &#39;Redina&#39; &#39;Langwell&#39; &#39;MICM&#39; &#39;Hall&#39; &#39;Gunn&amp;Co&#39; &#39;JMRE&#39; &#39;Ham&#39; &#39;Thomas&#39;
+ &#39;Mandy&#39; &#39;Haughton&#39; &#39;Whiting&#39; &#39;PRDNationwide&#39; &#39;Win&#39; &#39;Westside&#39; &#39;Better&#39;
+ &#39;Iconek&#39; &#39;Aquire&#39; &#39;Galldon&#39; &#39;Only&#39; &quot;D&#39;Aprano&quot; &#39;U&#39; &#39;Dingle&#39; &#39;Ross&#39; &#39;Dixon&#39;
+ &#39;Wilson&#39; &#39;Ristic&#39; &#39;Ash&#39; &#39;Upper&#39; &#39;Pagan&#39; &#39;Xynergy&#39; &#39;Bekdon&#39; &#39;Metro&#39;
+ &#39;Lucas&#39; &#39;Rounds&#39; &#39;Mitchell&#39; &#39;Weda&#39; &#39;Hunter&#39; &#39;Leyton&#39; &#39;W.B.&#39; &#39;Conquest&#39;
+ &#39;Trimson&#39; &#39;Victory&#39; &#39;Smart&#39; &#39;Mindacom&#39; &#39;Beller&#39; &#39;Asset&#39; &#39;@Realty&#39; &#39;Jim&#39;
+ &#39;Real&#39; &#39;iProperty&#39; &#39;Hayeswinckle&#39; &#39;Nardella&#39; &#39;Prime&#39; &#39;Community&#39; &#39;Elite&#39;
+ &#39;Holland&#39; &#39;Free&#39; &#39;Veitch&#39; &#39;Oriental&#39; &quot;O&#39;Donoghues&quot; &#39;Morleys&#39; &quot;Sotheby&#39;s&quot;
+ &#39;WHITEFOX&#39; &#39;White&#39; &#39;Century&#39; &#39;Rodney&#39; &#39;Craig&#39; &#39;Rosin&#39; &#39;Reed&#39; &#39;Anderson&#39;
+ &#39;Hooper&#39; &#39;Matthew&#39; &#39;Leased&#39; &#39;Maddison&#39; &quot;Tiernan&#39;s&quot; &#39;hockingstuart/Barry&#39;
+ &#39;David&#39; &#39;Pride&#39; &#39;Johnston&#39; &#39;Prowse&#39; &#39;Ascend&#39; &#39;Christopher&#39;
+ &#39;Fletchers/One&#39; &#39;Paul&#39; &#39;Walsh&#39; &#39;New&#39; &#39;North&#39; &#39;Naison&#39; &#39;Reach&#39; &#39;Blue&#39;
+ &#39;Ken&#39; &#39;Bayside&#39; &#39;Re&#39; &#39;Vic&#39; &#39;Direct&#39; &#39;Geoff&#39; &#39;Buxton/Find&#39; &#39;First&#39; &#39;Owen&#39;
+ &#39;Grantham&#39; &#39;Crane&#39; &#39;Sweeney/Advantage&#39; &#39;Compton&#39; &#39;Brace&#39; &#39;Allens&#39;
+ &#39;VICPROP&#39; &#39;Zahn&#39; &#39;Assisi&#39; &#39;Wood&#39; &#39;Besser&#39; &#39;Oak&#39; &#39;Australian&#39; &#39;CASTRAN&#39;
+ &#39;Buxton/Advantage&#39; &quot;Private/Tiernan&#39;s&quot; &#39;Nguyen&#39; &#39;Joe&#39; &#39;Homes&#39; &#39;Property&#39;
+ &#39;Luxe&#39; &#39;Weast&#39; &#39;Coventry&#39; &#39;Changing&#39; &#39;Raine&amp;Horne&#39;
+ &#39;hockingstuart/Advantage&#39; &#39;Steveway&#39; &#39;Propertyau&#39; &#39;Calder&#39; &#39;Parkinson&#39;
+ &#39;Clairmont&#39; &#39;hockingstuart/Village&#39; &#39;iOne&#39;]
+
+Unique values for council
+[nan &#39;Yarra&#39; &#39;Moonee Valley&#39; &#39;Brimbank&#39; &#39;Darebin&#39; &#39;Hobsons Bay&#39;
+ &#39;Stonnington&#39; &#39;Boroondara&#39; &#39;Kingston&#39; &#39;Port Phillip&#39; &#39;Knox&#39; &#39;Bayside&#39;
+ &#39;Banyule&#39; &#39;Glen Eira&#39; &#39;Casey&#39; &#39;Whitehorse&#39; &#39;Hume&#39; &#39;Moreland&#39; &#39;Manningham&#39;
+ &#39;Macedon Ranges&#39; &#39;Whittlesea&#39; &#39;Melton&#39; &#39;Frankston&#39; &#39;Monash&#39;
+ &#39;Yarra Ranges&#39; &#39;Maroondah&#39; &#39;Greater Dandenong&#39; &#39;Nillumbik&#39; &#39;Melbourne&#39;
+ &#39;Maribyrnong&#39; &#39;Wyndham&#39; &#39;Cardinia&#39; &#39;Moorabool&#39; &#39;Unavailable&#39;]
+
+Unique values for region
+[&#39;Western Metropolitan&#39; &#39;Southern Metropolitan&#39; &#39;Eastern Metropolitan&#39;
+ &#39;Eastern Victoria&#39; &#39;South-Eastern Metropolitan&#39; &#39;Northern Metropolitan&#39;
+ &#39;Northern Victoria&#39; &#39;Western Victoria&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The summary statistics are generated for all the numerical features. There does not seem to be any outliers in the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s1">&#39;&lt;b&gt;Table 2: Summary of numerical features&lt;/b&gt;&#39;</span><span class="p">))</span>
+<span class="n">melb_df</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;int64&#39;</span><span class="p">,</span><span class="s1">&#39;float64&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><b>Table 2: Summary of numerical features</b></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>min</th>
+      <th>25%</th>
+      <th>50%</th>
+      <th>75%</th>
+      <th>max</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>rooms</th>
+      <td>13580.0</td>
+      <td>2.937997e+00</td>
+      <td>0.955748</td>
+      <td>1.00000</td>
+      <td>2.000000</td>
+      <td>3.000000</td>
+      <td>3.000000e+00</td>
+      <td>1.000000e+01</td>
+    </tr>
+    <tr>
+      <th>distance</th>
+      <td>13580.0</td>
+      <td>1.013778e+01</td>
+      <td>5.868725</td>
+      <td>0.00000</td>
+      <td>6.100000</td>
+      <td>9.200000</td>
+      <td>1.300000e+01</td>
+      <td>4.810000e+01</td>
+    </tr>
+    <tr>
+      <th>bathroom</th>
+      <td>13580.0</td>
+      <td>1.534242e+00</td>
+      <td>0.691712</td>
+      <td>0.00000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>2.000000e+00</td>
+      <td>8.000000e+00</td>
+    </tr>
+    <tr>
+      <th>car</th>
+      <td>13518.0</td>
+      <td>1.610075e+00</td>
+      <td>0.962634</td>
+      <td>0.00000</td>
+      <td>1.000000</td>
+      <td>2.000000</td>
+      <td>2.000000e+00</td>
+      <td>1.000000e+01</td>
+    </tr>
+    <tr>
+      <th>land_size</th>
+      <td>13580.0</td>
+      <td>5.584161e+02</td>
+      <td>3990.669241</td>
+      <td>0.00000</td>
+      <td>177.000000</td>
+      <td>440.000000</td>
+      <td>6.510000e+02</td>
+      <td>4.330140e+05</td>
+    </tr>
+    <tr>
+      <th>building_area</th>
+      <td>7130.0</td>
+      <td>1.519676e+02</td>
+      <td>541.014538</td>
+      <td>0.00000</td>
+      <td>93.000000</td>
+      <td>126.000000</td>
+      <td>1.740000e+02</td>
+      <td>4.451500e+04</td>
+    </tr>
+    <tr>
+      <th>year_built</th>
+      <td>8205.0</td>
+      <td>1.964684e+03</td>
+      <td>37.273762</td>
+      <td>1196.00000</td>
+      <td>1940.000000</td>
+      <td>1970.000000</td>
+      <td>1.999000e+03</td>
+      <td>2.018000e+03</td>
+    </tr>
+    <tr>
+      <th>lattitude</th>
+      <td>13580.0</td>
+      <td>-3.780920e+01</td>
+      <td>0.079260</td>
+      <td>-38.18255</td>
+      <td>-37.856822</td>
+      <td>-37.802355</td>
+      <td>-3.775640e+01</td>
+      <td>-3.740853e+01</td>
+    </tr>
+    <tr>
+      <th>longtitude</th>
+      <td>13580.0</td>
+      <td>1.449952e+02</td>
+      <td>0.103916</td>
+      <td>144.43181</td>
+      <td>144.929600</td>
+      <td>145.000100</td>
+      <td>1.450583e+02</td>
+      <td>1.455264e+02</td>
+    </tr>
+    <tr>
+      <th>property_count</th>
+      <td>13580.0</td>
+      <td>7.454417e+03</td>
+      <td>4378.581772</td>
+      <td>249.00000</td>
+      <td>4380.000000</td>
+      <td>6555.000000</td>
+      <td>1.033100e+04</td>
+      <td>2.165000e+04</td>
+    </tr>
+    <tr>
+      <th>price</th>
+      <td>13580.0</td>
+      <td>1.075684e+06</td>
+      <td>639310.724296</td>
+      <td>85000.00000</td>
+      <td>650000.000000</td>
+      <td>903000.000000</td>
+      <td>1.330000e+06</td>
+      <td>9.000000e+06</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Missing values are checked by displaying the number of missing values in every column. We observe that <code class="docutils literal notranslate"><span class="pre">car</span></code>, <code class="docutils literal notranslate"><span class="pre">building_area</span></code>, <code class="docutils literal notranslate"><span class="pre">year_built</span></code> and <code class="docutils literal notranslate"><span class="pre">council</span></code> features have missing values. We decide to drop these observations for simplicity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Count missing values in each column</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of missing values for each column/ feature:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">melb_df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of missing values for each column/ feature:
+suburb               0
+rooms                0
+type                 0
+method               0
+real_estate          0
+distance             0
+bathroom             0
+car                 62
+land_size            0
+building_area     6450
+year_built        5375
+council           1369
+lattitude            0
+longtitude           0
+region               0
+property_count       0
+price                0
+year_sold            0
+month_sold           0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Drop all rows with missing values/NaN</span>
+<span class="n">melb_df</span> <span class="o">=</span> <span class="n">melb_df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">melb_df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(6196, 19)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="random-sampling">
+<h3>Random Sampling<a class="headerlink" href="#random-sampling" title="Link to this heading">#</a></h3>
+<p>As the data has more than 5000 rows, random sampling is done to get only 5000 rows out of the remaining 6196 rows for ease of computation. At the end, we display 5 random rows from our cleaned data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">melb_df</span> <span class="o">=</span> <span class="n">melb_df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+<span class="n">melb_df</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">melb_df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>suburb</th>
+      <th>rooms</th>
+      <th>type</th>
+      <th>method</th>
+      <th>real_estate</th>
+      <th>distance</th>
+      <th>bathroom</th>
+      <th>car</th>
+      <th>land_size</th>
+      <th>building_area</th>
+      <th>year_built</th>
+      <th>council</th>
+      <th>lattitude</th>
+      <th>longtitude</th>
+      <th>region</th>
+      <th>property_count</th>
+      <th>price</th>
+      <th>year_sold</th>
+      <th>month_sold</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3616</th>
+      <td>Windsor</td>
+      <td>2</td>
+      <td>h</td>
+      <td>S</td>
+      <td>hockingstuart</td>
+      <td>4.6</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>136</td>
+      <td>58.0</td>
+      <td>1892.0</td>
+      <td>Stonnington</td>
+      <td>-37.85542</td>
+      <td>144.99571</td>
+      <td>Southern Metropolitan</td>
+      <td>4380</td>
+      <td>957500</td>
+      <td>2017</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>10409</th>
+      <td>South Yarra</td>
+      <td>2</td>
+      <td>u</td>
+      <td>SP</td>
+      <td>Jellis</td>
+      <td>3.3</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0</td>
+      <td>86.0</td>
+      <td>2003.0</td>
+      <td>Stonnington</td>
+      <td>-37.83930</td>
+      <td>144.98860</td>
+      <td>Southern Metropolitan</td>
+      <td>14887</td>
+      <td>722000</td>
+      <td>2016</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>6777</th>
+      <td>St Kilda</td>
+      <td>3</td>
+      <td>h</td>
+      <td>VB</td>
+      <td>Wilson</td>
+      <td>6.1</td>
+      <td>2</td>
+      <td>2.0</td>
+      <td>176</td>
+      <td>192.0</td>
+      <td>1880.0</td>
+      <td>Port Phillip</td>
+      <td>-37.86410</td>
+      <td>144.97390</td>
+      <td>Southern Metropolitan</td>
+      <td>13240</td>
+      <td>2000000</td>
+      <td>2017</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>7304</th>
+      <td>Brighton East</td>
+      <td>5</td>
+      <td>h</td>
+      <td>S</td>
+      <td>hockingstuart</td>
+      <td>10.7</td>
+      <td>5</td>
+      <td>3.0</td>
+      <td>1561</td>
+      <td>272.0</td>
+      <td>1969.0</td>
+      <td>Bayside</td>
+      <td>-37.91020</td>
+      <td>145.02450</td>
+      <td>Southern Metropolitan</td>
+      <td>6938</td>
+      <td>3207000</td>
+      <td>2016</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>2627</th>
+      <td>Point Cook</td>
+      <td>4</td>
+      <td>h</td>
+      <td>S</td>
+      <td>hockingstuart</td>
+      <td>14.7</td>
+      <td>2</td>
+      <td>2.0</td>
+      <td>448</td>
+      <td>190.0</td>
+      <td>2012.0</td>
+      <td>Wyndham</td>
+      <td>-37.89140</td>
+      <td>144.72014</td>
+      <td>Western Metropolitan</td>
+      <td>15542</td>
+      <td>698000</td>
+      <td>2017</td>
+      <td>7</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="data-exploration-and-visualisation">
+<h2>Data Exploration and Visualisation<a class="headerlink" href="#data-exploration-and-visualisation" title="Link to this heading">#</a></h2>
+<p>Our dataset is now considered to be clean and we are ready to start visualising and explore each of the features.</p>
+<section id="univariate-visualisation">
+<h3>Univariate Visualisation<a class="headerlink" href="#univariate-visualisation" title="Link to this heading">#</a></h3>
+<section id="bar-chart-of-region-name">
+<h4>Bar Chart  of Region Name<a class="headerlink" href="#bar-chart-of-region-name" title="Link to this heading">#</a></h4>
+<p>We count the region name to see which region has the highest count in Melbourne Housing in a descending order. As we can see in Figure 1, the Southern Metropolitan has the highest number of house sold compared to the
+other regions in Melbourne.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;region&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">melb_df</span><span class="p">,</span> <span class="n">palette</span> <span class="o">=</span> <span class="s1">&#39;magma&#39;</span><span class="p">,</span> 
+                    <span class="n">order</span> <span class="o">=</span> <span class="n">melb_df</span><span class="p">[</span><span class="s1">&#39;region&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 1: Region Count for Melbourne Housing&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/57e5a2ea3b73fd328995d3c22a939253ddfe963ceff36bd625a715e7b29541b5.png"><img alt="../_images/57e5a2ea3b73fd328995d3c22a939253ddfe963ceff36bd625a715e7b29541b5.png" src="../_images/57e5a2ea3b73fd328995d3c22a939253ddfe963ceff36bd625a715e7b29541b5.png" style="width: 1630px; height: 702px;" /></a>
+</div>
+</div>
+</section>
+<section id="bar-chart-of-method">
+<h4>Bar Chart of Method<a class="headerlink" href="#bar-chart-of-method" title="Link to this heading">#</a></h4>
+<p>From Figure 2, we can see that the method “Property Sold” (“S”) is the most common method used in selling house based on the dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">melb_df</span><span class="p">,</span> <span class="n">palette</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+                    <span class="n">order</span> <span class="o">=</span> <span class="n">melb_df</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 2: Method Count in Melbourne Housing&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/fb5e65b78801e0f20c86d5375b714c831df46d3eb1b0633694efb7ce2a1dafcf.png"><img alt="../_images/fb5e65b78801e0f20c86d5375b714c831df46d3eb1b0633694efb7ce2a1dafcf.png" src="../_images/fb5e65b78801e0f20c86d5375b714c831df46d3eb1b0633694efb7ce2a1dafcf.png" style="width: 1243px; height: 702px;" /></a>
+</div>
+</div>
+</section>
+<section id="boxplot-histogram-of-price">
+<h4>Boxplot &amp; Histogram of Price<a class="headerlink" href="#boxplot-histogram-of-price" title="Link to this heading">#</a></h4>
+<p>We can see in Figures 3A and 3B that the distribution of price is clearly right-skewed and has a huge range, which indicates the price variable will probably need a log transformation in the second phase of the project.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Boxplot of Price</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">melb_df</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Figure 3A: Box Plot of Price&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/33446b7e92af8f173b13930f59f08c6a0661448a410532e2a49f4d90fc491aa4.png"><img alt="../_images/33446b7e92af8f173b13930f59f08c6a0661448a410532e2a49f4d90fc491aa4.png" src="../_images/33446b7e92af8f173b13930f59f08c6a0661448a410532e2a49f4d90fc491aa4.png" style="width: 1220px; height: 659px;" /></a>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Boxplot of Price</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">melb_df</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">],</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Figure 3B: Histogram of Price&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/7c03e1038605ec7967a85315a50952c74e1e8f8d014f641a43e9f6799e23136f.png"><img alt="../_images/7c03e1038605ec7967a85315a50952c74e1e8f8d014f641a43e9f6799e23136f.png" src="../_images/7c03e1038605ec7967a85315a50952c74e1e8f8d014f641a43e9f6799e23136f.png" style="width: 1231px; height: 702px;" /></a>
+</div>
+</div>
+</section>
+</section>
+<section id="two-variable-visualisation">
+<h3>Two-Variable Visualisation<a class="headerlink" href="#two-variable-visualisation" title="Link to this heading">#</a></h3>
+<section id="scatterplot-of-price-and-distance-from-cbd">
+<h4>Scatterplot of price and distance from CBD<a class="headerlink" href="#scatterplot-of-price-and-distance-from-cbd" title="Link to this heading">#</a></h4>
+<p>Figure 4 shows that there is a correlation between the distance from CBD and price. As the distance increases, the price tends to be lower.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">melb_df</span><span class="p">[</span><span class="s1">&#39;distance&#39;</span><span class="p">],</span> <span class="n">melb_df</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">],</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 4: Scatterplot of Price and Distance from CBD&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Distance from CBD&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Price&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/ec051b604898793005dd712d37a1172cfb4b253316ea1517cf0a286299b3f366.png"><img alt="../_images/ec051b604898793005dd712d37a1172cfb4b253316ea1517cf0a286299b3f366.png" src="../_images/ec051b604898793005dd712d37a1172cfb4b253316ea1517cf0a286299b3f366.png" style="width: 1220px; height: 702px;" /></a>
+</div>
+</div>
+</section>
+<section id="boxplot-of-price-by-house-type">
+<h4>Boxplot of Price by House Type<a class="headerlink" href="#boxplot-of-price-by-house-type" title="Link to this heading">#</a></h4>
+<p>From figure 5, we can see that H type (house, cottage, villa, semi, terrace) of house have overall a higher price compared to other types. Furthermore, U (unit or duplex) house has a lower price compared to other types.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">melb_df</span><span class="p">);</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 5: Boxplot of Price by House Type&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/015154a1ad33e302026b044914df2a72796a0fb13c037eec88e5928f67042a43.png"><img alt="../_images/015154a1ad33e302026b044914df2a72796a0fb13c037eec88e5928f67042a43.png" src="../_images/015154a1ad33e302026b044914df2a72796a0fb13c037eec88e5928f67042a43.png" style="width: 1220px; height: 702px;" /></a>
+</div>
+</div>
+</section>
+<section id="boxplot-of-price-by-number-of-rooms">
+<h4>Boxplot of Price by Number of Rooms<a class="headerlink" href="#boxplot-of-price-by-number-of-rooms" title="Link to this heading">#</a></h4>
+<p>In figure 6, the price tends to increase as the number of rooms increases.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;rooms&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">melb_df</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 6: Boxplot of Price by Number of Rooms&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/a2d3b06c402be1669a1c82a9f6abc4f31a2bbb10c9e48257d3ffdf0895197d7c.png"><img alt="../_images/a2d3b06c402be1669a1c82a9f6abc4f31a2bbb10c9e48257d3ffdf0895197d7c.png" src="../_images/a2d3b06c402be1669a1c82a9f6abc4f31a2bbb10c9e48257d3ffdf0895197d7c.png" style="width: 1220px; height: 702px;" /></a>
+</div>
+</div>
+</section>
+</section>
+<section id="three-variable-visualisation">
+<h3>Three-Variable Visualisation<a class="headerlink" href="#three-variable-visualisation" title="Link to this heading">#</a></h3>
+<section id="boxplot-of-price-broken-down-by-method-and-house-type">
+<h4>Boxplot of Price broken down by Method and House Type<a class="headerlink" href="#boxplot-of-price-broken-down-by-method-and-house-type" title="Link to this heading">#</a></h4>
+<p>We can clearly see that in figure 7, the comparison between house type and price in different method is somewhat comparable. There is no significant difference.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">melb_df</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;type&#39;</span><span class="p">);</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 7: Boxplot of Price broken down by Method and House Type&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/beefdb812c6d160315c79c484234376ea490279266599587f11f39fc0183f419.png"><img alt="../_images/beefdb812c6d160315c79c484234376ea490279266599587f11f39fc0183f419.png" src="../_images/beefdb812c6d160315c79c484234376ea490279266599587f11f39fc0183f419.png" style="width: 1220px; height: 702px;" /></a>
+</div>
+</div>
+</section>
+<section id="scatterplot-of-price-by-distance-from-central-business-district-cbd-and-house-type">
+<h4>Scatterplot of Price by Distance from Central Business District (CBD) and House Type<a class="headerlink" href="#scatterplot-of-price-by-distance-from-central-business-district-cbd-and-house-type" title="Link to this heading">#</a></h4>
+<p>Figure 8 shows that U house type (unit, duplex) tends to be closer to CBD and have a lower price, based on the clustering of the red points in the lower left corner of the plot.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;distance&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">melb_df</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 8: Scatterplot of Price by Distance coloured by House Type&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/6446ebbe62acf103aa86dfd21de9936c6195b8c4519b3701b311e84af0bc1cc0.png"><img alt="../_images/6446ebbe62acf103aa86dfd21de9936c6195b8c4519b3701b311e84af0bc1cc0.png" src="../_images/6446ebbe62acf103aa86dfd21de9936c6195b8c4519b3701b311e84af0bc1cc0.png" style="width: 1220px; height: 702px;" /></a>
+</div>
+</div>
+</section>
+<section id="barplot-of-price-by-month-and-year-sold">
+<h4>Barplot of Price by Month and Year Sold<a class="headerlink" href="#barplot-of-price-by-month-and-year-sold" title="Link to this heading">#</a></h4>
+<p>Overall, we observe that the price of house sold was higher in 2017 than 2016 per month, but there is no clear pattern regarding which month has higher price of house sold.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">fig_4</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;month_sold&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s1">&#39;year_sold&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">melb_df</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Figure 9: Barplot of Melbourne Housing Prices by Month in 2016 and 2017&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Month&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;House Prices&#39;</span><span class="p">,</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;House Prices&#39;)
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/5626b9f917627e44a3239e73a77ef25d76b65cf57b08ef5bdb07c60f37de6512.png"><img alt="../_images/5626b9f917627e44a3239e73a77ef25d76b65cf57b08ef5bdb07c60f37de6512.png" src="../_images/5626b9f917627e44a3239e73a77ef25d76b65cf57b08ef5bdb07c60f37de6512.png" style="width: 1230px; height: 700px;" /></a>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="summary-and-conclusions">
+<h2>Summary and Conclusions<a class="headerlink" href="#summary-and-conclusions" title="Link to this heading">#</a></h2>
+<p>Accurate prediction of house prices has many practical applications for all stakeholders; including buyers, sellers, banks, and real-estate agencies. Without a doubt, a model that can reliably predict a house’s actual sale price would be indispensable  for healthy functioning of the housing market. Our goal in this project is to investigate if we can come up with a reliable model for predicting house prices using the Melbourne House Prices dataset.</p>
+<p>In Phase I of this project, we undertook the tasks of data cleaning &amp; preprocessing and data visualisation. First we decided to drop two variables which we considered to be not useful for predictive modelling, namely the <code class="docutils literal notranslate"><span class="pre">Postcode</span></code> and <code class="docutils literal notranslate"><span class="pre">Bedroom2</span></code> variables. We also checked the data for any missing values and outliers, and we decided to remove any rows containing such data quality issues. There was not much cleaning needed, as the data seemed to be relatively clean to begin with. Furthermore, we sampled the data to get only 5000 random rows to save time when running models in the second phase of this project.</p>
+<p>We generated several visualisations in order to explore the data. Using the explanatory variables, we clearly see that Southern Metropolitan region has the highest count of selling Melbourne houses. During the years 2016 and 2017, the house prices in Melbourne only have a slight difference in prices which we can see that 2017 has more houses sold than 2016. Furthermore, in the years 2016 and 2017, the unit/ duplex house prices tend to be lower when it is closer to CBD than houses and townhouses. Therefore, Melbourne house prices tend to fluctuate more when people buy houses from popular region areas or CBD in Melbourne.</p>
+<p>We also observed that some of the numerical data are skewed, including the target feature, Price. Scaling/ transformation of the data will be needed to address this issue. We have seen that house types, distance from CBD, and number of rooms are few of the most significant features in determining the house price. However, further analysis needs be done in order to identify any further relationships.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Becker, D. (n.d.). Melbourne Housing Snapshot (Kaggle). Retrieved September 21, 2021 from <a class="reference external" href="https://www.kaggle.com/dansbecker/melbourne-housing-snapshot">https://www.kaggle.com/dansbecker/melbourne-housing-snapshot</a></p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./stats"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-1-data-preparation-visualisation">Phase 1: Data Preparation &amp; Visualisation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#group-name">Group Name:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#name-s-id-s-of-group-members">Name(s) &amp; ID(s) of Group Members:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction <a id="itr"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-source">Dataset Source</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-details">Dataset Details</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-features">Dataset Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#target-feature">Target Feature</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#goals-and-objectives">Goals and Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-cleaning-and-preprocessing">Data Cleaning and Preprocessing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-cleaning-steps">Data Cleaning Steps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-sampling">Random Sampling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-exploration-and-visualisation">Data Exploration and Visualisation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#univariate-visualisation">Univariate Visualisation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bar-chart-of-region-name">Bar Chart  of Region Name</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bar-chart-of-method">Bar Chart of Method</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#boxplot-histogram-of-price">Boxplot &amp; Histogram of Price</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-variable-visualisation">Two-Variable Visualisation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#scatterplot-of-price-and-distance-from-cbd">Scatterplot of price and distance from CBD</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#boxplot-of-price-by-house-type">Boxplot of Price by House Type</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#boxplot-of-price-by-number-of-rooms">Boxplot of Price by Number of Rooms</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#three-variable-visualisation">Three-Variable Visualisation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#boxplot-of-price-broken-down-by-method-and-house-type">Boxplot of Price broken down by Method and House Type</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#scatterplot-of-price-by-distance-from-central-business-district-cbd-and-house-type">Scatterplot of Price by Distance from Central Business District (CBD) and House Type</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#barplot-of-price-by-month-and-year-sold">Barplot of Price by Month and Year Sold</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-and-conclusions">Summary and Conclusions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By D. Akman
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

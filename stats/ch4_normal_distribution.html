@@ -1,0 +1,950 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Normal distribution &#8212; Tutorials on Data Science with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'stats/ch4_normal_distribution';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Foundations for statistical inference - Confidence intervals" href="ch5_confidence_intervals.html" />
+    <link rel="prev" title="Probability" href="ch3_probability.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Tutorials on Data Science with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to D. Akman’s Tutorials on Data Science with Python!
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python/README.html">Python Basics (PB) Tutorial Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB1_nb_intro.html">INTRODUCTION TO JUPYTER NOTEBOOKS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB2_nb_markdown.html">NOTEBOOK MARKDOWN TUTORIAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB3_intro_to_python.html">Introduction to Python Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB4_numpy.html">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB5_pandas.html">Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB6_matplotlib.html">Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB7_seaborn.html">Seaborn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB8_python_vs_r.html">Python vs. R</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Statistics Tutorials/ OpenIntro Labs for Python</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ch1n2_intro_to_data.html">Introduction to data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch3_probability.html">Probability</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Normal distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5_confidence_intervals.html">Foundations for statistical inference - Confidence intervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5_sampling_distributions.html">Foundations for statistical inference - Sampling distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch6_inf_for_categorical_data.html">Inference for categorical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch7_inf_for_numerical_data.html">Inference for numerical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch8_simple_regression.html">Introduction to linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch9_multiple_regression.html">Multiple linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_case_study_predicting_age_in_census_data.html">Predicting Age in Census Data<a class="anchor-link" href="#Predicting-Age-in-Census-Data"></a></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml/README.html">Machine Learning Tutorials with Scikit-Learn</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ml/Data_Prep_for_Predictive_Modelling.html">Data Preparation for Predictive Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK0_Scikit_Learn_Introduction.html">SK Part 0: Introduction to Predictive Modeling with Python and Scikit-Learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK1_Basic_Modelling.html">SK Part 1: Basic Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK2_Feature_Selection.html">SK Part 2: Feature Selection and Ranking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK3_Model_Evaluation.html">SK Part 3: Model Evaluation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK4_HyperParameter_Tuning.html">SK Part 4: Cross-Validation and Hyper-parameter Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK5_Advanced_Topics.html">SK Part 5: Pipelines, Statistical Model Comparison, and Model Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK6_Clustering.html">SK Part 6: K-Means Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK7_Neural_Networks.html">SK Part 7: Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK8_LightGBM.html">Light GBM &amp; Parameter Tuning with Optuna</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK9_Forecasting.html">Forecasting Fundamentals with Python &amp; Facebook Prophet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/Case_Study1_Predicting_Income_Status.html">Predicting Income Status</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../ml/Case_Study2_Maintenance_Predictive_Modelling.html">Predicting Optimal Machine Maintenance Cycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/Case_Study3_Hotel_Prediction.html">Hotel Prediction with Hybrid Collaborative Filtering with SVD</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../ml/Decision_Trees_InfoGain_Computation.html">Information Gain Computation in Python</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/stats/ch4_normal_distribution.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Normal distribution</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-data">The data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-normal-distribution">The normal distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-the-normal-distribution">Evaluating the normal distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-probabilities">Normal probabilities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#on-your-own">On Your Own</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="normal-distribution">
+<h1>Normal distribution<a class="headerlink" href="#normal-distribution" title="Link to this heading">#</a></h1>
+<p>In this tutorial we’ll investigate the probability distribution that is most central to statistics: the normal distribution. If we are confident that our data are nearly normal, that opens the door to many powerful statistical methods. Here we’ll use the graphical tools of Python to assess the normality of a dataset and also learn how to generate random numbers from a normal distribution.</p>
+<section id="the-data">
+<h2>The data<a class="headerlink" href="#the-data" title="Link to this heading">#</a></h2>
+<p>Here we’ll be working with measurements of body dimensions. This data set contains measurements from 247 men and 260 women, most of whom were considered healthy young adults.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">df_url</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/akmand/datasets/master/openintro/bdims.csv&#39;</span>
+<span class="n">url_content</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">df_url</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+<span class="n">bdims</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">url_content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s take a quick peek at the first few rows of the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">bdims</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">bdims</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(507, 25)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>bia.di</th>
+      <th>bii.di</th>
+      <th>bit.di</th>
+      <th>che.de</th>
+      <th>che.di</th>
+      <th>elb.di</th>
+      <th>wri.di</th>
+      <th>kne.di</th>
+      <th>ank.di</th>
+      <th>sho.gi</th>
+      <th>che.gi</th>
+      <th>wai.gi</th>
+      <th>nav.gi</th>
+      <th>hip.gi</th>
+      <th>thi.gi</th>
+      <th>bic.gi</th>
+      <th>for.gi</th>
+      <th>kne.gi</th>
+      <th>cal.gi</th>
+      <th>ank.gi</th>
+      <th>wri.gi</th>
+      <th>age</th>
+      <th>wgt</th>
+      <th>hgt</th>
+      <th>sex</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>42.9</td>
+      <td>26.0</td>
+      <td>31.5</td>
+      <td>17.7</td>
+      <td>28.0</td>
+      <td>13.1</td>
+      <td>10.4</td>
+      <td>18.8</td>
+      <td>14.1</td>
+      <td>106.2</td>
+      <td>89.5</td>
+      <td>71.5</td>
+      <td>74.5</td>
+      <td>93.5</td>
+      <td>51.5</td>
+      <td>32.5</td>
+      <td>26.0</td>
+      <td>34.5</td>
+      <td>36.5</td>
+      <td>23.5</td>
+      <td>16.5</td>
+      <td>21</td>
+      <td>65.6</td>
+      <td>174.0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>43.7</td>
+      <td>28.5</td>
+      <td>33.5</td>
+      <td>16.9</td>
+      <td>30.8</td>
+      <td>14.0</td>
+      <td>11.8</td>
+      <td>20.6</td>
+      <td>15.1</td>
+      <td>110.5</td>
+      <td>97.0</td>
+      <td>79.0</td>
+      <td>86.5</td>
+      <td>94.8</td>
+      <td>51.5</td>
+      <td>34.4</td>
+      <td>28.0</td>
+      <td>36.5</td>
+      <td>37.5</td>
+      <td>24.5</td>
+      <td>17.0</td>
+      <td>23</td>
+      <td>71.8</td>
+      <td>175.3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>40.1</td>
+      <td>28.2</td>
+      <td>33.3</td>
+      <td>20.9</td>
+      <td>31.7</td>
+      <td>13.9</td>
+      <td>10.9</td>
+      <td>19.7</td>
+      <td>14.1</td>
+      <td>115.1</td>
+      <td>97.5</td>
+      <td>83.2</td>
+      <td>82.9</td>
+      <td>95.0</td>
+      <td>57.3</td>
+      <td>33.4</td>
+      <td>28.8</td>
+      <td>37.0</td>
+      <td>37.3</td>
+      <td>21.9</td>
+      <td>16.9</td>
+      <td>28</td>
+      <td>80.7</td>
+      <td>193.5</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>44.3</td>
+      <td>29.9</td>
+      <td>34.0</td>
+      <td>18.4</td>
+      <td>28.2</td>
+      <td>13.9</td>
+      <td>11.2</td>
+      <td>20.9</td>
+      <td>15.0</td>
+      <td>104.5</td>
+      <td>97.0</td>
+      <td>77.8</td>
+      <td>78.8</td>
+      <td>94.0</td>
+      <td>53.0</td>
+      <td>31.0</td>
+      <td>26.2</td>
+      <td>37.0</td>
+      <td>34.8</td>
+      <td>23.0</td>
+      <td>16.6</td>
+      <td>23</td>
+      <td>72.6</td>
+      <td>186.5</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>42.5</td>
+      <td>29.9</td>
+      <td>34.0</td>
+      <td>21.5</td>
+      <td>29.4</td>
+      <td>15.2</td>
+      <td>11.6</td>
+      <td>20.7</td>
+      <td>14.9</td>
+      <td>107.5</td>
+      <td>97.5</td>
+      <td>80.0</td>
+      <td>82.5</td>
+      <td>98.5</td>
+      <td>55.4</td>
+      <td>32.0</td>
+      <td>28.4</td>
+      <td>37.7</td>
+      <td>38.6</td>
+      <td>24.4</td>
+      <td>18.0</td>
+      <td>22</td>
+      <td>78.8</td>
+      <td>187.2</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>You’ll see that for every observation we have 21 measurements, many of which are either diameters or girths. A key to the variable names can be found <a class="reference external" href="https://www.openintro.org/book/statdata/?data=bdims">here</a>, but we’ll be focusing on just three columns to get started: weight in kg (<code class="docutils literal notranslate"><span class="pre">wgt</span></code>), height in cm (<code class="docutils literal notranslate"><span class="pre">hgt</span></code>), and <code class="docutils literal notranslate"><span class="pre">sex</span></code> (1 indicates male, 0 indicates female).</p>
+<p>Since men and women tend to have different body dimensions, it will be useful to create two additional data sets: one with only men and another one with only women.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mdims</span> <span class="o">=</span> <span class="n">bdims</span><span class="p">[</span><span class="n">bdims</span><span class="p">[</span><span class="s1">&#39;sex&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">fdims</span> <span class="o">=</span> <span class="n">bdims</span><span class="p">[</span><span class="n">bdims</span><span class="p">[</span><span class="s1">&#39;sex&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class = 'exercise'>
+<h4>Exercise 1</h4>
+Make a histogram of men's heights and a histogram of women's heights. How would you compare the various aspects of the two distributions?
+</div></section>
+<section id="the-normal-distribution">
+<h2>The normal distribution<a class="headerlink" href="#the-normal-distribution" title="Link to this heading">#</a></h2>
+<p>In your description of the distributions, did you use words like <em>bell-shaped or normal</em>? It’s tempting to say so when faced with a unimodal symmetric distribution.</p>
+<p>To see how accurate that description is, we can plot a normal distribution curve on top of a histogram to see how closely the data follow a normal distribution. This normal curve should have the same mean and standard deviation as the data. We’ll be working with women’s heights, so let’s store them as a separate object and then calculate some statistics that will be referenced later.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fhgtmean</span> <span class="o">=</span> <span class="n">fdims</span><span class="p">[</span><span class="s1">&#39;hgt&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">fhgtsd</span> <span class="o">=</span> <span class="n">fdims</span><span class="p">[</span><span class="s1">&#39;hgt&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next we make a density histogram to use as the backdrop and use the <code class="docutils literal notranslate"><span class="pre">seaborn.distplot()</span></code> function to overlay a normal probability curve. The difference between a frequency histogram and a density histogram is that while in a frequency histogram the heights of the bars add up to the total number of observations, in a density histogram the areas of the bars add up to 1. The area of each bar can be calculated as simply the height times the width of the bar. Using a density histogram allows us to properly overlay a normal distribution curve over the histogram since the curve is a normal probability density function. Frequency and density histograms both display the same exact shape; they only differ in their y-axis. You can verify this by comparing the frequency histogram you constructed earlier and the density histogram created by the commands below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline 
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+
+<span class="n">fhgt_hist</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">fdims</span><span class="p">[</span><span class="s1">&#39;hgt&#39;</span><span class="p">],</span> <span class="n">norm_hist</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">kde</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">140</span><span class="p">,</span> <span class="mi">191</span><span class="p">)</span>                                                  
+<span class="n">y</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">fhgtmean</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">fhgtsd</span><span class="p">)</span>                                                         
+<span class="n">fhgt_hist</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;purple&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/3c8d0310a7c0ff3654519f9d34b866e772f285690fd3edf6b5c99a4debc72f1e.png" src="../_images/3c8d0310a7c0ff3654519f9d34b866e772f285690fd3edf6b5c99a4debc72f1e.png" />
+</div>
+</div>
+<p>After plotting the density histogram, we create the x- and y-coordinates for the normal curve. We chose the x range as 140 to 190 in order to span the entire range of women’s heights. To create y, we use <code class="docutils literal notranslate"><span class="pre">norm.pdf()</span></code> from <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code> to calculate the density of each of those x-values in a distribution that is normal with mean (<code class="docutils literal notranslate"><span class="pre">fhgtmean</span></code>) and standard deviation (<code class="docutils literal notranslate"><span class="pre">fhgtsd</span></code>). The final command draws a curve on the existing density histogram by connecting each of the points specified by x and y.</p>
+<div class = 'exercise'>
+<h4>Exercise 2</h4>
+Based on the this plot, does it appear that the data follow a nearly normal distribution?
+</div></section>
+<section id="evaluating-the-normal-distribution">
+<h2>Evaluating the normal distribution<a class="headerlink" href="#evaluating-the-normal-distribution" title="Link to this heading">#</a></h2>
+<p>Eyeballing the shape of the histogram is one way to determine if the data appear to be nearly normally distributed, but it can be frustrating to decide just how close the histogram is to the curve. An alternative approach involves constructing a normal probability plot, also called a normal Q-Q plot for “quantile-quantile”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">probplot</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">probplot</span><span class="p">(</span><span class="n">fdims</span><span class="p">[</span><span class="s1">&#39;hgt&#39;</span><span class="p">],</span> <span class="n">plot</span> <span class="o">=</span> <span class="n">plt</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/49805b47f7a24ecf4914013507cdbfdaf085a668faa7522b8f699d9169f69fcc.png" src="../_images/49805b47f7a24ecf4914013507cdbfdaf085a668faa7522b8f699d9169f69fcc.png" />
+</div>
+</div>
+<p>A data set that is nearly normal will result in a probability plot where the points closely follow the line. Any deviations from normality leads to deviations of these points from the line. The plot for female heights shows points that tend to follow the line but with some errant points towards the tails. We’re left with the same problem that we encountered with the histogram above: how close is close enough?</p>
+<p>A useful way to address this question is to rephrase it as: what do probability plots look like for data that I know came from a normal distribution? We can answer this by simulating data from a normal distribution using <code class="docutils literal notranslate"><span class="pre">numpy.random.normal()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">sim_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fdims</span><span class="p">[</span><span class="s1">&#39;hgt&#39;</span><span class="p">]),</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">fhgtmean</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">fhgtsd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The first argument indicates how many numbers you’d like to generate, which we specify to be the same number of heights in the  <code class="docutils literal notranslate"><span class="pre">fdims</span></code> data set using the <code class="docutils literal notranslate"><span class="pre">len()</span></code> function. The last two arguments (<code class="docutils literal notranslate"><span class="pre">loc</span></code> and <code class="docutils literal notranslate"><span class="pre">scale</span></code>) determine the mean and standard deviation of the normal distribution from which the simulated sample will be generated. We can take a look at the shape of our simulated data set,  <code class="docutils literal notranslate"><span class="pre">sim_norm</span></code>, as well as its normal probability plot.</p>
+<div class = 'exercise'>
+<h4>Exercise 3</h4>
+Make a normal probability plot of <code>sim_norm</code>. Do all of the points fall on the line? How does this plot compare to the probability plot for the real data?
+</div><p>Even better than comparing the original plot to a single plot generated from a normal distribution is to compare it to many more plots using the following function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># draw random samples from a normal distribution eight times, </span>
+<span class="c1"># so we can construct eight different normal probability plots</span>
+<span class="n">sim_norm_8</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+    <span class="n">sim_norm_8</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fdims</span><span class="p">[</span><span class="s1">&#39;hgt&#39;</span><span class="p">]),</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">fhgtmean</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">fhgtsd</span><span class="p">))</span>
+
+<span class="c1"># compare the original plot to nine plots generated from a normal distribution.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">pad</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># adjust the subplots to fit in to the figure area.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span> <span class="n">wspace</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">)</span> <span class="c1"># adjust the amount of width and height reserved for space between subplots.</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">probplot</span><span class="p">(</span><span class="n">fdims</span><span class="p">[</span><span class="s1">&#39;hgt&#39;</span><span class="p">],</span> <span class="n">plot</span> <span class="o">=</span> <span class="n">plt</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Normal Q-Q Plot (Data)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">probplot</span><span class="p">(</span><span class="n">sim_norm_8</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plot</span> <span class="o">=</span> <span class="n">plt</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Normal Q-Q Plot (Sim 1)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">probplot</span><span class="p">(</span><span class="n">sim_norm_8</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plot</span> <span class="o">=</span> <span class="n">plt</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Normal Q-Q Plot (Sim 2)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">probplot</span><span class="p">(</span><span class="n">sim_norm_8</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">plot</span> <span class="o">=</span> <span class="n">plt</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Normal Q-Q Plot (Sim 3)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">probplot</span><span class="p">(</span><span class="n">sim_norm_8</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">plot</span> <span class="o">=</span> <span class="n">plt</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Normal Q-Q Plot (Sim 4)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">probplot</span><span class="p">(</span><span class="n">sim_norm_8</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">plot</span> <span class="o">=</span> <span class="n">plt</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Normal Q-Q Plot (Sim 5)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="n">probplot</span><span class="p">(</span><span class="n">sim_norm_8</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">plot</span> <span class="o">=</span> <span class="n">plt</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Normal Q-Q Plot (Sim 6)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">probplot</span><span class="p">(</span><span class="n">sim_norm_8</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">plot</span> <span class="o">=</span> <span class="n">plt</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Normal Q-Q Plot (Sim 7)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="n">probplot</span><span class="p">(</span><span class="n">sim_norm_8</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">plot</span> <span class="o">=</span> <span class="n">plt</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Normal Q-Q Plot (Sim 8)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7c8985fa255bde45a316a9b5765ab3598a58cc33846e51f2dfeb9f5966cdb9f0.png" src="../_images/7c8985fa255bde45a316a9b5765ab3598a58cc33846e51f2dfeb9f5966cdb9f0.png" />
+</div>
+</div>
+<div class = 'exercise'>
+<h4>Exercise 4</h4>
+Does the normal probability plot for <code>fdims['hgt']</code> look similar to the plots created for the simulated data? That is, do plots provide evidence that the female heights are nearly normal?
+</div><div class = 'exercise'>
+<h4>Exercise 5</h4>
+Using the same technique, determine whether or not female weights appear to come from a normal distribution.
+</div></section>
+<section id="normal-probabilities">
+<h2>Normal probabilities<a class="headerlink" href="#normal-probabilities" title="Link to this heading">#</a></h2>
+<p>Okay, so now you have a slew of tools to judge whether or not a variable is normally distributed. Why should we care?</p>
+<p>It turns out that statisticians know a lot about the normal distribution. Once we decide that a random variable is approximately normal, we can answer all sorts of questions about that variable related to probability. Take, for example, the question of, “What is the probability that a randomly chosen young adult female is taller than 6 feet (about 182 cm)?” (The study that published this data set is clear to point out that the sample was not random and therefore inference to a general population is not suggested. We do so here only as an exercise.)</p>
+<p>If we assume that female heights are normally distributed (a very close approximation is also okay), we can find this probability by calculating a Z score and consulting a Z table (also called a <em>normal probability table</em>). In Python, this is done in one step with the function <code class="docutils literal notranslate"><span class="pre">norm.cdf()</span></code> from <code class="docutils literal notranslate"><span class="pre">scipy.stats</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
+
+<span class="n">prob_using_Z</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="mi">182</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">fhgtmean</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">fhgtsd</span><span class="p">)</span>
+<span class="nb">round</span><span class="p">(</span><span class="n">prob_using_Z</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0044
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that the function <code class="docutils literal notranslate"><span class="pre">norm.cdf()</span></code> gives the area under the normal curve below a given value, with a given mean and standard deviation. Since we’re interested in the probability that someone is taller than 182 cm, we have to take one minus that probability.</p>
+<p>Assuming a normal distribution has allowed us to calculate a theoretical probability. If we want to calculate the probability empirically, we simply need to determine how many observations fall above 182 then divide this number by the total sample size.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prob_using_theoretical</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">fdims</span><span class="p">[</span><span class="s1">&#39;hgt&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">182</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">fdims</span><span class="p">[</span><span class="s1">&#39;hgt&#39;</span><span class="p">]))</span>
+<span class="nb">round</span><span class="p">(</span><span class="n">prob_using_theoretical</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0038
+</pre></div>
+</div>
+</div>
+</div>
+<p>Although the probabilities are not exactly the same, they are reasonably close. The closer that your distribution is to being normal, the more accurate the theoretical probabilities will be.</p>
+<div class = 'exercise'>
+<h4>Exercise 6</h4>
+Write out two probability questions that you would like to answer; one regarding female heights and one regarding female weights. Calculate the those probabilities using both the theoretical normal distribution as well as the empirical distribution (four probabilities in all). Which variable, height or weight, had a closer agreement between the two methods?
+</div></section>
+<hr class="docutils" />
+<section id="on-your-own">
+<h2>On Your Own<a class="headerlink" href="#on-your-own" title="Link to this heading">#</a></h2>
+<ol>
+    <li>Now let's consider some of the other variables in the body dimensions data set. Using the figures at the end of the exercises, match the histogram to its normal probability plot. All of the variables have been standardized (first subtract the mean, then divide by the standard deviation), so the units won't be of any help. If you are uncertain based on these figures, generate the plots with Python to check.</li><br>
+    <ul>
+        <li>The histogram for female biiliac (pelvic) diameter (<code>bii.di</code>) belongs to normal probability plot letter ____.</li>
+        <li>The histogram for female elbow diameter (<code>elb.di</code>) belongs to normal probability plot letter ____.</li>
+        <li>The histogram for general age (<code>age</code>) belongs to normal probability plot letter ____.</li>
+        <li>The histogram for female chest depth (<code>che.de</code>) belongs to normal probability plot letter ____.</li>
+    </ul><br>
+    <li>Note that normal probability plots C and D have a slight stepwise pattern. Why do you think this is the case?</li><br>
+    <li>As you can see, normal probability plots can be used both to assess normality and visualize skewness. Make a normal probability plot for female knee diameter (<code>kne.di</code>). Based on this normal probability plot, is this variable left skewed, symmetric, or right skewed? Use a histogram to confirm your findings.</li><br>
+</ol>
+<img src='https://github.com/akmand/stats_tutorials/blob/main/histQQmatch.png?raw=true'>
+<div class = "license">
+This lab was adapted by David Akman and Imran Ture from OpenIntro by Andrew Bray and Mine Çetinkaya-Rundel.
+</div><hr class="docutils" />
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./stats"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ch3_probability.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Probability</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ch5_confidence_intervals.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Foundations for statistical inference - Confidence intervals</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-data">The data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-normal-distribution">The normal distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-the-normal-distribution">Evaluating the normal distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-probabilities">Normal probabilities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#on-your-own">On Your Own</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By D. Akman
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

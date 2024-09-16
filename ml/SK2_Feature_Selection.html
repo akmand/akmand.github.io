@@ -1,0 +1,1366 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SK Part 2: Feature Selection and Ranking &#8212; Tutorials on Data Science with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ml/SK2_Feature_Selection';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SK Part 3: Model Evaluation" href="SK3_Model_Evaluation.html" />
+    <link rel="prev" title="SK Part 1: Basic Modeling" href="SK1_Basic_Modelling.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Tutorials on Data Science with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to D. Akman’s Tutorials on Data Science with Python!
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python/README.html">Python Basics (PB) Tutorial Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB1_nb_intro.html">INTRODUCTION TO JUPYTER NOTEBOOKS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB2_nb_markdown.html">NOTEBOOK MARKDOWN TUTORIAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB3_intro_to_python.html">Introduction to Python Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB4_numpy.html">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB5_pandas.html">Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB6_matplotlib.html">Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB7_seaborn.html">Seaborn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB8_python_vs_r.html">Python vs. R</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../stats/README.html">Statistics Tutorials/ OpenIntro Labs for Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch1n2_intro_to_data.html">Introduction to data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch3_probability.html">Probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch4_normal_distribution.html">Normal distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch5_confidence_intervals.html">Foundations for statistical inference - Confidence intervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch5_sampling_distributions.html">Foundations for statistical inference - Sampling distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch6_inf_for_categorical_data.html">Inference for categorical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch7_inf_for_numerical_data.html">Inference for numerical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch8_simple_regression.html">Introduction to linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch9_multiple_regression.html">Multiple linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/regression_case_study_predicting_age_in_census_data.html">Predicting Age in Census Data<a class="anchor-link" href="#Predicting-Age-in-Census-Data"></a></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Machine Learning Tutorials with Scikit-Learn</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Data_Prep_for_Predictive_Modelling.html">Data Preparation for Predictive Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK0_Scikit_Learn_Introduction.html">SK Part 0: Introduction to Predictive Modeling with Python and Scikit-Learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK1_Basic_Modelling.html">SK Part 1: Basic Modeling</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">SK Part 2: Feature Selection and Ranking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK3_Model_Evaluation.html">SK Part 3: Model Evaluation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="SK4_HyperParameter_Tuning.html">SK Part 4: Cross-Validation and Hyper-parameter Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK5_Advanced_Topics.html">SK Part 5: Pipelines, Statistical Model Comparison, and Model Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK6_Clustering.html">SK Part 6: K-Means Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK7_Neural_Networks.html">SK Part 7: Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK8_LightGBM.html">Light GBM &amp; Parameter Tuning with Optuna</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK9_Forecasting.html">Forecasting Fundamentals with Python &amp; Facebook Prophet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Case_Study1_Predicting_Income_Status.html">Predicting Income Status</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Case_Study2_Maintenance_Predictive_Modelling.html">Predicting Optimal Machine Maintenance Cycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Case_Study3_Hotel_Prediction.html">Hotel Prediction with Hybrid Collaborative Filtering with SVD</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Decision_Trees_InfoGain_Computation.html">Information Gain Computation in Python</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/ml/SK2_Feature_Selection.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>SK Part 2: Feature Selection and Ranking</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">Data Preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-with-full-set-of-features">Performance with Full Set of Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-f-score">Feature Selection Using F-Score</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-mutual-information">Feature Selection Using Mutual Information</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-random-forest-importance">Feature Selection Using Random Forest Importance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-spfsr">Feature Selection Using spFSR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-comparison-using-paired-t-tests">Performance Comparison Using Paired T-Tests</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="sk-part-2-feature-selection-and-ranking">
+<h1>SK Part 2: Feature Selection and Ranking<a class="headerlink" href="#sk-part-2-feature-selection-and-ranking" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
+<p>The topic of this tutorial is feature selection and ranking (as in “what are the most important 5 features?”). Feature selection is usually an overlooked issue in machine learning. In many cases, using all the descriptive features that are available can lead to excessive computational times, overfitting, and poor performance in general. It’s always a good idea to check to see if we can achieve better performance by employing some sort of feature selection before fitting a model. Feature selection can also be performed in conjunction with the modeling process (as part of a machine learning pipeline), which is discussed in <strong>SK Part 5</strong>.</p>
+<section id="learning-objectives">
+<h2>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Perform feature selection and ranking using the following methods:</p>
+<ul>
+<li><p>F-score (a statistical filter method)</p></li>
+<li><p>Mutual information (an entropy-based filter method)</p></li>
+<li><p>Random forest importance (an ensemble-based filter method)</p></li>
+<li><p>spFSR (feature selection using stochastic optimisation)</p></li>
+</ul>
+</li>
+<li><p>Compare performance of feature selection methods using paired t-tests.</p></li>
+</ul>
+<p>First, let’s discuss some terminology.</p>
+<p>The classifier used to assess performance of the feature selection methods is called the “wrapper”. Here, we use the decision tree classifier as the wrapper. As for the sample data, we use the breast cancer Wisconsin dataset.</p>
+<p>The first three methods are <strong>“filter methods”</strong>: they examine the relationship between the descriptive features and the target feature and they select features only once regardless of which classifier shall be used subsequently.</p>
+<p>The last method is a <strong>“wrapper method”</strong>: it selects a different set of features for each wrapper. Wrapper feature selection methods are relatively slow and they need to be executed again when a different wrapper is used. For instance, the best 5 features selected by a wrapper method for a decision tree classifier will probably be different than the best 5 features for the 1-nearest neighbor classifier. However, wrapper methods attempt to solve the “real problem”: “what is the best subset of features when, say, the decision tree classifier is used?”. They usually perform better than the filter methods at the cost of more computational resources and a different set of features for each classifier.</p>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#Data-Preparation"><span class="xref myst">Data Preparation</span></a></p></li>
+<li><p><a class="reference internal" href="#Performance-with-Full-Set-of-Features"><span class="xref myst">Performance with Full Set of Features</span></a></p></li>
+<li><p><a class="reference internal" href="#Feature-Selection-Using-F-Score"><span class="xref myst">Feature Selection Using F-Score</span></a></p></li>
+<li><p><a class="reference internal" href="#Feature-Selection-Using-Mutual-Information"><span class="xref myst">Feature Selection Using Mutual Information</span></a></p></li>
+<li><p><a class="reference internal" href="#Feature-Selection-Using-Random-Forest-Importance"><span class="xref myst">Feature Selection Using Random Forest Importance</span></a></p></li>
+<li><p><a class="reference internal" href="#Feature-Selection-Using-spFSR"><span class="xref myst">Feature Selection Using spFSR</span></a></p></li>
+<li><p><a class="reference internal" href="#Performance-Comparison-Using-Paired-T-Tests"><span class="xref myst">Performance Comparison Using Paired T-Tests</span></a></p></li>
+</ul>
+</section>
+<section id="data-preparation">
+<h2>Data Preparation<a class="headerlink" href="#data-preparation" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span><span class="p">,</span> <span class="n">RepeatedStratifiedKFold</span>
+<span class="kn">import</span> <span class="nn">sklearn.metrics</span> <span class="k">as</span> <span class="nn">metrics</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">feature_selection</span> <span class="k">as</span> <span class="n">fs</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s load the dataset from the Cloud.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c1"># so that we can see all the columns</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> 
+
+<span class="c1"># how to read a csv file from a github account</span>
+<span class="n">url_name</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/akmand/datasets/master/breast_cancer_wisconsin.csv&#39;</span>
+<span class="n">url_content</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_name</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">url_content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s have a look at the first 5 rows to see what the dataset looks like. Here, the last column “diagnosis” is the target variable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean_radius</th>
+      <th>mean_texture</th>
+      <th>mean_perimeter</th>
+      <th>mean_area</th>
+      <th>mean_smoothness</th>
+      <th>mean_compactness</th>
+      <th>mean_concavity</th>
+      <th>mean_concave_points</th>
+      <th>mean_symmetry</th>
+      <th>mean_fractal_dimension</th>
+      <th>radius_error</th>
+      <th>texture_error</th>
+      <th>perimeter_error</th>
+      <th>area_error</th>
+      <th>smoothness_error</th>
+      <th>compactness_error</th>
+      <th>concavity_error</th>
+      <th>concave_points_error</th>
+      <th>symmetry_error</th>
+      <th>fractal_dimension_error</th>
+      <th>worst_radius</th>
+      <th>worst_texture</th>
+      <th>worst_perimeter</th>
+      <th>worst_area</th>
+      <th>worst_smoothness</th>
+      <th>worst_compactness</th>
+      <th>worst_concavity</th>
+      <th>worst_concave_points</th>
+      <th>worst_symmetry</th>
+      <th>worst_fractal_dimension</th>
+      <th>diagnosis</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>17.99</td>
+      <td>10.38</td>
+      <td>122.80</td>
+      <td>1001.0</td>
+      <td>0.11840</td>
+      <td>0.27760</td>
+      <td>0.3001</td>
+      <td>0.14710</td>
+      <td>0.2419</td>
+      <td>0.07871</td>
+      <td>1.0950</td>
+      <td>0.9053</td>
+      <td>8.589</td>
+      <td>153.40</td>
+      <td>0.006399</td>
+      <td>0.04904</td>
+      <td>0.05373</td>
+      <td>0.01587</td>
+      <td>0.03003</td>
+      <td>0.006193</td>
+      <td>25.38</td>
+      <td>17.33</td>
+      <td>184.60</td>
+      <td>2019.0</td>
+      <td>0.1622</td>
+      <td>0.6656</td>
+      <td>0.7119</td>
+      <td>0.2654</td>
+      <td>0.4601</td>
+      <td>0.11890</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20.57</td>
+      <td>17.77</td>
+      <td>132.90</td>
+      <td>1326.0</td>
+      <td>0.08474</td>
+      <td>0.07864</td>
+      <td>0.0869</td>
+      <td>0.07017</td>
+      <td>0.1812</td>
+      <td>0.05667</td>
+      <td>0.5435</td>
+      <td>0.7339</td>
+      <td>3.398</td>
+      <td>74.08</td>
+      <td>0.005225</td>
+      <td>0.01308</td>
+      <td>0.01860</td>
+      <td>0.01340</td>
+      <td>0.01389</td>
+      <td>0.003532</td>
+      <td>24.99</td>
+      <td>23.41</td>
+      <td>158.80</td>
+      <td>1956.0</td>
+      <td>0.1238</td>
+      <td>0.1866</td>
+      <td>0.2416</td>
+      <td>0.1860</td>
+      <td>0.2750</td>
+      <td>0.08902</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>19.69</td>
+      <td>21.25</td>
+      <td>130.00</td>
+      <td>1203.0</td>
+      <td>0.10960</td>
+      <td>0.15990</td>
+      <td>0.1974</td>
+      <td>0.12790</td>
+      <td>0.2069</td>
+      <td>0.05999</td>
+      <td>0.7456</td>
+      <td>0.7869</td>
+      <td>4.585</td>
+      <td>94.03</td>
+      <td>0.006150</td>
+      <td>0.04006</td>
+      <td>0.03832</td>
+      <td>0.02058</td>
+      <td>0.02250</td>
+      <td>0.004571</td>
+      <td>23.57</td>
+      <td>25.53</td>
+      <td>152.50</td>
+      <td>1709.0</td>
+      <td>0.1444</td>
+      <td>0.4245</td>
+      <td>0.4504</td>
+      <td>0.2430</td>
+      <td>0.3613</td>
+      <td>0.08758</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>11.42</td>
+      <td>20.38</td>
+      <td>77.58</td>
+      <td>386.1</td>
+      <td>0.14250</td>
+      <td>0.28390</td>
+      <td>0.2414</td>
+      <td>0.10520</td>
+      <td>0.2597</td>
+      <td>0.09744</td>
+      <td>0.4956</td>
+      <td>1.1560</td>
+      <td>3.445</td>
+      <td>27.23</td>
+      <td>0.009110</td>
+      <td>0.07458</td>
+      <td>0.05661</td>
+      <td>0.01867</td>
+      <td>0.05963</td>
+      <td>0.009208</td>
+      <td>14.91</td>
+      <td>26.50</td>
+      <td>98.87</td>
+      <td>567.7</td>
+      <td>0.2098</td>
+      <td>0.8663</td>
+      <td>0.6869</td>
+      <td>0.2575</td>
+      <td>0.6638</td>
+      <td>0.17300</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>20.29</td>
+      <td>14.34</td>
+      <td>135.10</td>
+      <td>1297.0</td>
+      <td>0.10030</td>
+      <td>0.13280</td>
+      <td>0.1980</td>
+      <td>0.10430</td>
+      <td>0.1809</td>
+      <td>0.05883</td>
+      <td>0.7572</td>
+      <td>0.7813</td>
+      <td>5.438</td>
+      <td>94.44</td>
+      <td>0.011490</td>
+      <td>0.02461</td>
+      <td>0.05688</td>
+      <td>0.01885</td>
+      <td>0.01756</td>
+      <td>0.005115</td>
+      <td>22.54</td>
+      <td>16.67</td>
+      <td>152.20</td>
+      <td>1575.0</td>
+      <td>0.1374</td>
+      <td>0.2050</td>
+      <td>0.4000</td>
+      <td>0.1625</td>
+      <td>0.2364</td>
+      <td>0.07678</td>
+      <td>M</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Let’s do some pre-processing:</p>
+<ul class="simple">
+<li><p>Split the dataset columns into <code class="docutils literal notranslate"><span class="pre">Data</span></code> and <code class="docutils literal notranslate"><span class="pre">target</span></code>.</p></li>
+<li><p>Make target numeric by label-encoding.</p></li>
+<li><p>Normalize each descriptive feature in <code class="docutils literal notranslate"><span class="pre">Data</span></code> to be between 0 and 1.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;diagnosis&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+<span class="n">target</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;diagnosis&#39;</span><span class="p">]</span>
+<span class="n">Data</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MinMaxScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
+<span class="n">target</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">LabelEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="performance-with-full-set-of-features">
+<h2>Performance with Full Set of Features<a class="headerlink" href="#performance-with-full-set-of-features" title="Link to this heading">#</a></h2>
+<p>As wrapper, we use the decision tree classifier with default values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>First, we would like to assess performance using all the features in the dataset. For assessment, we shall use stratified 5-fold cross-validation with 3 repetitions. We set the random state to 999 so that our results can be replicated and verified later on exactly as they are.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_method</span> <span class="o">=</span> <span class="n">RepeatedStratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> 
+                                     <span class="n">n_repeats</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                                     <span class="n">random_state</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For scoring, we use the accuracy score.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scoring_metric</span> <span class="o">=</span> <span class="s1">&#39;accuracy&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s perform the cross-validation using the <code class="docutils literal notranslate"><span class="pre">cross_val_score</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results_full</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">clf</span><span class="p">,</span>
+                             <span class="n">X</span><span class="o">=</span><span class="n">Data</span><span class="p">,</span>
+                             <span class="n">y</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> 
+                             <span class="n">cv</span><span class="o">=</span><span class="n">cv_method</span><span class="p">,</span> 
+                             <span class="n">scoring</span><span class="o">=</span><span class="n">scoring_metric</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The array <code class="docutils literal notranslate"><span class="pre">cv_results_full</span></code> contains 15 values corresponding to each one of the 3-repetition/ 5-fold combinations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results_full</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.92105263, 0.95614035, 0.9122807 , 0.92105263, 0.97345133,
+       0.94736842, 0.92982456, 0.87719298, 0.92105263, 0.92920354,
+       0.9122807 , 0.92982456, 0.92105263, 0.95614035, 0.9380531 ])
+</pre></div>
+</div>
+</div>
+</div>
+<p>We compute the average cross-validation performance as the mean of the <code class="docutils literal notranslate"><span class="pre">cv_results_full</span></code> array.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results_full</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.93)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s now select the best 5 features in the dataset using different methods.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_features</span> <span class="o">=</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="feature-selection-using-f-score">
+<h2>Feature Selection Using F-Score<a class="headerlink" href="#feature-selection-using-f-score" title="Link to this heading">#</a></h2>
+<p>The F-Score method is a filter feature selection method that looks at the relationship between each descriptive feature and the target feature using the F-distribution.</p>
+<p>The code below returns the indices of the 5 features that have the highest F-Score value sorted from the highest to the lowest. Pay attention that the wrapper is not used in any way when selecting features using the F-Score method.</p>
+<p>In some cases, the F-Score will be “NaN” for some features due to technical reasons (related to the nature of the F-distribution). For this reason, we will convert any “NaN” value to zero for a correct result via the <code class="docutils literal notranslate"><span class="pre">np.nan_to_num()</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fs_fit_fscore</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">SelectKBest</span><span class="p">(</span><span class="n">fs</span><span class="o">.</span><span class="n">f_classif</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">num_features</span><span class="p">)</span>
+<span class="n">fs_fit_fscore</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+<span class="n">fs_indices_fscore</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">fs_fit_fscore</span><span class="o">.</span><span class="n">scores_</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">num_features</span><span class="p">]</span>
+<span class="n">fs_indices_fscore</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([27, 22,  7, 20,  2])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s see what these 5 best features are.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_features_fscore</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">fs_indices_fscore</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">best_features_fscore</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;worst_concave_points&#39;, &#39;worst_perimeter&#39;, &#39;mean_concave_points&#39;,
+       &#39;worst_radius&#39;, &#39;mean_perimeter&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Based on the F-Scores, we observe that, out of the top 5 features, the most important feature is “worst_concave_points” and the least important feature is “mean_perimeter”.</p>
+<p>The F-Score importances of these features are given below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feature_importances_fscore</span> <span class="o">=</span> <span class="n">fs_fit_fscore</span><span class="o">.</span><span class="n">scores_</span><span class="p">[</span><span class="n">fs_indices_fscore</span><span class="p">]</span>
+<span class="n">feature_importances_fscore</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([964.38539345, 897.94421886, 861.67602001, 860.78170699,
+       697.23527248])
+</pre></div>
+</div>
+</div>
+</div>
+<p>We define a function for plotting so that we can plot other importance types as well corresponding to different feature selection methods.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline 
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;ggplot&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">plot_imp</span><span class="p">(</span><span class="n">best_features</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">method_name</span><span class="p">):</span>   
+    <span class="n">plt</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">best_features</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">method_name</span> <span class="o">+</span> <span class="s1">&#39; Feature Importances&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Importance&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Features&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_imp</span><span class="p">(</span><span class="n">best_features_fscore</span><span class="p">,</span> <span class="n">feature_importances_fscore</span><span class="p">,</span> <span class="s1">&#39;F-Score&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/0eb9d8ca3044962acc2daa7488d86d6a8bf89b45e1c5ac050328a4ac14735add.png"><img alt="../_images/0eb9d8ca3044962acc2daa7488d86d6a8bf89b45e1c5ac050328a4ac14735add.png" src="../_images/0eb9d8ca3044962acc2daa7488d86d6a8bf89b45e1c5ac050328a4ac14735add.png" style="width: 712px; height: 459px;" /></a>
+</div>
+</div>
+<p>We can select those features from the set of descriptive features <code class="docutils literal notranslate"><span class="pre">Data</span></code> using slicing as shown below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Data</span><span class="p">[:,</span> <span class="n">fs_indices_fscore</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(569, 5)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s now assess performance of this feature selection method using cross validation with the decision tree classifier.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results_fscore</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">clf</span><span class="p">,</span>
+                             <span class="n">X</span><span class="o">=</span><span class="n">Data</span><span class="p">[:,</span> <span class="n">fs_indices_fscore</span><span class="p">],</span>
+                             <span class="n">y</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> 
+                             <span class="n">cv</span><span class="o">=</span><span class="n">cv_method</span><span class="p">,</span> 
+                             <span class="n">scoring</span><span class="o">=</span><span class="n">scoring_metric</span><span class="p">)</span>
+<span class="n">cv_results_fscore</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.926)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="feature-selection-using-mutual-information">
+<h2>Feature Selection Using Mutual Information<a class="headerlink" href="#feature-selection-using-mutual-information" title="Link to this heading">#</a></h2>
+<p>The mutual information method is a filter feature selection method that looks at the relationship between each descriptive feature and the target feature using the concept of entropy.</p>
+<p>The code below returns the indices of the 5 features that have the highest mutual information value. As in the F-score method, the wrapper is not used in any way when selecting features using the mutual information method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fs_fit_mutual_info</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">SelectKBest</span><span class="p">(</span><span class="n">fs</span><span class="o">.</span><span class="n">mutual_info_classif</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">num_features</span><span class="p">)</span>
+<span class="n">fs_fit_mutual_info</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+<span class="n">fs_indices_mutual_info</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">fs_fit_mutual_info</span><span class="o">.</span><span class="n">scores_</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">num_features</span><span class="p">]</span>
+<span class="n">best_features_mutual_info</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">fs_indices_mutual_info</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">best_features_mutual_info</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;worst_perimeter&#39;, &#39;worst_area&#39;, &#39;worst_radius&#39;,
+       &#39;mean_concave_points&#39;, &#39;worst_concave_points&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feature_importances_mutual_info</span> <span class="o">=</span> <span class="n">fs_fit_mutual_info</span><span class="o">.</span><span class="n">scores_</span><span class="p">[</span><span class="n">fs_indices_mutual_info</span><span class="p">]</span>
+<span class="n">feature_importances_mutual_info</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.47764827, 0.4632881 , 0.45627324, 0.44107263, 0.4368373 ])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_imp</span><span class="p">(</span><span class="n">best_features_mutual_info</span><span class="p">,</span> <span class="n">feature_importances_mutual_info</span><span class="p">,</span> <span class="s1">&#39;Mutual Information&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/d1d98b8c297f0419f37dc7d44d2f062f3b05ac4939e4cfc24aa4fcc1837ae6e1.png"><img alt="../_images/d1d98b8c297f0419f37dc7d44d2f062f3b05ac4939e4cfc24aa4fcc1837ae6e1.png" src="../_images/d1d98b8c297f0419f37dc7d44d2f062f3b05ac4939e4cfc24aa4fcc1837ae6e1.png" style="width: 710px; height: 459px;" /></a>
+</div>
+</div>
+<p>Now let’s evaluate the performance of these features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results_mutual_info</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">clf</span><span class="p">,</span>
+                             <span class="n">X</span><span class="o">=</span><span class="n">Data</span><span class="p">[:,</span> <span class="n">fs_indices_mutual_info</span><span class="p">],</span>
+                             <span class="n">y</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> 
+                             <span class="n">cv</span><span class="o">=</span><span class="n">cv_method</span><span class="p">,</span> 
+                             <span class="n">scoring</span><span class="o">=</span><span class="n">scoring_metric</span><span class="p">)</span>
+<span class="n">cv_results_mutual_info</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.919)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="feature-selection-using-random-forest-importance">
+<h2>Feature Selection Using Random Forest Importance<a class="headerlink" href="#feature-selection-using-random-forest-importance" title="Link to this heading">#</a></h2>
+<p>The random forest importance (RFI) method is a filter feature selection method that uses the total decrease in node impurities from splitting on a particular feature as averaged over all decision trees in the ensemble. For classification, the node impurity is measured by the Gini index and for regression, it is measured by residual sum of squares.</p>
+<p>Let’s perform RFI feature selection using 100 trees.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_rfi</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">model_rfi</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+<span class="n">fs_indices_rfi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">model_rfi</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">num_features</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here are the best features selected by RFI.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_features_rfi</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">fs_indices_rfi</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">best_features_rfi</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;worst_concave_points&#39;, &#39;worst_radius&#39;, &#39;worst_perimeter&#39;,
+       &#39;mean_concave_points&#39;, &#39;worst_area&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feature_importances_rfi</span> <span class="o">=</span> <span class="n">model_rfi</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">[</span><span class="n">fs_indices_rfi</span><span class="p">]</span>
+<span class="n">feature_importances_rfi</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.16911595, 0.11984545, 0.11509717, 0.08568064, 0.07844842])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_imp</span><span class="p">(</span><span class="n">best_features_rfi</span><span class="p">,</span> <span class="n">feature_importances_rfi</span><span class="p">,</span> <span class="s1">&#39;Random Forest&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/a00f8f02fbadfe48d6c035bff05fb7d60c981be7fb3578f811501b915ff9f82e.png"><img alt="../_images/a00f8f02fbadfe48d6c035bff05fb7d60c981be7fb3578f811501b915ff9f82e.png" src="../_images/a00f8f02fbadfe48d6c035bff05fb7d60c981be7fb3578f811501b915ff9f82e.png" style="width: 701px; height: 459px;" /></a>
+</div>
+</div>
+<p>Now let’s evaluate the performance of these features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results_rfi</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">clf</span><span class="p">,</span>
+                             <span class="n">X</span><span class="o">=</span><span class="n">Data</span><span class="p">[:,</span> <span class="n">fs_indices_rfi</span><span class="p">],</span>
+                             <span class="n">y</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> 
+                             <span class="n">cv</span><span class="o">=</span><span class="n">cv_method</span><span class="p">,</span> 
+                             <span class="n">scoring</span><span class="o">=</span><span class="n">scoring_metric</span><span class="p">)</span>
+<span class="n">cv_results_rfi</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.925)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="feature-selection-using-spfsr">
+<h2>Feature Selection Using spFSR<a class="headerlink" href="#feature-selection-using-spfsr" title="Link to this heading">#</a></h2>
+<p>spFSR is a new wrapper-based feature selection method that uses binary stochastic approximation. Please refer to this <a class="reference external" href="https://www.sciencedirect.com/science/article/abs/pii/S0957417422018826">journal article</a> paper for more information on this method.</p>
+<p>First, you need to make sure that you download and copy the Python file <code class="docutils literal notranslate"><span class="pre">spFSR.py</span></code> under the same directory as your Jupyter notebook so that the import works correctly. You can download this file from this <a class="reference external" href="https://github.com/akmand/spFSR/blob/master/spFSR.py">link</a>.</p>
+<p>Let’s define an SpFSR object with our feature selection problem with ‘accuracy’ as our performance metric. Let’s run spFSR in the wrapper mode by setting <code class="docutils literal notranslate"><span class="pre">wrapper=clf</span></code>.</p>
+<p>Please keep in mind that spFSR can be used as a <strong>filter-based</strong> feature selection method as well so that the selected features do not depend on the intended classifier. For this to work, just set the <code class="docutils literal notranslate"><span class="pre">wrapper</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">None</span></code>. For more details, please see <a class="reference external" href="https://github.com/akmand/spFSR/blob/master/spFSR_example_github.py">this</a> example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pay attention to capitalization below!</span>
+<span class="kn">from</span> <span class="nn">spFSR</span> <span class="kn">import</span> <span class="n">SpFSR</span>
+
+<span class="c1"># set the engine parameters</span>
+<span class="c1"># pred_type needs to be &#39;c&#39; for classification and &#39;r&#39; for regression datasets</span>
+<span class="n">sp_engine</span> <span class="o">=</span> <span class="n">SpFSR</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">Data</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> <span class="n">pred_type</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">wrapper</span><span class="o">=</span><span class="n">clf</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s now run the spFSR method and the indices of the best features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">999</span><span class="p">)</span>
+<span class="n">sp_output</span> <span class="o">=</span> <span class="n">sp_engine</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">num_features</span><span class="o">=</span><span class="n">num_features</span><span class="p">)</span><span class="o">.</span><span class="n">results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SpFSR-INFO: Wrapper: DecisionTreeClassifier(random_state=999)
+SpFSR-INFO: Hot start: True
+SpFSR-INFO: Hot start range: 0.2
+SpFSR-INFO: Feature weighting: False
+SpFSR-INFO: Scoring metric: accuracy
+SpFSR-INFO: Number of jobs: 1
+SpFSR-INFO: Number of observations in the dataset: 569
+SpFSR-INFO: Number of observations used: 569
+SpFSR-INFO: Number of features available: 30
+SpFSR-INFO: Number of features to select: 5
+SpFSR-INFO: iter_no: 0, num_ft: 5, value: 0.924, st_dev: 0.026, best: 0.924 @ iter_no 0
+SpFSR-INFO: ===&gt; iter_no: 4, same feature stall limit reached, initializing search...
+SpFSR-INFO: iter_no: 10, num_ft: 5, value: 0.93, st_dev: 0.016, best: 0.948 @ iter_no 6
+SpFSR-INFO: iter_no: 20, num_ft: 5, value: 0.939, st_dev: 0.016, best: 0.948 @ iter_no 6
+SpFSR-INFO: ===&gt; iter_no: 23, same feature stall limit reached, initializing search...
+SpFSR-INFO: iter_no: 30, num_ft: 5, value: 0.928, st_dev: 0.032, best: 0.948 @ iter_no 6
+SpFSR-INFO: iter_no: 40, num_ft: 5, value: 0.933, st_dev: 0.02, best: 0.948 @ iter_no 6
+SpFSR-INFO: ===&gt; iter_no: 41, same feature stall limit reached, initializing search...
+SpFSR-INFO: iter_no: 50, num_ft: 5, value: 0.927, st_dev: 0.022, best: 0.948 @ iter_no 6
+SpFSR-INFO: iter_no: 60, num_ft: 5, value: 0.929, st_dev: 0.026, best: 0.948 @ iter_no 6
+SpFSR-INFO: iter_no: 70, num_ft: 5, value: 0.919, st_dev: 0.021, best: 0.948 @ iter_no 6
+SpFSR-INFO: ===&gt; iter_no: 72, same feature stall limit reached, initializing search...
+SpFSR-INFO: iter_no: 80, num_ft: 5, value: 0.943, st_dev: 0.023, best: 0.948 @ iter_no 6
+SpFSR-INFO: ===&gt; iter_no: 85, same feature stall limit reached, initializing search...
+SpFSR-INFO: iter_no: 90, num_ft: 5, value: 0.923, st_dev: 0.02, best: 0.948 @ iter_no 6
+SpFSR-INFO: iter_no: 100, num_ft: 5, value: 0.931, st_dev: 0.026, best: 0.948 @ iter_no 6
+SpFSR-INFO: SpFSR completed in 0.12 minutes.
+SpFSR-INFO: Best value = 0.948 with 5 features and 100 total iterations.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s get the indices of the best features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fs_indices_spfsr</span> <span class="o">=</span> <span class="n">sp_output</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;selected_features&#39;</span><span class="p">)</span>
+<span class="n">fs_indices_spfsr</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[23, 27, 26, 21, 2]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s have a look at the top 5 features selected by spFSR.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_features_spfsr</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">fs_indices_spfsr</span><span class="p">]</span>
+<span class="n">best_features_spfsr</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;worst_area&#39;, &#39;worst_concave_points&#39;, &#39;worst_concavity&#39;,
+       &#39;worst_texture&#39;, &#39;mean_perimeter&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feature_importances_spfsr</span> <span class="o">=</span> <span class="n">sp_output</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;selected_ft_importance&#39;</span><span class="p">)</span>
+<span class="n">feature_importances_spfsr</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.09887883, 0.05283565, 0.04254586, 0.0403938 , 0.02842053])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_imp</span><span class="p">(</span><span class="n">best_features_spfsr</span><span class="p">,</span> <span class="n">feature_importances_spfsr</span><span class="p">,</span> <span class="s1">&#39;spFSR&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/9893a14d54822b5c7195d41c8d5fdb7db627430085f72a26f27c646399db50c9.png"><img alt="../_images/9893a14d54822b5c7195d41c8d5fdb7db627430085f72a26f27c646399db50c9.png" src="../_images/9893a14d54822b5c7195d41c8d5fdb7db627430085f72a26f27c646399db50c9.png" style="width: 700px; height: 459px;" /></a>
+</div>
+</div>
+<p>Finally, let’s evaluate the performance of the spFSR feature selection method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results_spfsr</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">clf</span><span class="p">,</span>
+                             <span class="n">X</span><span class="o">=</span><span class="n">Data</span><span class="p">[:,</span> <span class="n">fs_indices_spfsr</span><span class="p">],</span>
+                             <span class="n">y</span><span class="o">=</span><span class="n">target</span><span class="p">,</span> 
+                             <span class="n">cv</span><span class="o">=</span><span class="n">cv_method</span><span class="p">,</span> 
+                             <span class="n">scoring</span><span class="o">=</span><span class="n">scoring_metric</span><span class="p">)</span>
+<span class="n">cv_results_spfsr</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.941)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We observe that we get a cross-validation accuracy of 94.4% with spFSR with just 5 features. Recall that the cross-validation accuracy with the full set of features is 93%. So, in this particular case, it is remarkable that we can achieve even slightly better results with 5 features selected by spFSR as opposed to using all the 30 features. However, we will need to conduct a t-test to determine if this difference is statistically significant or not.</p>
+</section>
+<section id="performance-comparison-using-paired-t-tests">
+<h2>Performance Comparison Using Paired T-Tests<a class="headerlink" href="#performance-comparison-using-paired-t-tests" title="Link to this heading">#</a></h2>
+<p>For performance assessment, we used repeated cross-validation. However, cross-validation is a random process and we need statistical tests in order to determine if any difference between the performance of any two feature selection methods is statistically significant; or if it is within the sample variation and the difference is statistically insignificant.</p>
+<p>Since we fixed the random state to be same for all cross-validation procedures, all feature selection methods were fitted and then tested on exactly the same data partitions. This indicates that our experiments were actually paired. Conducting experiments in a paired fashion reduces the variability significantly compared to conducting experiments in an independent fashion.</p>
+<p>Let’s now conduct paired t-tests to see which differences between full set of features, filter methods, and spFSR are statistically significant. Let’s first remind ourselves the performances.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Full Set of Features:&#39;</span><span class="p">,</span> <span class="n">cv_results_full</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;F-Score:&#39;</span><span class="p">,</span> <span class="n">cv_results_fscore</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mutual Information:&#39;</span><span class="p">,</span> <span class="n">cv_results_mutual_info</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RFI:&#39;</span><span class="p">,</span> <span class="n">cv_results_rfi</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;spFSR:&#39;</span><span class="p">,</span> <span class="n">cv_results_spfsr</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Full Set of Features: 0.93
+F-Score: 0.926
+Mutual Information: 0.919
+RFI: 0.925
+spFSR: 0.941
+</pre></div>
+</div>
+</div>
+</div>
+<p>The above results indicate that spFSR outperforms the other FS methods. However, we need to perform some statistical tests to check to see if this difference is indeed statistically significant.</p>
+<p>For a paired t-test in Python, we use the <code class="docutils literal notranslate"><span class="pre">stats.ttest_rel</span></code> function inside the <code class="docutils literal notranslate"><span class="pre">scipy</span></code> module and look at the p-values. At a 95% significance level, if the p-value is smaller than 0.05, we can conclude that the difference is statistically significant.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_rel</span><span class="p">(</span><span class="n">cv_results_spfsr</span><span class="p">,</span> <span class="n">cv_results_fscore</span><span class="p">)</span><span class="o">.</span><span class="n">pvalue</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_rel</span><span class="p">(</span><span class="n">cv_results_spfsr</span><span class="p">,</span> <span class="n">cv_results_mutual_info</span><span class="p">)</span><span class="o">.</span><span class="n">pvalue</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_rel</span><span class="p">(</span><span class="n">cv_results_spfsr</span><span class="p">,</span> <span class="n">cv_results_rfi</span><span class="p">)</span><span class="o">.</span><span class="n">pvalue</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.019
+0.014
+0.054
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since all p-values are below 0.05, we conclude that spFSR is statistically better than the other FS methods. Next, let’s see if spFSR performance is better than that with full set of features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_rel</span><span class="p">(</span><span class="n">cv_results_spfsr</span><span class="p">,</span> <span class="n">cv_results_full</span><span class="p">)</span><span class="o">.</span><span class="n">pvalue</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.103)
+</pre></div>
+</div>
+</div>
+</div>
+<p>For spFSR vs. full set of features, we observe a p-value above 0.05, indicating that the difference is not statically significant. Thus, spFSR with 5 features performs statistically the same as the full set of features, at least for the decision tree classifier.</p>
+<p><strong>Note</strong>: In this notebook, we use all the data to train the feature selection methods and then tested them again on the entire dataset using cross-validation due to the smallness of the dataset to work with. Despite its simplicity, this approach potentially results in overfitting. In order to mitigate this issue, a more appropriate approach would be to perform this comparison within a <strong>train/ test split approach</strong>. Specifically, we can split the entire data into two partitions, a train and a test data. We can find the top features using the <strong>train data</strong> using cross-validation. Next, we can assess the performance of these features on the <strong>test data</strong>, again using cross-validation.</p>
+<hr class="docutils" />
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./ml"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="SK1_Basic_Modelling.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">SK Part 1: Basic Modeling</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="SK3_Model_Evaluation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">SK Part 3: Model Evaluation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">Data Preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-with-full-set-of-features">Performance with Full Set of Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-f-score">Feature Selection Using F-Score</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-mutual-information">Feature Selection Using Mutual Information</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-random-forest-importance">Feature Selection Using Random Forest Importance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-using-spfsr">Feature Selection Using spFSR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-comparison-using-paired-t-tests">Performance Comparison Using Paired T-Tests</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By D. Akman
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

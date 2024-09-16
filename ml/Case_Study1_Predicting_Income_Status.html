@@ -1,0 +1,2766 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Predicting Income Status &#8212; Tutorials on Data Science with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ml/Case_Study1_Predicting_Income_Status';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Predicting Optimal Machine Maintenance Cycle" href="Case_Study2_Maintenance_Predictive_Modelling.html" />
+    <link rel="prev" title="Forecasting Fundamentals with Python &amp; Facebook Prophet" href="SK9_Forecasting.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Tutorials on Data Science with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to D. Akman’s Tutorials on Data Science with Python!
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python/README.html">Python Basics (PB) Tutorial Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB1_nb_intro.html">INTRODUCTION TO JUPYTER NOTEBOOKS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB2_nb_markdown.html">NOTEBOOK MARKDOWN TUTORIAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB3_intro_to_python.html">Introduction to Python Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB4_numpy.html">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB5_pandas.html">Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB6_matplotlib.html">Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB7_seaborn.html">Seaborn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB8_python_vs_r.html">Python vs. R</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../stats/README.html">Statistics Tutorials/ OpenIntro Labs for Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch1n2_intro_to_data.html">Introduction to data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch3_probability.html">Probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch4_normal_distribution.html">Normal distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch5_confidence_intervals.html">Foundations for statistical inference - Confidence intervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch5_sampling_distributions.html">Foundations for statistical inference - Sampling distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch6_inf_for_categorical_data.html">Inference for categorical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch7_inf_for_numerical_data.html">Inference for numerical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch8_simple_regression.html">Introduction to linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch9_multiple_regression.html">Multiple linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/regression_case_study_predicting_age_in_census_data.html">Predicting Age in Census Data<a class="anchor-link" href="#Predicting-Age-in-Census-Data"></a></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Machine Learning Tutorials with Scikit-Learn</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Data_Prep_for_Predictive_Modelling.html">Data Preparation for Predictive Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK0_Scikit_Learn_Introduction.html">SK Part 0: Introduction to Predictive Modeling with Python and Scikit-Learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK1_Basic_Modelling.html">SK Part 1: Basic Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK2_Feature_Selection.html">SK Part 2: Feature Selection and Ranking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK3_Model_Evaluation.html">SK Part 3: Model Evaluation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="SK4_HyperParameter_Tuning.html">SK Part 4: Cross-Validation and Hyper-parameter Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK5_Advanced_Topics.html">SK Part 5: Pipelines, Statistical Model Comparison, and Model Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK6_Clustering.html">SK Part 6: K-Means Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK7_Neural_Networks.html">SK Part 7: Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK8_LightGBM.html">Light GBM &amp; Parameter Tuning with Optuna</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK9_Forecasting.html">Forecasting Fundamentals with Python &amp; Facebook Prophet</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Predicting Income Status</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Case_Study2_Maintenance_Predictive_Modelling.html">Predicting Optimal Machine Maintenance Cycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Case_Study3_Hotel_Prediction.html">Hotel Prediction with Hybrid Collaborative Filtering with SVD</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Decision_Trees_InfoGain_Computation.html">Information Gain Computation in Python</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/ml/Case_Study1_Predicting_Income_Status.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Predicting Income Status</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Predicting Income Status</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview <a class="anchor" id="2"></a></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methodology">Methodology</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">Data Preparation <a class="anchor" id="3"></a></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-dataset">Loading Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-for-missing-values">Checking for Missing Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-statistics">Summary Statistics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-categorical-features">Encoding Categorical Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-the-target-feature">Encoding the Target Feature</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-categorical-descriptive-features">Encoding Categorical Descriptive Features</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-of-features">Scaling of Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-ranking">Feature Selection &amp; Ranking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sampling-train-test-splitting">Data Sampling &amp; Train-Test Splitting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-evaluation-strategy">Model Evaluation Strategy</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#hyperparameter-tuning">Hyperparameter Tuning <a class="anchor" id="4"></a></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbors-knn">K-Nearest Neighbors (KNN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-naive-bayes-nb">(Gaussian) Naive Bayes (NB)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-trees-dt">Decision Trees (DT)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-fine-tuning">Further Fine Tuning</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-comparison">Performance Comparison <a class="anchor" id="5"></a></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">Discussion</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-proposed-solutions">Limitations and Proposed Solutions <a class="anchor" id="6"></a></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary <a class="anchor" id="7"></a></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="predicting-income-status">
+<h1>Predicting Income Status<a class="headerlink" href="#predicting-income-status" title="Link to this heading">#</a></h1>
+<p>The objective of this case study is to fit and compare three different binary classifiers to predict whether an individual earns more than USD 50,000 (50K) or less in a year using the 1994 US Census Data sourced from the UCI Machine Learning Repository (Lichman, 2013). The descriptive features include 4 numeric and 7 nominal categorical features. The target feature has two classes defined as “&lt;=50K” and “&gt;50K” respectively. The full dataset contains about 45K observations.</p>
+<p>This report is organized as follows:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#2"><span class="xref myst">Section 2 (Overview)</span></a> outlines our methodology.</p></li>
+<li><p><a class="reference internal" href="#3"><span class="xref myst">Section 3 (Data Preparation)</span></a> summarizes the data preparation process and our model evaluation strategy.</p></li>
+<li><p><a class="reference internal" href="#4"><span class="xref myst">Section 4 (Hyper-parameter Tuning)</span></a> describes the hyper-parameter tuning process for each classification algorithm.</p></li>
+<li><p><a class="reference internal" href="#5"><span class="xref myst">Section 5 (Performance Comparison)</span></a> presents model performance comparison results.</p></li>
+<li><p><a class="reference internal" href="#6"><span class="xref myst">Section 6 (Limitations)</span></a> discusses a limitations of our approach and possible solutions.</p></li>
+<li><p><a class="reference internal" href="#7"><span class="xref myst">Section 7 (Summary)</span></a> provides a brief summary of our work in this project.</p></li>
+</ul>
+<p>Compiled from a Jupyter Notebook, this report contains both narratives and the Python code used throughout the project.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="overview">
+<h1>Overview <a class="anchor" id="2"></a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h1>
+<section id="methodology">
+<h2>Methodology<a class="headerlink" href="#methodology" title="Link to this heading">#</a></h2>
+<p>We consider the following (binary) classifiers to predict the target feature:</p>
+<ul class="simple">
+<li><p>K-Nearest Neighbors (KNN),</p></li>
+<li><p>Decision trees (DT), and</p></li>
+<li><p>Naive Bayes (NB).</p></li>
+</ul>
+<p>Our modeling strategy begins by transforming the full dataset cleaned in Phase I. This transformation includes encoding categorical descriptive features as numerical and then scaling of the descriptive features. We first randomly sample 20K rows from the full dataset and then split this sample into training and test sets with a 70:30 ratio. This way, our training data has 14K rows and test data has 6K rows. To be clear, our terminology here is that</p>
+<ul class="simple">
+<li><p>The 14K rows of data used during the hyper-parameter tuning phase is called the <strong>training data</strong>.</p></li>
+<li><p>The 6K rows of data used during the performance comparison phase is called the <strong>test data</strong>.</p></li>
+</ul>
+<p>Before fitting a particular classifier on the training data, we select the best features using the powerful Random Forest Importance method inside a pipeline. We consider 10, 20, and the full set of features (with 41 features) after encoding of categorical features. Using feature selection together with hyper-parameter search inside a single pipeline, we conduct a 5-fold stratified cross-validation to fine-tune hyper-parameters of each classifier using area under curve (AUC) as the performance metric. We build each model using parallel processing with “-2” cores. Since the target feature has more individuals earning less than USD 50K in 1994 (unbalanced target class issue), stratification is crucial to ensure that each validation set has the same proportion of classes as in the original dataset. We also examine sensitivity of each model with respect to its hyper-parameters during the search.</p>
+<p>Classifiers with the best set of hyper-parameter values as identified via grid search using the training data are called <strong>tuned</strong> classifiers. Once we identify the three tuned classifiers (with the best hyper-parameter values), we “fit” them on the test data using 10-fold cross-validation in a paired fashion and we perform paired t-tests to see if any performance difference is statistically significant. In addition, we compare the classifiers with respect to their recall scores and confusion matrices on the test data.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="data-preparation">
+<h1>Data Preparation <a class="anchor" id="3"></a><a class="headerlink" href="#data-preparation" title="Link to this heading">#</a></h1>
+<section id="loading-dataset">
+<h2>Loading Dataset<a class="headerlink" href="#loading-dataset" title="Link to this heading">#</a></h2>
+<p>We load the dataset from the Cloud. Below we set the seed to a particular value at the beginning of this notebook so that our results can be repeated later on.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c1"># so that we can see all the columns</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> 
+
+<span class="c1"># how to read a csv file from a github account</span>
+<span class="n">url_name</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/akmand/datasets/master/us_census_income_data_clean.csv&#39;</span>
+<span class="n">url_content</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_name</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">url_content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">dataset</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(45222, 12)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;age&#39;, &#39;workclass&#39;, &#39;education_num&#39;, &#39;marital_status&#39;,
+       &#39;occupation&#39;, &#39;relationship&#39;, &#39;race&#39;, &#39;gender&#39;, &#39;hours_per_week&#39;,
+       &#39;native_country&#39;, &#39;capital&#39;, &#39;income_status&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The full data has 45,222 observations. It has 11 descriptive features and the “income_status” target feature.</p>
+</section>
+<section id="checking-for-missing-values">
+<h2>Checking for Missing Values<a class="headerlink" href="#checking-for-missing-values" title="Link to this heading">#</a></h2>
+<p>Let’s make sure we do not have any missing values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>age               0
+workclass         0
+education_num     0
+marital_status    0
+occupation        0
+relationship      0
+race              0
+gender            0
+hours_per_week    0
+native_country    0
+capital           0
+income_status     0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s have a look at 5 randomly selected rows in this raw dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>workclass</th>
+      <th>education_num</th>
+      <th>marital_status</th>
+      <th>occupation</th>
+      <th>relationship</th>
+      <th>race</th>
+      <th>gender</th>
+      <th>hours_per_week</th>
+      <th>native_country</th>
+      <th>capital</th>
+      <th>income_status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>29270</th>
+      <td>40</td>
+      <td>private</td>
+      <td>10</td>
+      <td>never_married</td>
+      <td>exec_managerial</td>
+      <td>unmarried</td>
+      <td>white</td>
+      <td>female</td>
+      <td>40</td>
+      <td>united_states</td>
+      <td>0</td>
+      <td>&lt;=50k</td>
+    </tr>
+    <tr>
+      <th>25610</th>
+      <td>24</td>
+      <td>state_gov</td>
+      <td>13</td>
+      <td>never_married</td>
+      <td>prof_specialty</td>
+      <td>not_in_family</td>
+      <td>white</td>
+      <td>female</td>
+      <td>20</td>
+      <td>united_states</td>
+      <td>0</td>
+      <td>&lt;=50k</td>
+    </tr>
+    <tr>
+      <th>19125</th>
+      <td>38</td>
+      <td>self_emp_not_inc</td>
+      <td>9</td>
+      <td>married_civ_spouse</td>
+      <td>handlers_cleaners</td>
+      <td>husband</td>
+      <td>white</td>
+      <td>male</td>
+      <td>40</td>
+      <td>united_states</td>
+      <td>0</td>
+      <td>&gt;50k</td>
+    </tr>
+    <tr>
+      <th>43423</th>
+      <td>43</td>
+      <td>self_emp_not_inc</td>
+      <td>9</td>
+      <td>married_civ_spouse</td>
+      <td>adm_clerical</td>
+      <td>wife</td>
+      <td>white</td>
+      <td>female</td>
+      <td>15</td>
+      <td>united_states</td>
+      <td>0</td>
+      <td>&lt;=50k</td>
+    </tr>
+    <tr>
+      <th>14464</th>
+      <td>37</td>
+      <td>local_gov</td>
+      <td>15</td>
+      <td>married_civ_spouse</td>
+      <td>prof_specialty</td>
+      <td>husband</td>
+      <td>white</td>
+      <td>male</td>
+      <td>60</td>
+      <td>united_states</td>
+      <td>0</td>
+      <td>&gt;50k</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="summary-statistics">
+<h2>Summary Statistics<a class="headerlink" href="#summary-statistics" title="Link to this heading">#</a></h2>
+<p>The summary statistics for the full data are shown below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>workclass</th>
+      <th>education_num</th>
+      <th>marital_status</th>
+      <th>occupation</th>
+      <th>relationship</th>
+      <th>race</th>
+      <th>gender</th>
+      <th>hours_per_week</th>
+      <th>native_country</th>
+      <th>capital</th>
+      <th>income_status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>45222.000000</td>
+      <td>45222</td>
+      <td>45222.000000</td>
+      <td>45222</td>
+      <td>45222</td>
+      <td>45222</td>
+      <td>45222</td>
+      <td>45222</td>
+      <td>45222.000000</td>
+      <td>45222</td>
+      <td>45222.000000</td>
+      <td>45222</td>
+    </tr>
+    <tr>
+      <th>unique</th>
+      <td>NaN</td>
+      <td>7</td>
+      <td>NaN</td>
+      <td>7</td>
+      <td>14</td>
+      <td>6</td>
+      <td>2</td>
+      <td>2</td>
+      <td>NaN</td>
+      <td>2</td>
+      <td>NaN</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td>NaN</td>
+      <td>private</td>
+      <td>NaN</td>
+      <td>married_civ_spouse</td>
+      <td>craft_repair</td>
+      <td>husband</td>
+      <td>white</td>
+      <td>male</td>
+      <td>NaN</td>
+      <td>united_states</td>
+      <td>NaN</td>
+      <td>&lt;=50k</td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td>NaN</td>
+      <td>33307</td>
+      <td>NaN</td>
+      <td>21055</td>
+      <td>6020</td>
+      <td>18666</td>
+      <td>38903</td>
+      <td>30527</td>
+      <td>NaN</td>
+      <td>41292</td>
+      <td>NaN</td>
+      <td>34014</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>38.547941</td>
+      <td>NaN</td>
+      <td>10.118460</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>40.938017</td>
+      <td>NaN</td>
+      <td>1012.834925</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>13.217870</td>
+      <td>NaN</td>
+      <td>2.552881</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>12.007508</td>
+      <td>NaN</td>
+      <td>7530.315380</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>17.000000</td>
+      <td>NaN</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>-4356.000000</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>28.000000</td>
+      <td>NaN</td>
+      <td>9.000000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>40.000000</td>
+      <td>NaN</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>37.000000</td>
+      <td>NaN</td>
+      <td>10.000000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>40.000000</td>
+      <td>NaN</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>47.000000</td>
+      <td>NaN</td>
+      <td>13.000000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>45.000000</td>
+      <td>NaN</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>90.000000</td>
+      <td>NaN</td>
+      <td>16.000000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>99.000000</td>
+      <td>NaN</td>
+      <td>99999.000000</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="encoding-categorical-features">
+<h2>Encoding Categorical Features<a class="headerlink" href="#encoding-categorical-features" title="Link to this heading">#</a></h2>
+<p>Prior to modeling, it is essential to encode all categorical features (both the target feature and the descriptive features) into a set of numerical features.</p>
+<section id="encoding-the-target-feature">
+<h3>Encoding the Target Feature<a class="headerlink" href="#encoding-the-target-feature" title="Link to this heading">#</a></h3>
+<p>We remove the “income_status” feature from the full dataset and call it “target”. The rest of the features are the descriptive features which we call “Data”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Data</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;income_status&#39;</span><span class="p">)</span>
+<span class="n">target</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;income_status&#39;</span><span class="p">]</span>
+<span class="n">target</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>income_status
+&lt;=50k    34014
+&gt;50k     11208
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s encode the target feature so that the positive class is “&gt;50K” and it is encoded as “1”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s1">&#39;&lt;=50K&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;&gt;50K&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+<span class="n">target</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>income_status
+&lt;=50k    34014
+&gt;50k     11208
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>As a side note, we observe that the classes are not quite balanced.</p>
+</section>
+<section id="encoding-categorical-descriptive-features">
+<h3>Encoding Categorical Descriptive Features<a class="headerlink" href="#encoding-categorical-descriptive-features" title="Link to this heading">#</a></h3>
+<p>Since all of the descriptive features appear to be nominal, we perform one-hot-encoding. Furthermore, since we plan on conducting feature selection, we define <span class="math notranslate nohighlight">\(q\)</span> dummy variables for a categorical descriptive variable with <span class="math notranslate nohighlight">\(q\)</span> levels. The exception here is that when a categorical descriptive feature has only two levels, we define a single dummy variable. Let’s extract the list of categorical descriptive features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">categorical_cols</span> <span class="o">=</span> <span class="n">Data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">Data</span><span class="o">.</span><span class="n">dtypes</span><span class="o">==</span><span class="nb">object</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Before any transformation, the categorical features are as follows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">categorical_cols</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;workclass&#39;,
+ &#39;marital_status&#39;,
+ &#39;occupation&#39;,
+ &#39;relationship&#39;,
+ &#39;race&#39;,
+ &#39;gender&#39;,
+ &#39;native_country&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The coding operation is shown below. For each two-level categorical variable, we set the <code class="docutils literal notranslate"><span class="pre">drop_first</span></code> option to <code class="docutils literal notranslate"><span class="pre">True</span></code> to encode the variable into a single column of 0 or 1. Next, we apply the <code class="docutils literal notranslate"><span class="pre">get_dummies()</span></code> function for the regular one-hot encoding for categorical features with more than 2 levels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">categorical_cols</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">Data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+   
+<span class="c1"># use one-hot-encoding for categorical features with &gt;2 levels</span>
+<span class="n">Data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>After encoding, the feature set has the following columns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;age&#39;, &#39;education_num&#39;, &#39;race&#39;, &#39;gender&#39;, &#39;hours_per_week&#39;,
+       &#39;native_country&#39;, &#39;capital&#39;, &#39;workclass_federal_gov&#39;,
+       &#39;workclass_local_gov&#39;, &#39;workclass_private&#39;, &#39;workclass_self_emp_inc&#39;,
+       &#39;workclass_self_emp_not_inc&#39;, &#39;workclass_state_gov&#39;,
+       &#39;workclass_without_pay&#39;, &#39;marital_status_divorced&#39;,
+       &#39;marital_status_married_af_spouse&#39;, &#39;marital_status_married_civ_spouse&#39;,
+       &#39;marital_status_married_spouse_absent&#39;, &#39;marital_status_never_married&#39;,
+       &#39;marital_status_separated&#39;, &#39;marital_status_widowed&#39;,
+       &#39;occupation_adm_clerical&#39;, &#39;occupation_armed_forces&#39;,
+       &#39;occupation_craft_repair&#39;, &#39;occupation_exec_managerial&#39;,
+       &#39;occupation_farming_fishing&#39;, &#39;occupation_handlers_cleaners&#39;,
+       &#39;occupation_machine_op_inspct&#39;, &#39;occupation_other_service&#39;,
+       &#39;occupation_priv_house_serv&#39;, &#39;occupation_prof_specialty&#39;,
+       &#39;occupation_protective_serv&#39;, &#39;occupation_sales&#39;,
+       &#39;occupation_tech_support&#39;, &#39;occupation_transport_moving&#39;,
+       &#39;relationship_husband&#39;, &#39;relationship_not_in_family&#39;,
+       &#39;relationship_other_relative&#39;, &#39;relationship_own_child&#39;,
+       &#39;relationship_unmarried&#39;, &#39;relationship_wife&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>education_num</th>
+      <th>race</th>
+      <th>gender</th>
+      <th>hours_per_week</th>
+      <th>native_country</th>
+      <th>capital</th>
+      <th>workclass_federal_gov</th>
+      <th>workclass_local_gov</th>
+      <th>workclass_private</th>
+      <th>workclass_self_emp_inc</th>
+      <th>workclass_self_emp_not_inc</th>
+      <th>workclass_state_gov</th>
+      <th>workclass_without_pay</th>
+      <th>marital_status_divorced</th>
+      <th>marital_status_married_af_spouse</th>
+      <th>marital_status_married_civ_spouse</th>
+      <th>marital_status_married_spouse_absent</th>
+      <th>marital_status_never_married</th>
+      <th>marital_status_separated</th>
+      <th>marital_status_widowed</th>
+      <th>occupation_adm_clerical</th>
+      <th>occupation_armed_forces</th>
+      <th>occupation_craft_repair</th>
+      <th>occupation_exec_managerial</th>
+      <th>occupation_farming_fishing</th>
+      <th>occupation_handlers_cleaners</th>
+      <th>occupation_machine_op_inspct</th>
+      <th>occupation_other_service</th>
+      <th>occupation_priv_house_serv</th>
+      <th>occupation_prof_specialty</th>
+      <th>occupation_protective_serv</th>
+      <th>occupation_sales</th>
+      <th>occupation_tech_support</th>
+      <th>occupation_transport_moving</th>
+      <th>relationship_husband</th>
+      <th>relationship_not_in_family</th>
+      <th>relationship_other_relative</th>
+      <th>relationship_own_child</th>
+      <th>relationship_unmarried</th>
+      <th>relationship_wife</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>29270</th>
+      <td>40</td>
+      <td>10</td>
+      <td>True</td>
+      <td>False</td>
+      <td>40</td>
+      <td>True</td>
+      <td>0</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>25610</th>
+      <td>24</td>
+      <td>13</td>
+      <td>True</td>
+      <td>False</td>
+      <td>20</td>
+      <td>True</td>
+      <td>0</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>19125</th>
+      <td>38</td>
+      <td>9</td>
+      <td>True</td>
+      <td>True</td>
+      <td>40</td>
+      <td>True</td>
+      <td>0</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>43423</th>
+      <td>43</td>
+      <td>9</td>
+      <td>True</td>
+      <td>False</td>
+      <td>15</td>
+      <td>True</td>
+      <td>0</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>14464</th>
+      <td>37</td>
+      <td>15</td>
+      <td>True</td>
+      <td>True</td>
+      <td>60</td>
+      <td>True</td>
+      <td>0</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="scaling-of-features">
+<h2>Scaling of Features<a class="headerlink" href="#scaling-of-features" title="Link to this heading">#</a></h2>
+<p>After encoding all the categorical features, we perform a min-max scaling of the descriptive features. But first we make a copy of the Data to keep track of column names.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+
+<span class="n">Data_df</span> <span class="o">=</span> <span class="n">Data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">Data_scaler</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MinMaxScaler</span><span class="p">()</span>
+<span class="n">Data_scaler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
+<span class="n">Data</span> <span class="o">=</span> <span class="n">Data_scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s have another look at the descriptive features after scaling. Pay attention that the output of the scaler is a <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> array, so all the column names are lost. That’s why we kept a copy of Data before scaling so that we can recover the column names below. We observe below that binary features are still kept as binary after the min-max scaling.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">Data_df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>education_num</th>
+      <th>race</th>
+      <th>gender</th>
+      <th>hours_per_week</th>
+      <th>native_country</th>
+      <th>capital</th>
+      <th>workclass_federal_gov</th>
+      <th>workclass_local_gov</th>
+      <th>workclass_private</th>
+      <th>workclass_self_emp_inc</th>
+      <th>workclass_self_emp_not_inc</th>
+      <th>workclass_state_gov</th>
+      <th>workclass_without_pay</th>
+      <th>marital_status_divorced</th>
+      <th>marital_status_married_af_spouse</th>
+      <th>marital_status_married_civ_spouse</th>
+      <th>marital_status_married_spouse_absent</th>
+      <th>marital_status_never_married</th>
+      <th>marital_status_separated</th>
+      <th>marital_status_widowed</th>
+      <th>occupation_adm_clerical</th>
+      <th>occupation_armed_forces</th>
+      <th>occupation_craft_repair</th>
+      <th>occupation_exec_managerial</th>
+      <th>occupation_farming_fishing</th>
+      <th>occupation_handlers_cleaners</th>
+      <th>occupation_machine_op_inspct</th>
+      <th>occupation_other_service</th>
+      <th>occupation_priv_house_serv</th>
+      <th>occupation_prof_specialty</th>
+      <th>occupation_protective_serv</th>
+      <th>occupation_sales</th>
+      <th>occupation_tech_support</th>
+      <th>occupation_transport_moving</th>
+      <th>relationship_husband</th>
+      <th>relationship_not_in_family</th>
+      <th>relationship_other_relative</th>
+      <th>relationship_own_child</th>
+      <th>relationship_unmarried</th>
+      <th>relationship_wife</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>29270</th>
+      <td>0.315068</td>
+      <td>0.600000</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.397959</td>
+      <td>1.0</td>
+      <td>0.041742</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>25610</th>
+      <td>0.095890</td>
+      <td>0.800000</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.193878</td>
+      <td>1.0</td>
+      <td>0.041742</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>19125</th>
+      <td>0.287671</td>
+      <td>0.533333</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.397959</td>
+      <td>1.0</td>
+      <td>0.041742</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>43423</th>
+      <td>0.356164</td>
+      <td>0.533333</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.142857</td>
+      <td>1.0</td>
+      <td>0.041742</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>14464</th>
+      <td>0.273973</td>
+      <td>0.933333</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.602041</td>
+      <td>1.0</td>
+      <td>0.041742</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="feature-selection-ranking">
+<h2>Feature Selection &amp; Ranking<a class="headerlink" href="#feature-selection-ranking" title="Link to this heading">#</a></h2>
+<p>Let’s have a look at the most important 10 features as selected by Random Forest Importance (RFI) in the full dataset. This is for a quick ranking of the most relevant 10 features to gain some insight into the problem at hand. During the hyperparameter tuning phase, we will include RFI as part of the pipeline and we will search over 10, 20, and the full set of 41 features to determine which number of features works best with each classifier.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+
+<span class="n">num_features</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">model_rfi</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">model_rfi</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+<span class="n">fs_indices_rfi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">model_rfi</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">num_features</span><span class="p">]</span>
+
+<span class="n">best_features_rfi</span> <span class="o">=</span> <span class="n">Data_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">fs_indices_rfi</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">best_features_rfi</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;age&#39;, &#39;capital&#39;, &#39;education_num&#39;, &#39;hours_per_week&#39;,
+       &#39;relationship_husband&#39;, &#39;marital_status_married_civ_spouse&#39;,
+       &#39;marital_status_never_married&#39;, &#39;occupation_exec_managerial&#39;,
+       &#39;occupation_prof_specialty&#39;, &#39;race&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feature_importances_rfi</span> <span class="o">=</span> <span class="n">model_rfi</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">[</span><span class="n">fs_indices_rfi</span><span class="p">]</span>
+<span class="n">feature_importances_rfi</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.23631035, 0.14501304, 0.13922436, 0.11586573, 0.07099669,
+       0.06915243, 0.02195376, 0.02005248, 0.01518717, 0.01230276])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s visualize these importances.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline 
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;seaborn-v0_8&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">plot_imp</span><span class="p">(</span><span class="n">best_features</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">method_name</span><span class="p">):</span>   
+    <span class="n">plt</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">best_features</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">method_name</span> <span class="o">+</span> <span class="s1">&#39; Feature Importances&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Importance&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Features&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_imp</span><span class="p">(</span><span class="n">best_features_rfi</span><span class="p">,</span> <span class="n">feature_importances_rfi</span><span class="p">,</span> <span class="s1">&#39;Random Forest&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/391727f728daeb2eb10d1eb33b4971ce4c5cb229c5b29f87736bb13e6487a045.png"><img alt="../_images/391727f728daeb2eb10d1eb33b4971ce4c5cb229c5b29f87736bb13e6487a045.png" src="../_images/391727f728daeb2eb10d1eb33b4971ce4c5cb229c5b29f87736bb13e6487a045.png" style="width: 888px; height: 506px;" /></a>
+</div>
+</div>
+<p>We observe that the most important feature is age, followed by capital, education, and hours per week.</p>
+</section>
+<section id="data-sampling-train-test-splitting">
+<h2>Data Sampling &amp; Train-Test Splitting<a class="headerlink" href="#data-sampling-train-test-splitting" title="Link to this heading">#</a></h2>
+<p>The original dataset has more than 45K rows, which is a lot. So, we would like to work with a small sample here with 20K rows. Thus, we will do the following:</p>
+<ul class="simple">
+<li><p>Randomly select 20K rows from the full dataset.</p></li>
+<li><p>Split this sample into train and test partitions with a 70:30 ratio using stratification.</p></li>
+</ul>
+<p>Pay attention here that we use <code class="docutils literal notranslate"><span class="pre">values</span></code> attribute to convert <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> data frames to a <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> array. You have to make absolutely sure that you <strong>NEVER</strong> pass <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> data frames to <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> functions!!! Sometimes it will work. But sometimes you will end up getting strange errors such as “invalid key” etc. Remember, <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> works with <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> arrays, not <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> data frames.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">20000</span>
+
+<span class="n">Data_sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+<span class="n">target_sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Data_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">target_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(20000, 41)
+(20000, 1)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">Data_sample_train</span><span class="p">,</span> <span class="n">Data_sample_test</span><span class="p">,</span> \
+<span class="n">target_sample_train</span><span class="p">,</span> <span class="n">target_sample_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">Data_sample</span><span class="p">,</span> <span class="n">target_sample</span><span class="p">,</span> 
+                                                    <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">999</span><span class="p">,</span>
+                                                    <span class="n">stratify</span> <span class="o">=</span> <span class="n">target_sample</span><span class="p">)</span>
+
+<span class="n">target_sample_test</span> <span class="o">=</span> <span class="n">target_sample_test</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Data_sample_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Data_sample_test</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(14000, 41)
+(6000, 41)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="model-evaluation-strategy">
+<h2>Model Evaluation Strategy<a class="headerlink" href="#model-evaluation-strategy" title="Link to this heading">#</a></h2>
+<p>So, we will train and tune our models on 14K rows of training data and we will test them on 6K rows of test data.</p>
+<p>For each model, we will use 5-fold stratified cross-validation evaluation method (without any repetitions for shorter run times) for hyperparameter tuning.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">StratifiedKFold</span><span class="p">,</span> <span class="n">GridSearchCV</span>
+
+<span class="n">cv_method</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="hyperparameter-tuning">
+<h1>Hyperparameter Tuning <a class="anchor" id="4"></a><a class="headerlink" href="#hyperparameter-tuning" title="Link to this heading">#</a></h1>
+<section id="k-nearest-neighbors-knn">
+<h2>K-Nearest Neighbors (KNN)<a class="headerlink" href="#k-nearest-neighbors-knn" title="Link to this heading">#</a></h2>
+<p>Using <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code>, we stack feature selection and grid search for KNN hyperparameter tuning via cross-validation. We will use the same <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> methodology for NB and DT.</p>
+<p>The KNN hyperparameters are as follows:</p>
+<ul class="simple">
+<li><p>number of neighbors (<code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code>) and</p></li>
+<li><p>the distance metric <code class="docutils literal notranslate"><span class="pre">p</span></code>.</p></li>
+</ul>
+<p>For feature selection, we use the powerful Random Forest Importance (RFI) method with 100 estimators. A trick here is that we need a bit of coding so that we can make RFI feature selection as part of the pipeline. For this reason, we define the custom <code class="docutils literal notranslate"><span class="pre">RFIFeatureSelector()</span></code> class
+below to pass in RFI as a “step” to the pipeline.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
+
+<span class="c1"># custom function for RFI feature selection inside a pipeline</span>
+<span class="c1"># here we use n_estimators=100</span>
+<span class="k">class</span> <span class="nc">RFIFeatureSelector</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    
+    <span class="c1"># class constructor </span>
+    <span class="c1"># make sure class attributes end with a &quot;_&quot;</span>
+    <span class="c1"># per scikit-learn convention to avoid errors</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_features_</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_features_</span> <span class="o">=</span> <span class="n">n_features_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fs_indices_</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># override the fit function</span>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">argsort</span>
+        <span class="n">model_rfi</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">model_rfi</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fs_indices_</span> <span class="o">=</span> <span class="n">argsort</span><span class="p">(</span><span class="n">model_rfi</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_features_</span><span class="p">]</span> 
+        <span class="k">return</span> <span class="bp">self</span> 
+    
+    <span class="c1"># override the transform function</span>
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">X</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs_indices_</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+
+<span class="n">pipe_KNN</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;rfi_fs&#39;</span><span class="p">,</span> <span class="n">RFIFeatureSelector</span><span class="p">()),</span> 
+                           <span class="p">(</span><span class="s1">&#39;knn&#39;</span><span class="p">,</span> <span class="n">KNeighborsClassifier</span><span class="p">())])</span>
+
+<span class="n">params_pipe_KNN</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rfi_fs__n_features_&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">Data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+                   <span class="s1">&#39;knn__n_neighbors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+                   <span class="s1">&#39;knn__p&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]}</span>
+
+<span class="n">gs_pipe_KNN</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">pipe_KNN</span><span class="p">,</span> 
+                           <span class="n">param_grid</span><span class="o">=</span><span class="n">params_pipe_KNN</span><span class="p">,</span> 
+                           <span class="n">cv</span><span class="o">=</span><span class="n">cv_method</span><span class="p">,</span>
+                           <span class="n">refit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                           <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span>
+                           <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">,</span>
+                           <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">target_sample_train</span> <span class="o">=</span> <span class="n">target_sample_train</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>  <span class="c1"># to make a 1d array</span>
+
+<span class="n">gs_pipe_KNN</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Data_sample_train</span><span class="p">,</span> <span class="n">target_sample_train</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 5 folds for each of 30 candidates, totalling 150 fits
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gs_pipe_KNN</span><span class="o">.</span><span class="n">best_params_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;knn__n_neighbors&#39;: 20, &#39;knn__p&#39;: 2, &#39;rfi_fs__n_features_&#39;: 10}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gs_pipe_KNN</span><span class="o">.</span><span class="n">best_score_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8734979888336427
+</pre></div>
+</div>
+</div>
+</div>
+<p>We observe that the optimal KNN model has a mean AUC score of 0.871. The best performing KNN selected 10 features with 20 nearest neighbors and <span class="math notranslate nohighlight">\(p=1\)</span>, which is the Manhattan distance.</p>
+<p>Even though these are the best values, let’s have a look at the other combinations to see if the difference is rather significant or not. For this, we will make use of the function below to format the grid search outputs as a <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> data frame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># custom function to format the search results as a Pandas data frame</span>
+<span class="k">def</span> <span class="nf">get_search_results</span><span class="p">(</span><span class="n">gs</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">model_result</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mean_score&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">),</span>
+             <span class="s1">&#39;std_score&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">scores</span><span class="p">),</span>
+             <span class="s1">&#39;min_score&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">scores</span><span class="p">),</span>
+             <span class="s1">&#39;max_score&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">scores</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="o">**</span><span class="n">params</span><span class="p">,</span><span class="o">**</span><span class="n">scores</span><span class="p">})</span>
+
+    <span class="n">models</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">gs</span><span class="o">.</span><span class="n">n_splits_</span><span class="p">):</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;split</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">_test_score&quot;</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">gs</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>        
+        <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">all_scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">gs</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">],</span> <span class="n">all_scores</span><span class="p">):</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">model_result</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">)))</span>
+
+    <span class="n">pipe_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;mean_score&#39;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">columns_first</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mean_score&#39;</span><span class="p">,</span> <span class="s1">&#39;std_score&#39;</span><span class="p">,</span> <span class="s1">&#39;max_score&#39;</span><span class="p">,</span> <span class="s1">&#39;min_score&#39;</span><span class="p">]</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="n">columns_first</span> <span class="o">+</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">pipe_results</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">columns_first</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">pipe_results</span><span class="p">[</span><span class="n">columns</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_KNN</span> <span class="o">=</span> <span class="n">get_search_results</span><span class="p">(</span><span class="n">gs_pipe_KNN</span><span class="p">)</span>
+<span class="n">results_KNN</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean_score</th>
+      <th>std_score</th>
+      <th>max_score</th>
+      <th>min_score</th>
+      <th>knn__n_neighbors</th>
+      <th>knn__p</th>
+      <th>rfi_fs__n_features_</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>27</th>
+      <td>0.873498</td>
+      <td>0.005868</td>
+      <td>0.882791</td>
+      <td>0.866026</td>
+      <td>20.0</td>
+      <td>2.0</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>0.872979</td>
+      <td>0.006175</td>
+      <td>0.883804</td>
+      <td>0.865047</td>
+      <td>20.0</td>
+      <td>1.0</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>0.870450</td>
+      <td>0.005706</td>
+      <td>0.879929</td>
+      <td>0.863030</td>
+      <td>15.0</td>
+      <td>2.0</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>0.870217</td>
+      <td>0.002880</td>
+      <td>0.873596</td>
+      <td>0.866694</td>
+      <td>20.0</td>
+      <td>2.0</td>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>0.870150</td>
+      <td>0.003371</td>
+      <td>0.873714</td>
+      <td>0.865099</td>
+      <td>20.0</td>
+      <td>1.0</td>
+      <td>20.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We observe that the difference between the hyperparameter combinations is not really much when conditioned on the number of features selected. Let’s visualize the results of the grid search corresponding to 10 selected features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_KNN_10_features</span> <span class="o">=</span> <span class="n">results_KNN</span><span class="p">[</span><span class="n">results_KNN</span><span class="p">[</span><span class="s1">&#39;rfi_fs__n_features_&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mf">10.0</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">results_KNN_10_features</span><span class="p">[</span><span class="s1">&#39;knn__p&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">results_KNN_10_features</span><span class="p">[</span><span class="n">results_KNN_10_features</span><span class="p">[</span><span class="s1">&#39;knn__p&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="s1">&#39;knn__n_neighbors&#39;</span><span class="p">],</span> <span class="n">temp</span><span class="p">[</span><span class="s1">&#39;mean_score&#39;</span><span class="p">],</span> <span class="n">marker</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">i</span><span class="p">)</span>
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;p&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Neighbors&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;AUC Score&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;KNN Performance Comparison with 10 Features&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/1ce85304f6cb5bed6b83c669f5826fe62fb48f9a167ececd4d4b460a8ff1dd28.png"><img alt="../_images/1ce85304f6cb5bed6b83c669f5826fe62fb48f9a167ececd4d4b460a8ff1dd28.png" src="../_images/1ce85304f6cb5bed6b83c669f5826fe62fb48f9a167ececd4d4b460a8ff1dd28.png" style="width: 704px; height: 506px;" /></a>
+</div>
+</div>
+</section>
+<section id="gaussian-naive-bayes-nb">
+<h2>(Gaussian) Naive Bayes (NB)<a class="headerlink" href="#gaussian-naive-bayes-nb" title="Link to this heading">#</a></h2>
+<p>We implement a Gaussian Naive Bayes model.  We optimize <code class="docutils literal notranslate"><span class="pre">var_smoothing</span></code> (a variant of Laplace smoothing) as we do not have any prior information about our dataset. By default, the <code class="docutils literal notranslate"><span class="pre">var_smoothing</span></code> parameter’s value is <span class="math notranslate nohighlight">\(10^{-9}\)</span> . We conduct the grid search in the <code class="docutils literal notranslate"><span class="pre">logspace</span></code> (over the powers of 10) sourced from <code class="docutils literal notranslate"><span class="pre">NumPy</span></code>. We start with 10 and end with <span class="math notranslate nohighlight">\(10^{-3}\)</span> with 200 different values, but we perform a random search over only 20 different values (for shorter run times). Since NB requires each descriptive feature to follow a Gaussian distribution, we first perform a power transformation on the input data before model fitting.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">PowerTransformer</span>
+<span class="n">Data_sample_train_transformed</span> <span class="o">=</span> <span class="n">PowerTransformer</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Data_sample_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RandomizedSearchCV</span>
+
+<span class="n">pipe_NB</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;rfi_fs&#39;</span><span class="p">,</span> <span class="n">RFIFeatureSelector</span><span class="p">()),</span> 
+                     <span class="p">(</span><span class="s1">&#39;nb&#39;</span><span class="p">,</span> <span class="n">GaussianNB</span><span class="p">())])</span>
+
+<span class="n">params_pipe_NB</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rfi_fs__n_features_&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">Data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+                  <span class="s1">&#39;nb__var_smoothing&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">200</span><span class="p">)}</span>
+
+<span class="n">n_iter_search</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">gs_pipe_NB</span> <span class="o">=</span> <span class="n">RandomizedSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">pipe_NB</span><span class="p">,</span> 
+                          <span class="n">param_distributions</span><span class="o">=</span><span class="n">params_pipe_NB</span><span class="p">,</span> 
+                          <span class="n">cv</span><span class="o">=</span><span class="n">cv_method</span><span class="p">,</span>
+                          <span class="n">refit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span>
+                          <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">,</span>
+                          <span class="n">n_iter</span><span class="o">=</span><span class="n">n_iter_search</span><span class="p">,</span>
+                          <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+
+<span class="n">gs_pipe_NB</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Data_sample_train_transformed</span><span class="p">,</span> <span class="n">target_sample_train</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 5 folds for each of 20 candidates, totalling 100 fits
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gs_pipe_NB</span><span class="o">.</span><span class="n">best_params_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;rfi_fs__n_features_&#39;: 10, &#39;nb__var_smoothing&#39;: 0.9011018251665018}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gs_pipe_NB</span><span class="o">.</span><span class="n">best_score_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8799365392831007
+</pre></div>
+</div>
+</div>
+</div>
+<p>The optimal NB yiels an AUC score of 0.878 (with 10 features) - slightly higher than that of KNN. At this point, we cannot conclude NB outperforms KNN. For this conclusion, we will have to perform a paired t-test on the test data as discussed further below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_NB</span> <span class="o">=</span> <span class="n">get_search_results</span><span class="p">(</span><span class="n">gs_pipe_NB</span><span class="p">)</span>
+<span class="n">results_NB</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean_score</th>
+      <th>std_score</th>
+      <th>max_score</th>
+      <th>min_score</th>
+      <th>rfi_fs__n_features_</th>
+      <th>nb__var_smoothing</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>14</th>
+      <td>0.879937</td>
+      <td>0.002581</td>
+      <td>0.883908</td>
+      <td>0.875860</td>
+      <td>10.0</td>
+      <td>0.901102</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0.878655</td>
+      <td>0.002820</td>
+      <td>0.882873</td>
+      <td>0.874479</td>
+      <td>10.0</td>
+      <td>2.171118</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>0.878568</td>
+      <td>0.002876</td>
+      <td>0.883613</td>
+      <td>0.875703</td>
+      <td>10.0</td>
+      <td>0.651734</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>0.878115</td>
+      <td>0.003046</td>
+      <td>0.882377</td>
+      <td>0.873137</td>
+      <td>10.0</td>
+      <td>0.391710</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>0.876028</td>
+      <td>0.003216</td>
+      <td>0.881826</td>
+      <td>0.871970</td>
+      <td>10.0</td>
+      <td>0.141499</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Let’s visualize the search results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_NB_10_features</span> <span class="o">=</span> <span class="n">results_NB</span><span class="p">[</span><span class="n">results_NB</span><span class="p">[</span><span class="s1">&#39;rfi_fs__n_features_&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mf">10.0</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;nb__var_smoothing&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">results_NB_10_features</span><span class="p">[</span><span class="s1">&#39;nb__var_smoothing&#39;</span><span class="p">],</span> <span class="n">results_NB_10_features</span><span class="p">[</span><span class="s1">&#39;mean_score&#39;</span><span class="p">],</span> <span class="n">marker</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">i</span><span class="p">)</span>    
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Var. Smoothing&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;AUC Score&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;NB Performance Comparison with 10 Features&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/cb4fad0c2f9865177fabb5f6b4a95a3a0681bfa264c842d7ea8ce4b551336826.png"><img alt="../_images/cb4fad0c2f9865177fabb5f6b4a95a3a0681bfa264c842d7ea8ce4b551336826.png" src="../_images/cb4fad0c2f9865177fabb5f6b4a95a3a0681bfa264c842d7ea8ce4b551336826.png" style="width: 704px; height: 506px;" /></a>
+</div>
+</div>
+</section>
+<section id="decision-trees-dt">
+<h2>Decision Trees (DT)<a class="headerlink" href="#decision-trees-dt" title="Link to this heading">#</a></h2>
+<p>We build a DT using gini index to maximize information gain. We aim to determine the optimal combinations of maximum depth (<code class="docutils literal notranslate"><span class="pre">max_depth</span></code>) and minimum sample split (<code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+
+<span class="n">pipe_DT</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;rfi_fs&#39;</span><span class="p">,</span> <span class="n">RFIFeatureSelector</span><span class="p">()),</span>
+                    <span class="p">(</span><span class="s1">&#39;dt&#39;</span><span class="p">,</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;gini&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">111</span><span class="p">))])</span>
+
+<span class="n">params_pipe_DT</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rfi_fs__n_features_&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">Data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+                  <span class="s1">&#39;dt__max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+                  <span class="s1">&#39;dt__min_samples_split&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+
+<span class="n">gs_pipe_DT</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">pipe_DT</span><span class="p">,</span> 
+                          <span class="n">param_grid</span><span class="o">=</span><span class="n">params_pipe_DT</span><span class="p">,</span> 
+                          <span class="n">cv</span><span class="o">=</span><span class="n">cv_method</span><span class="p">,</span>
+                          <span class="n">refit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span>
+                          <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">,</span>
+                          <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+
+<span class="n">gs_pipe_DT</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Data_sample_train</span><span class="p">,</span> <span class="n">target_sample_train</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 5 folds for each of 18 candidates, totalling 90 fits
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gs_pipe_DT</span><span class="o">.</span><span class="n">best_params_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;dt__max_depth&#39;: 5, &#39;dt__min_samples_split&#39;: 5, &#39;rfi_fs__n_features_&#39;: 10}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gs_pipe_DT</span><span class="o">.</span><span class="n">best_score_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8797384303576419
+</pre></div>
+</div>
+</div>
+</div>
+<p>The best DT has a maximum depth of 5 and minimum split value of 2 samples with an AUC score of 0.881. A visualization of the search results is given below for 10 features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_DT</span> <span class="o">=</span> <span class="n">get_search_results</span><span class="p">(</span><span class="n">gs_pipe_DT</span><span class="p">)</span>
+<span class="n">results_DT_10_features</span> <span class="o">=</span> <span class="n">results_DT</span><span class="p">[</span><span class="n">results_DT</span><span class="p">[</span><span class="s1">&#39;rfi_fs__n_features_&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mf">10.0</span><span class="p">]</span>
+
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">results_DT_10_features</span><span class="p">[</span><span class="s1">&#39;dt__max_depth&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">results_DT_10_features</span><span class="p">[</span><span class="n">results_DT_10_features</span><span class="p">[</span><span class="s1">&#39;dt__max_depth&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="s1">&#39;dt__min_samples_split&#39;</span><span class="p">],</span> <span class="n">temp</span><span class="p">[</span><span class="s1">&#39;mean_score&#39;</span><span class="p">],</span> <span class="n">marker</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">i</span><span class="p">)</span>
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Max Depth&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Min Samples for Split&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;AUC Score&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;DT Performance Comparison with 10 Features&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/befd37503dc8e8bb9e6ccfec146de693a1955fe0079179f680ad44de13c8cfd6.png"><img alt="../_images/befd37503dc8e8bb9e6ccfec146de693a1955fe0079179f680ad44de13c8cfd6.png" src="../_images/befd37503dc8e8bb9e6ccfec146de693a1955fe0079179f680ad44de13c8cfd6.png" style="width: 704px; height: 506px;" /></a>
+</div>
+</div>
+</section>
+<section id="further-fine-tuning">
+<h2>Further Fine Tuning<a class="headerlink" href="#further-fine-tuning" title="Link to this heading">#</a></h2>
+<p>We notice that the optimal value of maximum depth hyperparameter is at the extreme end of its search space. Thus, we need to go beyond what we already tried to make sure that we are not missing out on even better values. That is, we would like to see an <strong>“elbow shape”</strong> so that we can figure out where the improvement stops. For this reason, we try a new search as below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params_pipe_DT2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rfi_fs__n_features_&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">],</span>
+                  <span class="s1">&#39;dt__max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span>
+                  <span class="s1">&#39;dt__min_samples_split&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">250</span><span class="p">]}</span>
+
+<span class="n">gs_pipe_DT2</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">pipe_DT</span><span class="p">,</span> 
+                          <span class="n">param_grid</span><span class="o">=</span><span class="n">params_pipe_DT2</span><span class="p">,</span> 
+                          <span class="n">cv</span><span class="o">=</span><span class="n">cv_method</span><span class="p">,</span>
+                          <span class="n">refit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span>
+                          <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">,</span>
+                          <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+
+<span class="n">gs_pipe_DT2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Data_sample_train</span><span class="p">,</span> <span class="n">target_sample_train</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 5 folds for each of 18 candidates, totalling 90 fits
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gs_pipe_DT2</span><span class="o">.</span><span class="n">best_params_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;dt__max_depth&#39;: 10, &#39;dt__min_samples_split&#39;: 150, &#39;rfi_fs__n_features_&#39;: 10}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gs_pipe_DT2</span><span class="o">.</span><span class="n">best_score_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8962802058163899
+</pre></div>
+</div>
+</div>
+</div>
+<p>As suspected, we can achieve slightly better results with the new search space.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_DT</span> <span class="o">=</span> <span class="n">get_search_results</span><span class="p">(</span><span class="n">gs_pipe_DT2</span><span class="p">)</span>
+<span class="n">results_DT</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean_score</th>
+      <th>std_score</th>
+      <th>max_score</th>
+      <th>min_score</th>
+      <th>dt__max_depth</th>
+      <th>dt__min_samples_split</th>
+      <th>rfi_fs__n_features_</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>9</th>
+      <td>0.896280</td>
+      <td>0.005781</td>
+      <td>0.901725</td>
+      <td>0.885281</td>
+      <td>10.0</td>
+      <td>150.0</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>0.896039</td>
+      <td>0.004196</td>
+      <td>0.900597</td>
+      <td>0.888148</td>
+      <td>10.0</td>
+      <td>200.0</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>0.895434</td>
+      <td>0.005571</td>
+      <td>0.901430</td>
+      <td>0.885672</td>
+      <td>10.0</td>
+      <td>100.0</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>0.895430</td>
+      <td>0.006171</td>
+      <td>0.901141</td>
+      <td>0.883781</td>
+      <td>10.0</td>
+      <td>250.0</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.894888</td>
+      <td>0.004542</td>
+      <td>0.901560</td>
+      <td>0.888698</td>
+      <td>10.0</td>
+      <td>50.0</td>
+      <td>10.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We again observe that the cross-validated AUC score difference between the hyperparameter combinations is not really much. A visualization of the new search results is shown below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_DT_10_features</span> <span class="o">=</span> <span class="n">results_DT</span><span class="p">[</span><span class="n">results_DT</span><span class="p">[</span><span class="s1">&#39;rfi_fs__n_features_&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mf">10.0</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;dt__min_samples_split&#39;</span><span class="p">)</span>
+
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">results_DT_10_features</span><span class="p">[</span><span class="s1">&#39;dt__max_depth&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">results_DT_10_features</span><span class="p">[</span><span class="n">results_DT_10_features</span><span class="p">[</span><span class="s1">&#39;dt__max_depth&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="s1">&#39;dt__min_samples_split&#39;</span><span class="p">],</span> <span class="n">temp</span><span class="p">[</span><span class="s1">&#39;mean_score&#39;</span><span class="p">],</span> <span class="n">marker</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">i</span><span class="p">)</span>
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Max Depth&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Min Samples for Split&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;AUC Score&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;DT Performance Comparison with 10 Features - Extended&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/7666a9f73027cf56dd5869cf522c63f966d1260f2bcdf2db87f2d73cb6993efe.png"><img alt="../_images/7666a9f73027cf56dd5869cf522c63f966d1260f2bcdf2db87f2d73cb6993efe.png" src="../_images/7666a9f73027cf56dd5869cf522c63f966d1260f2bcdf2db87f2d73cb6993efe.png" style="width: 696px; height: 506px;" /></a>
+</div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="performance-comparison">
+<h1>Performance Comparison <a class="anchor" id="5"></a><a class="headerlink" href="#performance-comparison" title="Link to this heading">#</a></h1>
+<p>During the hyper-parameter tuning phase above, we used the 14K rows in our <strong>training data</strong> within a cross-validation framework and we determined the best hyper-parameter values for each of the three classifiers. For instance, for KNN, it turned out that the best set of hyper-parameter values is <span class="math notranslate nohighlight">\(k=100\)</span> and <span class="math notranslate nohighlight">\(p=1\)</span> with the best 10 features as selected by the RFI feature selection method.</p>
+<p>What we would like to do now is to <strong>“fit”</strong> each tuned classifier (with the best set of hyper-parameter values) on the 6K rows in the <strong>test data</strong> in a cross-validated fashion to figure out which (tuned) classifier performs the best. This way, we would be measuring performance of the tuned classifiers on data that they did not <strong>“see”</strong> previously.</p>
+<p>Since cross validation itself is a random process, we would like to perform pairwise t-tests to determine if any difference between the performance of any two (tuned) classifiers is statistically significant [1]. Specifically, we first perform 10-fold stratified cross-validation (without any repetitions) on each (tuned) classifier where we use the <strong>same</strong> seed in each of the three cross-validation runs. Second, we conduct a paired t-test for the AUC score between the following (tuned) classifier combinations:</p>
+<ul class="simple">
+<li><p>KNN vs. NB,</p></li>
+<li><p>KNN vs. DT, and</p></li>
+<li><p>DT vs. NB.</p></li>
+</ul>
+<section id="discussion">
+<h2>Discussion<a class="headerlink" href="#discussion" title="Link to this heading">#</a></h2>
+<p><strong>Machine learning is as much as art as it is science.</strong> A proper performance comparison can be conducted in other ways (including the particular variant in here). On the other hand, what is “proper” depends on your objectives as well as the characteristics of the dataset you are working with.</p>
+<p>For instance, in the case where amount of data available is especially a concern (say less than a few hundred observations), you might want to use 100% of the dataset as the <strong>training data</strong> during the hyper-parameter tuning phase, and also use 100% of the dataset as the <strong>test data</strong> during the performance comparison phase (this time using a different random seed). Here, you might want to opt for, say, 5-repeated 3-fold cross-validation. Apparently, this will be rather inappropriate as you would be using the same data in both of the tuning and performance comparison phases. However, since both phases involve cross-validation, effects of overfitting shall be quite limited. In particular, you might just decide that this is an acceptable trade-off given the lack of enough observations to work with.</p>
+<p>Another popular performance comparison method calls for two <strong>nested</strong> cross-validation runs as follows: you resort to a train-test-split approach within an outer cross-validation framework, say 3-repeated 5-fold cross-validation, and you perform hyper-parameter tuning using a possibly different inner cross-validation scheme (say 5-fold with no repetitions). This variant is rather involved and we do not cover it in this tutorial.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
+
+<span class="n">cv_method_ttest</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">111</span><span class="p">)</span>
+
+<span class="n">cv_results_KNN</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">gs_pipe_KNN</span><span class="o">.</span><span class="n">best_estimator_</span><span class="p">,</span>
+                                 <span class="n">X</span><span class="o">=</span><span class="n">Data_sample_test</span><span class="p">,</span>
+                                 <span class="n">y</span><span class="o">=</span><span class="n">target_sample_test</span><span class="p">,</span> 
+                                 <span class="n">cv</span><span class="o">=</span><span class="n">cv_method_ttest</span><span class="p">,</span> 
+                                 <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span>
+                                 <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">)</span>
+<span class="n">cv_results_KNN</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8681593157808228
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Data_sample_test_transformed</span> <span class="o">=</span> <span class="n">PowerTransformer</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Data_sample_test</span><span class="p">)</span>
+
+<span class="n">cv_results_NB</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">gs_pipe_NB</span><span class="o">.</span><span class="n">best_estimator_</span><span class="p">,</span>
+                                <span class="n">X</span><span class="o">=</span><span class="n">Data_sample_test_transformed</span><span class="p">,</span>
+                                <span class="n">y</span><span class="o">=</span><span class="n">target_sample_test</span><span class="p">,</span> 
+                                <span class="n">cv</span><span class="o">=</span><span class="n">cv_method_ttest</span><span class="p">,</span> 
+                                <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span>
+                                <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">)</span>
+<span class="n">cv_results_NB</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8794885472721508
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cv_results_DT</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">gs_pipe_DT2</span><span class="o">.</span><span class="n">best_estimator_</span><span class="p">,</span>
+                                <span class="n">X</span><span class="o">=</span><span class="n">Data_sample_test</span><span class="p">,</span>
+                                <span class="n">y</span><span class="o">=</span><span class="n">target_sample_test</span><span class="p">,</span> 
+                                <span class="n">cv</span><span class="o">=</span><span class="n">cv_method_ttest</span><span class="p">,</span> 
+                                <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span>
+                                <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">)</span>
+<span class="n">cv_results_DT</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8913256706832351
+</pre></div>
+</div>
+</div>
+</div>
+<p>The above results indicate that the tuned DT classifier outperforms the other methods with a cross-validated test AUC of 0.891. However, the tuned KNN and NB classifiers are not far behind with AUC scores of 0.870 and 0.879 respectively. For this reason, we need to perform some statistical tests to check to see if this difference is indeed statistically significant.</p>
+<p>Since we fixed the random state to be the same during cross-validation, all (tuned) classifiers were fitted and then tested on exactly the same data partitions, making our results “paired” in a statistical sense. So, we use the <code class="docutils literal notranslate"><span class="pre">stats.ttest_rel</span></code> function from the <code class="docutils literal notranslate"><span class="pre">SciPy</span></code> module to run the following paired t-tests.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_rel</span><span class="p">(</span><span class="n">cv_results_KNN</span><span class="p">,</span> <span class="n">cv_results_NB</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_rel</span><span class="p">(</span><span class="n">cv_results_DT</span><span class="p">,</span> <span class="n">cv_results_KNN</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_rel</span><span class="p">(</span><span class="n">cv_results_DT</span><span class="p">,</span> <span class="n">cv_results_NB</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TtestResult(statistic=-2.9319621560781983, pvalue=0.01670362027015796, df=9)
+TtestResult(statistic=8.985202004647071, pvalue=8.653748304042342e-06, df=9)
+TtestResult(statistic=2.8844031427891266, pvalue=0.018048072872731125, df=9)
+</pre></div>
+</div>
+</div>
+</div>
+<p>A p-value smaller than 0.05 indicates a statistically significant difference. Looking at these results, we observe that the difference between both DT/ KNN and DT/ NB pairs are indeed statistically significant (both p-values are smaller than 0.05). Thus, we conclude that at a 95% significance level, DT is statistically the best model in this competition (in terms of AUC) when compared on the <strong>test data</strong>.</p>
+<p>Though we used AUC to optimize the algorithm hyper-parameters, we shall consider the following metrics to evaluate models based on the test set:</p>
+<ul class="simple">
+<li><p>Accuracy</p></li>
+<li><p>Precision</p></li>
+<li><p>Recall</p></li>
+<li><p>F1 Score (the harmonic average of precision and recall)</p></li>
+<li><p>Confusion Matrix</p></li>
+</ul>
+<p>These metrics can be computed using <code class="docutils literal notranslate"><span class="pre">classification_report</span></code> from <code class="docutils literal notranslate"><span class="pre">sklearn.metrics</span></code>. The classification reports are shown below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pred_KNN</span> <span class="o">=</span> <span class="n">gs_pipe_KNN</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Data_sample_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Data_test_transformed</span> <span class="o">=</span> <span class="n">PowerTransformer</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Data_sample_test</span><span class="p">)</span>
+<span class="n">pred_NB</span> <span class="o">=</span> <span class="n">gs_pipe_NB</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Data_test_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pred_DT</span> <span class="o">=</span> <span class="n">gs_pipe_DT2</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Data_sample_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Classification report for K-Nearest Neighbor&quot;</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span><span class="p">(</span><span class="n">target_sample_test</span><span class="p">,</span> <span class="n">pred_KNN</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Classification report for Naive Bayes&quot;</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span><span class="p">(</span><span class="n">target_sample_test</span><span class="p">,</span> <span class="n">pred_NB</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Classification report for Decision Tree&quot;</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span><span class="p">(</span><span class="n">target_sample_test</span><span class="p">,</span> <span class="n">pred_DT</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Classification report for K-Nearest Neighbor
+              precision    recall  f1-score   support
+
+       &lt;=50k       0.85      0.92      0.89      4471
+        &gt;50k       0.71      0.53      0.60      1529
+
+    accuracy                           0.82      6000
+   macro avg       0.78      0.73      0.74      6000
+weighted avg       0.81      0.82      0.81      6000
+
+
+Classification report for Naive Bayes
+              precision    recall  f1-score   support
+
+       &lt;=50k       0.87      0.90      0.89      4471
+        &gt;50k       0.68      0.61      0.64      1529
+
+    accuracy                           0.83      6000
+   macro avg       0.78      0.76      0.77      6000
+weighted avg       0.82      0.83      0.82      6000
+
+
+Classification report for Decision Tree
+              precision    recall  f1-score   support
+
+       &lt;=50k       0.86      0.94      0.90      4471
+        &gt;50k       0.77      0.56      0.65      1529
+
+    accuracy                           0.85      6000
+   macro avg       0.82      0.75      0.78      6000
+weighted avg       0.84      0.85      0.84      6000
+</pre></div>
+</div>
+</div>
+</div>
+<p>The confusion matrices are given below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Confusion matrix for K-Nearest Neighbor&quot;</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">target_sample_test</span><span class="p">,</span> <span class="n">pred_KNN</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Confusion matrix for Naive Bayes&quot;</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">target_sample_test</span><span class="p">,</span> <span class="n">pred_NB</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Confusion matrix for Decision Tree&quot;</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">target_sample_test</span><span class="p">,</span> <span class="n">pred_DT</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Confusion matrix for K-Nearest Neighbor
+[[4135  336]
+ [ 725  804]]
+
+Confusion matrix for Naive Bayes
+[[4030  441]
+ [ 592  937]]
+
+Confusion matrix for Decision Tree
+[[4219  252]
+ [ 667  862]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Suppose we are a tax agency and we would like to detect individuals earning more than USD 50K. Then we would choose recall as the performance metric, which is equivalent to the true positive rate (TPR). In this context, NB would be the best performer since it produces the highest recall score for incomes higher than USD 50K. The confusion matrices are in line with the classification reports. This is in contrast to our finding that DT is statistically the best performer when it comes to the AUC metric.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="limitations-and-proposed-solutions">
+<h1>Limitations and Proposed Solutions <a class="anchor" id="6"></a><a class="headerlink" href="#limitations-and-proposed-solutions" title="Link to this heading">#</a></h1>
+<p>Our modeling strategy has a few flaws and limitations. First, ours was a black-box approach since we preferred raw predictive performance over interpretability. In the future, we could consider a more in-depth analysis regarding the feature selection &amp; ranking process as well as our choices for the hyper-parameter spaces.</p>
+<p>Second, we utilized a blanket power transformation on the training data when building the NB, ignoring the dummy features within the dataset. This might partially explain the poor performance of the NB when evaluated on the test set. A potential solution is to build a Gaussian NB and a Bernoulli NB separately on the numerical and dummy descriptive features respectively. Then we can compute a final prediction by multiplying predictions from each model since NB assumes inter-independence conditioned on the value of the target feature.</p>
+<p>Third, we only worked with a small subset of the full dataset for shorter run times, both for training and testing. Since data is always valuable, we could re-run our experiments with the entire data while making sure that the train and test split is performed in a proper manner.</p>
+<p>The DT classifier statistically outperforms the other two models. Therefore, we can perhaps improve it by further expanding the hyper-parameter search space by including other parameters of this classification method. Furthermore, we can consider random forests and other ensemble methods built on trees as potentially better models.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="summary">
+<h1>Summary <a class="anchor" id="7"></a><a class="headerlink" href="#summary" title="Link to this heading">#</a></h1>
+<p>The Decision Tree model with 10 of the best features selected by Random Forest Importance (RFI) produces the highest cross-validated AUC score on the training data. In addition, when evaluated on the test data (in a cross-validated fashion), the Decision Tree model again outperforms both Naive Bayes and k-Nearest Neighbor models with respect to AUC. However, the Naive Bayes model yields the highest recall score on the test data. We also observe that our models are not very sensitive to the number of features as selected by RFI when conditioned on the values of the hyper-parameters in general. For this reason, it seems working with 10 features is preferable to working with the full feature set, which potentially avoids overfitting and results in models that are easier to train and easier to understand.</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="references">
+<h1>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Lichman, M. (2013). UCI Machine Learning Repository: Census Income Data Set [online]. Available at
+<a class="reference external" href="https://archive.ics.uci.edu/ml/datasets/adult">https://archive.ics.uci.edu/ml/datasets/adult</a> [Accessed 2021-06-14]</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./ml"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="SK9_Forecasting.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Forecasting Fundamentals with Python &amp; Facebook Prophet</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Case_Study2_Maintenance_Predictive_Modelling.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Predicting Optimal Machine Maintenance Cycle</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Predicting Income Status</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview <a class="anchor" id="2"></a></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methodology">Methodology</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">Data Preparation <a class="anchor" id="3"></a></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-dataset">Loading Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-for-missing-values">Checking for Missing Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-statistics">Summary Statistics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-categorical-features">Encoding Categorical Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-the-target-feature">Encoding the Target Feature</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-categorical-descriptive-features">Encoding Categorical Descriptive Features</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-of-features">Scaling of Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-ranking">Feature Selection &amp; Ranking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sampling-train-test-splitting">Data Sampling &amp; Train-Test Splitting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-evaluation-strategy">Model Evaluation Strategy</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#hyperparameter-tuning">Hyperparameter Tuning <a class="anchor" id="4"></a></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbors-knn">K-Nearest Neighbors (KNN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-naive-bayes-nb">(Gaussian) Naive Bayes (NB)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-trees-dt">Decision Trees (DT)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-fine-tuning">Further Fine Tuning</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-comparison">Performance Comparison <a class="anchor" id="5"></a></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">Discussion</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-proposed-solutions">Limitations and Proposed Solutions <a class="anchor" id="6"></a></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary <a class="anchor" id="7"></a></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By D. Akman
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

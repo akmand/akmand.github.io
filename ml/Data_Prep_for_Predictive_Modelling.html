@@ -1,0 +1,1873 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Data Preparation for Predictive Modeling &#8212; Tutorials on Data Science with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ml/Data_Prep_for_Predictive_Modelling';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SK Part 0: Introduction to Predictive Modeling with Python and Scikit-Learn" href="SK0_Scikit_Learn_Introduction.html" />
+    <link rel="prev" title="Machine Learning Tutorials with Scikit-Learn" href="README.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Tutorials on Data Science with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to D. Akman’s Tutorials on Data Science with Python!
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python/README.html">Python Basics (PB) Tutorial Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB1_nb_intro.html">INTRODUCTION TO JUPYTER NOTEBOOKS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB2_nb_markdown.html">NOTEBOOK MARKDOWN TUTORIAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB3_intro_to_python.html">Introduction to Python Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB4_numpy.html">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB5_pandas.html">Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB6_matplotlib.html">Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB7_seaborn.html">Seaborn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB8_python_vs_r.html">Python vs. R</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../stats/README.html">Statistics Tutorials/ OpenIntro Labs for Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch1n2_intro_to_data.html">Introduction to data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch3_probability.html">Probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch4_normal_distribution.html">Normal distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch5_confidence_intervals.html">Foundations for statistical inference - Confidence intervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch5_sampling_distributions.html">Foundations for statistical inference - Sampling distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch6_inf_for_categorical_data.html">Inference for categorical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch7_inf_for_numerical_data.html">Inference for numerical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch8_simple_regression.html">Introduction to linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch9_multiple_regression.html">Multiple linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/regression_case_study_predicting_age_in_census_data.html">Predicting Age in Census Data<a class="anchor-link" href="#Predicting-Age-in-Census-Data"></a></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Machine Learning Tutorials with Scikit-Learn</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Data Preparation for Predictive Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK0_Scikit_Learn_Introduction.html">SK Part 0: Introduction to Predictive Modeling with Python and Scikit-Learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK1_Basic_Modelling.html">SK Part 1: Basic Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK2_Feature_Selection.html">SK Part 2: Feature Selection and Ranking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK3_Model_Evaluation.html">SK Part 3: Model Evaluation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="SK4_HyperParameter_Tuning.html">SK Part 4: Cross-Validation and Hyper-parameter Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK5_Advanced_Topics.html">SK Part 5: Pipelines, Statistical Model Comparison, and Model Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK6_Clustering.html">SK Part 6: K-Means Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK7_Neural_Networks.html">SK Part 7: Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK8_LightGBM.html">Light GBM &amp; Parameter Tuning with Optuna</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK9_Forecasting.html">Forecasting Fundamentals with Python &amp; Facebook Prophet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Case_Study1_Predicting_Income_Status.html">Predicting Income Status</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Case_Study2_Maintenance_Predictive_Modelling.html">Predicting Optimal Machine Maintenance Cycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Case_Study3_Hotel_Prediction.html">Hotel Prediction with Hybrid Collaborative Filtering with SVD</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Decision_Trees_InfoGain_Computation.html">Information Gain Computation in Python</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/ml/Data_Prep_for_Predictive_Modelling.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Data Preparation for Predictive Modeling</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-classification-example-breast-cancer-wisconsin-data">Binary Classification Example: Breast Cancer Wisconsin Data <a class="anchor" id="2"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-steps">Basic Steps <a class="anchor" id="2.1"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id-like-columns">ID-Like Columns</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constant-features">Constant Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-irrelevant-features">Other Irrelevant Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#redundant-features">Redundant Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#date-and-time-features">Date and Time Features</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-for-missing-values">Checking for Missing Values <a class="anchor" id="2.2.0"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discretizing-numeric-features">Discretizing Numeric Features <a class="anchor" id="2.2.1"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#making-categorical-features-numeric">Making Categorical Features Numeric  <a class="anchor" id="2.2.2"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nominal-vs-ordinal-categorical-features">Nominal vs. Ordinal Categorical Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-nominal-descriptive-features">Encoding Nominal Descriptive Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-ordinal-descriptive-features">Encoding Ordinal Descriptive Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding">One-Hot-Encoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#integer-encoding">Integer-Encoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-integer-encoding-a-nominal-descriptive-feature-is-a-bad-idea">Why Integer-Encoding a Nominal Descriptive Feature is a BAD Idea</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-the-target-feature">Encoding The Target Feature <a class="anchor" id="2.3"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-descriptive-features">Scaling Descriptive Features <a class="anchor" id="2.4"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-observations">Sampling Observations <a class="anchor" id="2.5"></a></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="data-preparation-for-predictive-modeling">
+<h1>Data Preparation for Predictive Modeling<a class="headerlink" href="#data-preparation-for-predictive-modeling" title="Link to this heading">#</a></h1>
+<p>This tutorial’s topic is data preparation for predictive modeling. Our terminology is that the feature we would like to predict is called the “target” feature, which can be numeric or categorical. The other features that we use for the prediction are called the “descriptive” features. There is a certain format for the data before we can perform predictive modeling via <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code>. In general, the following steps will be necessary for data preparation <strong>in this specific order</strong>:</p>
+<ol class="arabic simple">
+<li><p>Outliers and unusual values (such as a negative age) are taken care of: they are either imputed, dropped, or set to missing values.</p></li>
+<li><p>Missing values are imputed or the rows containing them are dropped.</p></li>
+<li><p>Any categorical descriptive feature is encoded to be numeric as follows:</p>
+<ul class="simple">
+<li><p>one-hot-encoding for nominals,</p></li>
+<li><p>one-hot-encoding or integer-encoding for ordinals.</p></li>
+</ul>
+</li>
+<li><p>All descriptive features (which are all numeric at this point) are scaled.</p></li>
+<li><p>In case of a classification problem, the target feature is label-encoded (in case of a binary problem, the positive class is encoded as 1).</p></li>
+<li><p>If the dataset has too many observations, only a small random subset of entire dataset is selected to be used during model tuning and model comparison.</p></li>
+<li><p>Before fitting any <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> models, any <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> series or data frame is converted to a <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> array using the <code class="docutils literal notranslate"><span class="pre">values</span></code> method in Pandas.</p></li>
+</ol>
+<p>We now briefly describe the above steps. We will first have to make sure there are no missing values anywhere, neither in the descriptive features nor the target feature. Dealing with missing values can involve various imputation techniques in practice. However, we will stick to our topic of modeling and we will simply remove any rows with any missing values in this tutorial.</p>
+<p>Next, we will have to ensure that all categorical features are encoded correctly. For <strong>nominal</strong> categorical descriptive features, we will use one-hot-encoding where a categorical feature with <span class="math notranslate nohighlight">\(q\)</span> levels is replaced with <span class="math notranslate nohighlight">\(q\)</span> binary variables indicating membership of the <span class="math notranslate nohighlight">\(q\)</span>-th level. For <strong>ordinal</strong> categorical descriptive features, we can use either one-hot-encoding or integer-encoding.</p>
+<p>For categorical <strong>target</strong> features, we will use label-encoding so that a categorical target feature with <span class="math notranslate nohighlight">\(t\)</span> levels is encoded as integers in the range <span class="math notranslate nohighlight">\(0, 1, \ldots, t-1\)</span>. Here, the encoding is done in alphabetical order. That is, the level that would be the first after an alphabetical sorting will be encoded as 0, and so forth. However, as we will see in tutorial <strong>SK Part 3: Evaluation</strong>, in the case of a binary classification, we need the “positive” class to be encoded as “1” and the negative class to be encoded as “0”. So, we will have to make sure that regardless of the alphabetical order, the positive class is always encoded as 1.</p>
+<p>For regression problems where the target feature is numerical, apparently no label-encoding shall be necessary. On the other hand, if the range of the numerical target feature is quite large (salaries might be a good example here), then a <code class="docutils literal notranslate"><span class="pre">log</span></code> transformation might be useful.</p>
+<p>Many machine learning algorithms require <strong>numerical descriptive</strong> features to be scaled in some fashion (such as nearest neighbor methods) and, scaling usually does not hurt the other type of algorithms. So, it is always a good idea to scale the numerical descriptive features before modeling.</p>
+<p>Sometimes your dataset will have too many observations for your computer to handle (as in millions of rows). If this is the case, it might be good idea to select a small random subset of the entire set of observations before trying out any models. Once you decide on which model to use, you can then use the entire dataset for final training  before deploying your model.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> models do not play well with <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> series or data frames. For this reason, before fitting any models, we have to ensure that any <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> variable is converted to a <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> array using its <code class="docutils literal notranslate"><span class="pre">values</span></code> method.</p>
+<p>In this tutorial, we will see how the data preparation steps described above can be performed using the <code class="docutils literal notranslate"><span class="pre">NumPy</span></code>, <code class="docutils literal notranslate"><span class="pre">Pandas</span></code>, and <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> modules.</p>
+<section id="learning-objectives">
+<h2>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Load datasets from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> as well as from the Cloud</p></li>
+<li><p>Perform initial data preparation steps</p></li>
+<li><p>Deal with missing values</p></li>
+<li><p>Discretize numeric features and make categorical features numeric</p></li>
+<li><p>Encode categorical target features in classification problems</p></li>
+<li><p>Scale numerical descriptive features: min-max, standard, and robust scaling</p></li>
+<li><p>Select a small random subset of available rows</p></li>
+</ul>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#2"><span class="xref myst">Binary Classification Example: Breast Cancer Wisconsin Data</span></a></p></li>
+<li><p><a class="reference internal" href="#2.1"><span class="xref myst">First Steps</span></a></p></li>
+<li><p><a class="reference internal" href="#2.2.0"><span class="xref myst">Checking for Missing Values</span></a></p></li>
+<li><p><a class="reference internal" href="#2.2.1"><span class="xref myst">Discretizing Numeric Features</span></a></p></li>
+<li><p><a class="reference internal" href="#2.2.2"><span class="xref myst">Making Categorical Features Numeric</span></a></p></li>
+<li><p><a class="reference internal" href="#2.3"><span class="xref myst">Encoding The Target Feature</span></a></p></li>
+<li><p><a class="reference internal" href="#2.4"><span class="xref myst">Scaling Descriptive Features</span></a></p></li>
+<li><p><a class="reference internal" href="#2.5"><span class="xref myst">Sampling Observations</span></a></p></li>
+</ul>
+</section>
+<section id="binary-classification-example-breast-cancer-wisconsin-data">
+<h2>Binary Classification Example: Breast Cancer Wisconsin Data <a class="anchor" id="2"></a><a class="headerlink" href="#binary-classification-example-breast-cancer-wisconsin-data" title="Link to this heading">#</a></h2>
+<p>This dataset contains 569 observations and has 30 input features from breast cancer screening tissue samples. The target feature has two classes: 212 malignant (“M”) and 357 benign (“B”).</p>
+<p>We can load the data from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> (as shown further below), or we can read the data from the following github account. The reason we prefer the github account here is that the version in <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> does not have column names.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c1"># so that we can see all the columns</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> 
+
+<span class="c1"># how to read a csv file from a github account</span>
+<span class="n">url_name</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/akmand/datasets/master/breast_cancer_wisconsin.csv&#39;</span>
+<span class="n">url_content</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_name</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">url_content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s check the shape of this dataset to make sure it has been downloaded correctly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(569, 31)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s print the column names for this dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;mean_radius&#39;,
+ &#39;mean_texture&#39;,
+ &#39;mean_perimeter&#39;,
+ &#39;mean_area&#39;,
+ &#39;mean_smoothness&#39;,
+ &#39;mean_compactness&#39;,
+ &#39;mean_concavity&#39;,
+ &#39;mean_concave_points&#39;,
+ &#39;mean_symmetry&#39;,
+ &#39;mean_fractal_dimension&#39;,
+ &#39;radius_error&#39;,
+ &#39;texture_error&#39;,
+ &#39;perimeter_error&#39;,
+ &#39;area_error&#39;,
+ &#39;smoothness_error&#39;,
+ &#39;compactness_error&#39;,
+ &#39;concavity_error&#39;,
+ &#39;concave_points_error&#39;,
+ &#39;symmetry_error&#39;,
+ &#39;fractal_dimension_error&#39;,
+ &#39;worst_radius&#39;,
+ &#39;worst_texture&#39;,
+ &#39;worst_perimeter&#39;,
+ &#39;worst_area&#39;,
+ &#39;worst_smoothness&#39;,
+ &#39;worst_compactness&#39;,
+ &#39;worst_concavity&#39;,
+ &#39;worst_concave_points&#39;,
+ &#39;worst_symmetry&#39;,
+ &#39;worst_fractal_dimension&#39;,
+ &#39;diagnosis&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s have a look at 10 randomly selected rows in this raw dataset. We will display the last 5 columns so that we do not clutter the output.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">5</span><span class="p">:]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>worst_concavity</th>
+      <th>worst_concave_points</th>
+      <th>worst_symmetry</th>
+      <th>worst_fractal_dimension</th>
+      <th>diagnosis</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>325</th>
+      <td>0.10200</td>
+      <td>0.05602</td>
+      <td>0.2688</td>
+      <td>0.06888</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>557</th>
+      <td>0.00000</td>
+      <td>0.00000</td>
+      <td>0.2475</td>
+      <td>0.06969</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>475</th>
+      <td>0.34760</td>
+      <td>0.09783</td>
+      <td>0.3006</td>
+      <td>0.07802</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>308</th>
+      <td>0.01379</td>
+      <td>0.02210</td>
+      <td>0.2267</td>
+      <td>0.06192</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>553</th>
+      <td>0.07993</td>
+      <td>0.02564</td>
+      <td>0.2435</td>
+      <td>0.07393</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>159</th>
+      <td>0.01854</td>
+      <td>0.03953</td>
+      <td>0.2738</td>
+      <td>0.07685</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>290</th>
+      <td>0.22200</td>
+      <td>0.10210</td>
+      <td>0.2272</td>
+      <td>0.08799</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>146</th>
+      <td>0.45040</td>
+      <td>0.18650</td>
+      <td>0.5774</td>
+      <td>0.10300</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>431</th>
+      <td>0.24030</td>
+      <td>0.07370</td>
+      <td>0.2556</td>
+      <td>0.09359</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>527</th>
+      <td>0.17910</td>
+      <td>0.10700</td>
+      <td>0.3110</td>
+      <td>0.07592</td>
+      <td>B</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="basic-steps">
+<h2>Basic Steps <a class="anchor" id="2.1"></a><a class="headerlink" href="#basic-steps" title="Link to this heading">#</a></h2>
+<p>Before undertaking more involved data preparation steps, we need to perform some basic steps, which are described below.</p>
+<section id="id-like-columns">
+<h3>ID-Like Columns<a class="headerlink" href="#id-like-columns" title="Link to this heading">#</a></h3>
+<p>Sometimes the dataset at hand will have a unique value for each row, such as Customer ID, Patient ID, Record ID, etc. Such features are irrelevant in machine learning/ predictive modeling. As an example, consider a new patient whose ID 84537. How is this ID going to help us with predicting this patient’s health status? For this reason, you need to remove any ID-like columns before modeling. Even better, a good practice in Python is to set this ID-like column to be the column index in your Pandas data frame so that it is not completely lost, yet it is not a column anymore, e.g.,</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;CustomerID&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To be clear, this is only for ID columns that have a unique value for each row. Other types of ID columns, say for instance, ID of the state where the patient lives, would be relevant and they should <strong>not</strong> be removed.</p>
+</section>
+<section id="constant-features">
+<h3>Constant Features<a class="headerlink" href="#constant-features" title="Link to this heading">#</a></h3>
+<p>Sometimes a dataset will have constant features (that have only one unique value). Such features are also irrelevant for machine learning, so they need to be removed as follows.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">df</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="other-irrelevant-features">
+<h3>Other Irrelevant Features<a class="headerlink" href="#other-irrelevant-features" title="Link to this heading">#</a></h3>
+<p>While being problem-specific, any feature that is not relevant for “learning” needs to be removed. For instance, suppose there is a column in your dataset that shows the particular database this row was extracted from. If this information is purely for record-keeping purposes, then you should remove this column before fitting any models.</p>
+</section>
+<section id="redundant-features">
+<h3>Redundant Features<a class="headerlink" href="#redundant-features" title="Link to this heading">#</a></h3>
+<p>A descriptive feature is “redundant” if it conveys the same information as another feature. Suppose a customer’s salary is stored in two columns: one in US Dollars and the other one in AU Dollars. You need only one of these columns.</p>
+<p>Likewise, if there is a one-to-one correspondence between any two categorical descriptive features, then you need only one of them as far as predictive modeling is concerned. Why? Because when you encode these two features via one-hot-encoding, the binary variables representing the corresponding level pairs will be 100% correlated.</p>
+</section>
+<section id="date-and-time-features">
+<h3>Date and Time Features<a class="headerlink" href="#date-and-time-features" title="Link to this heading">#</a></h3>
+<p>Date and time features need careful attention. Date features such as birthdays cannot be used as they are and they must be transformed. In the birthday example, the logical approach would be be convert it to a new feature called “age”. For the conversion, you need to subtract the birth date from the current date and cast the result to a year quantity. As for time features, they should be transformed to durations, such as number of hours since a particular reference point in time.</p>
+<p>As an example, consider the data frame below and pay attention how age is calculated using the DOB column with the <code class="docutils literal notranslate"><span class="pre">pd.to_datetime()</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define a simple data frame with name and date of birth (DOB) of three individuals</span>
+<span class="n">df_age_example</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Michael&#39;</span><span class="p">,</span> <span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="s1">&#39;Emily&#39;</span><span class="p">],</span> 
+                                    <span class="s1">&#39;DOB&#39;</span><span class="p">:[</span><span class="s1">&#39;28-01-1988&#39;</span><span class="p">,</span> <span class="s1">&#39;19-08-2001&#39;</span><span class="p">,</span> <span class="s1">&#39;23-04-2002&#39;</span><span class="p">]})</span>
+<span class="n">df_age_example</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>DOB</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Michael</td>
+      <td>28-01-1988</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>John</td>
+      <td>19-08-2001</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Emily</td>
+      <td>23-04-2002</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># use the pd.to_datetime() function to convert the DOB column to Pandas&#39; datetime format</span>
+<span class="n">df_age_example</span><span class="p">[</span><span class="s1">&#39;DOB&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_age_example</span><span class="p">[</span><span class="s1">&#39;DOB&#39;</span><span class="p">],</span> <span class="n">dayfirst</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># extract the year information from DOB column</span>
+<span class="c1"># for more information, please refer to the documentation on the pd.to_datetime() function</span>
+<span class="n">df_age_example</span><span class="p">[</span><span class="s1">&#39;DOB_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_age_example</span><span class="p">[</span><span class="s1">&#39;DOB&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+
+<span class="n">df_age_example</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>DOB</th>
+      <th>DOB_year</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Michael</td>
+      <td>1988-01-28</td>
+      <td>1988</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>John</td>
+      <td>2001-08-19</td>
+      <td>2001</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Emily</td>
+      <td>2002-04-23</td>
+      <td>2002</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># finally determine the age of each individual</span>
+<span class="n">current_year</span> <span class="o">=</span> <span class="mi">2021</span>
+<span class="n">df_age_example</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_year</span> <span class="o">-</span> <span class="n">df_age_example</span><span class="p">[</span><span class="s1">&#39;DOB_year&#39;</span><span class="p">]</span>
+<span class="n">df_age_example</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>DOB</th>
+      <th>DOB_year</th>
+      <th>age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Michael</td>
+      <td>1988-01-28</td>
+      <td>1988</td>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>John</td>
+      <td>2001-08-19</td>
+      <td>2001</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Emily</td>
+      <td>2002-04-23</td>
+      <td>2002</td>
+      <td>19</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="checking-for-missing-values">
+<h2>Checking for Missing Values <a class="anchor" id="2.2.0"></a><a class="headerlink" href="#checking-for-missing-values" title="Link to this heading">#</a></h2>
+<p>Models in <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> do not work with data with missing values. Let’s check to see which columns have missing values in our dataset. Missing values are a bit complicated in Python as they can be denoted by either “na” or “null” in <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> (both mean the same thing). Furthermore, <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> denotes missing values as “NaN” (that is, “not a number”).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean_radius                0
+mean_texture               0
+mean_perimeter             0
+mean_area                  0
+mean_smoothness            0
+mean_compactness           0
+mean_concavity             0
+mean_concave_points        0
+mean_symmetry              0
+mean_fractal_dimension     0
+radius_error               0
+texture_error              0
+perimeter_error            0
+area_error                 0
+smoothness_error           0
+compactness_error          0
+concavity_error            0
+concave_points_error       0
+symmetry_error             0
+fractal_dimension_error    0
+worst_radius               0
+worst_texture              0
+worst_perimeter            0
+worst_area                 0
+worst_smoothness           0
+worst_compactness          0
+worst_concavity            0
+worst_concave_points       0
+worst_symmetry             0
+worst_fractal_dimension    0
+diagnosis                  0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>We observe that there are no columns with a missing value, which is good. In case there were any missing values, we would have to either impute them or drop the corresponding rows. Dealing with missing values can get rather complicated and they are beyond our scope in this tutorial. For simplicity, we advocate just dropping the rows where at least one element is missing. We can accomplish this using the <code class="docutils literal notranslate"><span class="pre">dropna()</span></code> method in <code class="docutils literal notranslate"><span class="pre">Pandas</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="discretizing-numeric-features">
+<h2>Discretizing Numeric Features <a class="anchor" id="2.2.1"></a><a class="headerlink" href="#discretizing-numeric-features" title="Link to this heading">#</a></h2>
+<p>Sometimes it’s a good idea to discretize a numeric feature and make it a categorical feature. For instance, instead of treating an age variable as numeric, it might be a better option to discretize is as young, middle-aged, and old.</p>
+<p>Let’s briefly digress here and see how we can discretize the <code class="docutils literal notranslate"><span class="pre">mean_area</span></code> numeric feature in the cancer dataset as “small”, “average”, and “large” using equal-frequency binning. We can use the <code class="docutils literal notranslate"><span class="pre">qcut</span></code> method in the <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> module, which performs quantile-based discretization. We can also supply names for the resulting discretization.</p>
+<p>First, we will make a copy of the original dataset and give it a different name.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cat</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_cat</span><span class="p">[</span><span class="s1">&#39;mean_area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">df_cat</span><span class="p">[</span><span class="s1">&#39;mean_area&#39;</span><span class="p">],</span> 
+                              <span class="n">q</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> 
+                              <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;small&#39;</span><span class="p">,</span> <span class="s1">&#39;average&#39;</span><span class="p">,</span> <span class="s1">&#39;large&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s make sure we performed the dicretization correctly using the <code class="docutils literal notranslate"><span class="pre">value_counts</span></code> method in <code class="docutils literal notranslate"><span class="pre">Pandas</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cat</span><span class="p">[</span><span class="s1">&#39;mean_area&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean_area
+small      190
+large      190
+average    189
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s have a look at the first 5 rows in the categorized dataset. You will notice that <code class="docutils literal notranslate"><span class="pre">mean</span> <span class="pre">area</span></code> is now categorical. We will print only a subset of all the columns not to clutter the output.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cat</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">30</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean_texture</th>
+      <th>mean_perimeter</th>
+      <th>mean_area</th>
+      <th>mean_smoothness</th>
+      <th>mean_compactness</th>
+      <th>diagnosis</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.38</td>
+      <td>122.80</td>
+      <td>large</td>
+      <td>0.11840</td>
+      <td>0.27760</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>17.77</td>
+      <td>132.90</td>
+      <td>large</td>
+      <td>0.08474</td>
+      <td>0.07864</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>21.25</td>
+      <td>130.00</td>
+      <td>large</td>
+      <td>0.10960</td>
+      <td>0.15990</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>20.38</td>
+      <td>77.58</td>
+      <td>small</td>
+      <td>0.14250</td>
+      <td>0.28390</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>14.34</td>
+      <td>135.10</td>
+      <td>large</td>
+      <td>0.10030</td>
+      <td>0.13280</td>
+      <td>M</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="making-categorical-features-numeric">
+<h2>Making Categorical Features Numeric  <a class="anchor" id="2.2.2"></a><a class="headerlink" href="#making-categorical-features-numeric" title="Link to this heading">#</a></h2>
+<p>Keep in mind that <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> <strong>requires all features to be numeric</strong>, so you need to encode your categorical features as numeric.</p>
+<section id="nominal-vs-ordinal-categorical-features">
+<h3>Nominal vs. Ordinal Categorical Features<a class="headerlink" href="#nominal-vs-ordinal-categorical-features" title="Link to this heading">#</a></h3>
+<p>There are two types of categorical features: nominal and ordinal. Levels of a <strong>nominal</strong> (categorical) feature do not have a natural ordering. Some examples of nominal categorical features are as follows:</p>
+<ul class="simple">
+<li><p>Gender</p></li>
+<li><p>Seasons</p></li>
+<li><p>Days of a week</p></li>
+<li><p>ID features (such as country IDs, device type IDs)</p></li>
+<li><p>States in a country</p></li>
+<li><p>Breed of a dog</p></li>
+<li><p>Colors of a car brand</p></li>
+</ul>
+<p>On the other hand, levels of an <strong>ordinal</strong> (categorical) feature have a natural ordering. Some examples are as follows:</p>
+<ul class="simple">
+<li><p>The likert scale (strongly disagree, disagree, neutral, agree, strongly agree)</p></li>
+<li><p>Performance levels (poor, satisfactory, good, excellent)</p></li>
+<li><p>Education levels (none, elementary, secondary, bachelors, masters, doctorate)</p></li>
+<li><p>Age of a customer (young, middle-aged, old)</p></li>
+</ul>
+</section>
+<section id="encoding-nominal-descriptive-features">
+<h3>Encoding Nominal Descriptive Features<a class="headerlink" href="#encoding-nominal-descriptive-features" title="Link to this heading">#</a></h3>
+<p>Nominal <strong>descriptive</strong> features must be encoded using “one-hot-encoding”, which is described below. This type of encoding creates a binary variable for each unique value of the nominal feature we are encoding.</p>
+<p>We need to be careful here: <strong>Sometimes a feature that appears to be numeric is actually nominal!</strong> For instance, you might have a feature for country IDs that is numerical. However, these numbers indicate IDs, not numerical quantities! So, we will have to treat this feature as nominal. That is, whenever we have a numerical feature that actually represents categorical quantities (such as IDs), we must consider them as nominal and we must encode them using one-hot-encoding.</p>
+</section>
+<section id="encoding-ordinal-descriptive-features">
+<h3>Encoding Ordinal Descriptive Features<a class="headerlink" href="#encoding-ordinal-descriptive-features" title="Link to this heading">#</a></h3>
+<p>For ordinal <strong>descriptive</strong> features, we have two options:</p>
+<ul class="simple">
+<li><p><strong>One-hot-encoding:</strong> We can encode ordinal features using one-hot-encoding as well. The benefit of this encoding is that we would not be assuming any arithmetic relationship between the levels. The downside is that we would be introducing <span class="math notranslate nohighlight">\(q\)</span> additional binary variables.</p></li>
+<li><p><strong>Integer-encoding:</strong> We can perform integer-encoding (starting at 0) where the ordering is preserved. For instance, the likert scale above can be encoded as {0, 1, 2, 3, 4} where 0 corresponds to strongly disagree and 4 corresponds to strongly agree. The benefit of integer-encoding is that we would be replacing the original ordinal feature with just one feature that is numerical. The downside is that we would be introducing an arithmetic relationship between the levels, such as neutral (2) is “twice as much” as disagree (1).</p></li>
+</ul>
+<p>Deciding which type of encoding is more appropriate for an ordinal feature is almost always problem-specific as we would be making a trade-off with either option with respect to its benefit and downside. However, all else equal, we recommend choosing the integer-encoding option.</p>
+</section>
+<section id="one-hot-encoding">
+<h3>One-Hot-Encoding<a class="headerlink" href="#one-hot-encoding" title="Link to this heading">#</a></h3>
+<p>In the discussion below, we make no particular distinction between the terms “dummy variable” and “binary variable” and we use them interchangeably. We also make no distinction between Python “functions” and “methods” as they both refer to some piece of code.</p>
+<p>Nominal descriptive features must always be encoded using one-hot-encoding. We can use the <code class="docutils literal notranslate"><span class="pre">get_dummies()</span></code> method in the <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> module for one-hot-encoding. This is a very simple and effective method as you can do one-hot-encoding for multiple features at once and you can even supply a custom prefix for each categorical feature. If you omit the <code class="docutils literal notranslate"><span class="pre">columns</span></code> parameter, the <code class="docutils literal notranslate"><span class="pre">get_dummies()</span></code> method will intelligently do one-hot-encoding for <em>all</em> features that are not numeric. Thus, <code class="docutils literal notranslate"><span class="pre">get_dummies()</span></code> can be used in “automatic” mode.</p>
+<p>As a side note, for the <code class="docutils literal notranslate"><span class="pre">get_dummies()</span></code> function to work correctly in the automatic mode, we would have to make sure that categorical features that look like numerical (such as country IDs) are set to the “object” type so that <code class="docutils literal notranslate"><span class="pre">get_dummies()</span></code> knows that it needs to one-hot-encode them too. You can achieve this as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataframe</span><span class="p">[</span><span class="s1">&#39;cat_feature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataframe</span><span class="p">[</span><span class="s1">&#39;cat_feature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once you adapt the line above for your problem and then run it, the feature “cat_feature” becomes a string and therefore <code class="docutils literal notranslate"><span class="pre">get_dummies()</span></code> will one-hot-encode it correctly. While performing one-hot-encoding on a nominal descriptive feature with <span class="math notranslate nohighlight">\(q\)</span> unique levels, we can actually define <span class="math notranslate nohighlight">\(q-1\)</span> binary variables, but we would lose the base level as a feature and this would be problematic when performing feature selection. For instance, suppose we encode days of week using just 6 binary variables by dropping Monday. However, while doing feature selection for the most important days of the week, Monday will not even be one of the options. So, we will be using exactly <span class="math notranslate nohighlight">\(q\)</span> binary variables in our tutorials.</p>
+<p>An exception here is the case of a binary nominal feature where <span class="math notranslate nohighlight">\(q=2\)</span>. In this case, we define only one binary variable by setting the <code class="docutils literal notranslate"><span class="pre">drop_first</span></code> option in <code class="docutils literal notranslate"><span class="pre">get_dummies()</span></code> to “True”. As an example, we would encode the gender feature using only one binary variable. During feature selection, we would be deciding on whether the gender feature is important at all.</p>
+<p>It should also be noted that if you are <strong>not</strong> planning to do any feature selection, then you should define <span class="math notranslate nohighlight">\(q-1\)</span> dummy variables for a nominal feature, not the full set of <span class="math notranslate nohighlight">\(q\)</span> dummy variables. The reason is that defining <span class="math notranslate nohighlight">\(q\)</span> dummy variables results in multicollinearity and this becomes problematic while fitting models such as generalized linear models (this phenomenon is referred to as the “dummy variable trap”).</p>
+<p>Sometimes a nominal descriptive feature will have dozens of levels (such as country IDs) and using one-hot-encoding will therefore result in dozens of new (binary) variables. Well, welcome to the curse of dimensionality! To mitigate this issue, you might want to try feature selection. A more elegant solution would be to cluster countries into similar-looking groups, say in to 10 groups, and use this new group feature (which will be nominal) instead of the country ID feature, but we do not cover clustering here.</p>
+<p>As a good practice, we should first take care of any integer-encoding procedures before any one-hot-encoding so that <code class="docutils literal notranslate"><span class="pre">get_dummies()</span></code> works correctly in the automatic mode.</p>
+<p>Suppose we first performed any integer-encoding procedures (if required) and our dataset now has a mix of numerical and categorical descriptive features (represented by <code class="docutils literal notranslate"><span class="pre">Data</span></code>) where all categorical descriptive features are nominal. We can implement a proper one-hot-encoding logic as below in Python.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the list of categorical descriptive features</span>
+<span class="n">categorical_cols</span> <span class="o">=</span> <span class="n">Data</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">Data</span><span class="o">.</span><span class="n">dtypes</span><span class="o">==</span><span class="nb">object</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="c1"># if a categorical descriptive feature has only 2 levels,</span>
+<span class="c1"># define only one binary variable</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">categorical_cols</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">Data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">Data</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+   
+<span class="c1"># for other categorical features (with &gt; 2 levels), </span>
+<span class="c1"># use regular one-hot-encoding </span>
+<span class="c1"># if a feature is numeric, it will be untouched</span>
+<span class="n">Data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As a simple example, let’s see how we can use one-hot-encoding for encoding the “mean_area” categorical descriptive feature. But first, let’s remind ourselves the <code class="docutils literal notranslate"><span class="pre">df_cat</span></code> data frame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cat</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">30</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean_texture</th>
+      <th>mean_perimeter</th>
+      <th>mean_area</th>
+      <th>mean_smoothness</th>
+      <th>mean_compactness</th>
+      <th>diagnosis</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.38</td>
+      <td>122.80</td>
+      <td>large</td>
+      <td>0.11840</td>
+      <td>0.27760</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>17.77</td>
+      <td>132.90</td>
+      <td>large</td>
+      <td>0.08474</td>
+      <td>0.07864</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>21.25</td>
+      <td>130.00</td>
+      <td>large</td>
+      <td>0.10960</td>
+      <td>0.15990</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>20.38</td>
+      <td>77.58</td>
+      <td>small</td>
+      <td>0.14250</td>
+      <td>0.28390</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>14.34</td>
+      <td>135.10</td>
+      <td>large</td>
+      <td>0.10030</td>
+      <td>0.13280</td>
+      <td>M</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cat_onehot</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df_cat</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mean_area&#39;</span><span class="p">])</span>
+
+<span class="n">df_cat_onehot</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">5</span><span class="p">:]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>worst_fractal_dimension</th>
+      <th>diagnosis</th>
+      <th>mean_area_small</th>
+      <th>mean_area_average</th>
+      <th>mean_area_large</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.11890</td>
+      <td>M</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.08902</td>
+      <td>M</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.08758</td>
+      <td>M</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.17300</td>
+      <td>M</td>
+      <td>True</td>
+      <td>False</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.07678</td>
+      <td>M</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We notice that the “mean_area” feature is now replaced with three binary features at the end of the dataset.</p>
+</section>
+<section id="integer-encoding">
+<h3>Integer-Encoding<a class="headerlink" href="#integer-encoding" title="Link to this heading">#</a></h3>
+<p>A nominal descriptive feature always needs be encoded using one-hot-encoding. However, an ordinal descriptive feature can be encoded via either one-hot-encoding or integer-encoding. For the latter, we can use the <code class="docutils literal notranslate"><span class="pre">replace()</span></code> function in <code class="docutils literal notranslate"><span class="pre">Pandas</span></code>. Let’s do a simple example. The “mean_area” feature we defined above can in fact be considered to be “ordinal” as there is a natural ordering between the levels of small, average, and large. Let’s encode this feature using integer-encoding where each level corresponds to the integers 0, 1, and 2 respectively. Before using the <code class="docutils literal notranslate"><span class="pre">replace()</span></code> function, we need define a mapping between the levels and the integers using a dictionary as below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">level_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;small&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;average&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;large&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once we define the mapping, we can go ahead and perform the integer-encoding using the <code class="docutils literal notranslate"><span class="pre">replace()</span></code> function. After the encoding, we notice that the “mean_area” feature is now of integer data type.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cat_integer</span> <span class="o">=</span> <span class="n">df_cat</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">df_cat_integer</span><span class="p">[</span><span class="s1">&#39;mean_area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_cat_integer</span><span class="p">[</span><span class="s1">&#39;mean_area&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">level_mapping</span><span class="p">)</span>
+
+<span class="n">df_cat_integer</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">30</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean_texture</th>
+      <th>mean_perimeter</th>
+      <th>mean_area</th>
+      <th>mean_smoothness</th>
+      <th>mean_compactness</th>
+      <th>diagnosis</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.38</td>
+      <td>122.80</td>
+      <td>2</td>
+      <td>0.11840</td>
+      <td>0.27760</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>17.77</td>
+      <td>132.90</td>
+      <td>2</td>
+      <td>0.08474</td>
+      <td>0.07864</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>21.25</td>
+      <td>130.00</td>
+      <td>2</td>
+      <td>0.10960</td>
+      <td>0.15990</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>20.38</td>
+      <td>77.58</td>
+      <td>0</td>
+      <td>0.14250</td>
+      <td>0.28390</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>14.34</td>
+      <td>135.10</td>
+      <td>2</td>
+      <td>0.10030</td>
+      <td>0.13280</td>
+      <td>M</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Let’s check to make sure the type of the integer-encoded “mean_area” feature is integer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_cat_integer</span><span class="p">[</span><span class="s1">&#39;mean_area&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CategoricalDtype(categories=[0, 1, 2], ordered=True, categories_dtype=int64)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once we encode an ordinal descriptive feature as an integer, we will have to treat it just like another numerical feature. For instance, it’s important to keep in mind that integer-encoded ordinal features need to be scaled like other numerical features.</p>
+</section>
+<section id="why-integer-encoding-a-nominal-descriptive-feature-is-a-bad-idea">
+<h3>Why Integer-Encoding a Nominal Descriptive Feature is a BAD Idea<a class="headerlink" href="#why-integer-encoding-a-nominal-descriptive-feature-is-a-bad-idea" title="Link to this heading">#</a></h3>
+<p>Integer encoding inherently assumes an ordering. Suppose you encode “Monday” as 1 and “Tuesday” as 2. If you feed this into a linear regression, for instance, the model will assume that Tuesday is “twice as much” as Monday. Is that really the case? Absolutely not, of course. Monday and Tuesday are just two different days of the week and clearly they are not comparable. That is, there is no natural ordering between the days of the week. However, using integer-encoding on weekdays will introduce an ordering that is not there! Thus, any subsequent modeling you perform will be incorrect and your results will be fundamentally invalid.</p>
+</section>
+</section>
+<section id="encoding-the-target-feature">
+<h2>Encoding The Target Feature <a class="anchor" id="2.3"></a><a class="headerlink" href="#encoding-the-target-feature" title="Link to this heading">#</a></h2>
+<p>Interestingly, while we never use integer-encoding for nominal <strong>descriptive</strong> features, we need to do just that for a nominal <strong>target</strong> feature! That is, we encode a nominal target feature using integers starting with 0. When a nominal target feature has more than 2 levels, i.e., the multinomial (a.k.a. the multiclass) case, the ordering is unimportant. In fact, we use <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> module’s <code class="docutils literal notranslate"><span class="pre">LabelEncoder()</span></code> function for this type of integer-encoding (which is simply called “label-encoding”) and this function performs the encoding based on the alphabetical order of the feature levels. However, when a nominal target feature has exactly 2 levels, i.e., the binary classification case, we need to make sure that the “positive” class is encoded as “1” regardless of the  alphabetical order of the target feature levels, as described below.</p>
+<p>To be clear, “label-encoding” is a <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> terminology that refers to a particular form of integer-encoding where (1) encoding starts with 0, (2) numbering is done sequentially, and (3) ordering is done alphabetically.</p>
+<p>Now, we split <code class="docutils literal notranslate"><span class="pre">df</span></code> into the set of descriptive features and the target respectively. Note that we are using the original dataset here and not the categorized one, which was only for demonstration purposes.</p>
+<p><strong>WARNING:</strong> Below, by using the <code class="docutils literal notranslate"><span class="pre">values</span></code> method of <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> for “Data” and “target”, we are converting them to <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> arrays. Here, we make no distinction between a “vector” or a “matrix” as both are simply referred to as <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> arrays with the latter being a two-dimensional array. <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> arrays are usually harder to work with. <strong>For instance, when we convert “Data” from a data frame to a <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> array, we lose column names!</strong> The reason we do this transformation is that <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> only works with <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> arrays and not <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> variables (series or data frames). If you pass in a <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> variable to a <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> method, sometimes it will work! But sometimes it won’t, yet the error message you get will confuse you even further! <em><strong>For this reason, in order to avoid unnecessary dramas, you should never pass in any <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> variables into <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> methods</strong></em>. In case you need to, you will first have to make sure that you use the <code class="docutils literal notranslate"><span class="pre">values</span></code> method of the <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> variable in order to convert it to a <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> array beforehand.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="s1">&#39;diagnosis&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">target</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;diagnosis&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Remember, <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> requires all data to be numeric, so the target feature in our example needs to be encoded as 0 and 1. Note that if we had more than two levels, their label encoding would be 0,1,2,3, etc.</p>
+<p>So, how does <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> know if 0, 1, 2, 3 etc. is actually a numeric target feature, or it’s label-encoding of a categorical target feature? We tell this to <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> with the type of machine learning algorithm we use. For predicting numerical target features, we fit a “regressor” whereas for predicting categorical target features, we fit a “classifier”.</p>
+<p>First, let’s count how many instances each label has in the target feature in the cancer dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([&#39;B&#39;, &#39;M&#39;], dtype=object), array([357, 212]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>As expected, “B” (Benign) and “M” (Malignant) have 357 and 212 observations respectively. Next, let’s encode these as 0 and 1 using <code class="docutils literal notranslate"><span class="pre">LabelEncoder</span></code> from the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> preprocessing module.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+
+<span class="n">le</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="n">le_fit</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+<span class="n">target_encoded_le</span> <span class="o">=</span> <span class="n">le_fit</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">LabelEncoder</span></code> labels in an alphabetical order. That is, “B” is labeled as 0 whereas “M” as labeled as 1.</p>
+<p>Let’s check how the encoding was done. Here, you need to be careful with respect to <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> vs. <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> variables. The return value of label encoding is a <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> array, so you now need to use the <code class="docutils literal notranslate"><span class="pre">np.unique</span></code> method; because <code class="docutils literal notranslate"><span class="pre">value_counts</span></code> method belongs to the <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> module and it will not work with a <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> object.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Target Type:&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">target</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Counts Using NumPy:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">target_encoded_le</span><span class="p">,</span> <span class="n">return_counts</span> <span class="o">=</span> <span class="kc">True</span><span class="p">))</span>
+
+<span class="c1"># this will not work:</span>
+<span class="c1"># ### target_encoded_le.value_counts()</span>
+
+<span class="c1"># but this works:</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Counts Using Pandas:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">target_encoded_le</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Target Type: &lt;class &#39;numpy.ndarray&#39;&gt;
+Counts Using NumPy:
+(array([0, 1]), array([357, 212]))
+Counts Using Pandas:
+0    357
+1    212
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<p><strong>NOTE:</strong> Keep in mind that you can always go back and forth between a <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> array and a <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> series or data frame as below where <code class="docutils literal notranslate"><span class="pre">s</span></code> denotes a series, <code class="docutils literal notranslate"><span class="pre">df</span></code> denotes a data frame, and <code class="docutils literal notranslate"><span class="pre">a</span></code> denotes an array:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NumPy</span></code> to <code class="docutils literal notranslate"><span class="pre">Pandas</span></code>: pd.Series(<code class="docutils literal notranslate"><span class="pre">a</span></code>) (or pd.DataFrame(<code class="docutils literal notranslate"><span class="pre">a</span></code>))</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Pandas</span> <span class="pre">to</span> <span class="pre">Numpy</span></code>: <code class="docutils literal notranslate"><span class="pre">s</span></code>.values (or <code class="docutils literal notranslate"><span class="pre">df</span></code>.values)</p></li>
+</ul>
+<hr class="docutils" />
+<p>So, once encoded, how do we recover the original labels? We can do that using the <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code> method of the <code class="docutils literal notranslate"><span class="pre">LabelEncoder</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">target_original_values</span> <span class="o">=</span> <span class="n">le_fit</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">target_encoded_le</span><span class="p">)</span>
+
+<span class="c1"># here is an example of NumPy array to pandas Series conversion:</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">target_original_values</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>B    357
+M    212
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>In general, the positive class (the class that we are interested in) needs to be encoded as “1” and the negative class needs to be encoded as “0” so that the performance metrics we define work correctly (we will discuss these in more detail in <strong>SK 3: Evaluation</strong>). In this case, we got lucky because “M” comes after “B” in the alphabet! So, label encoder correctly encoded the malignant class as “1”. But we cannot rely on luck all the time, so in case the label encoding does not give us the result we want, we will have to manually define the labels ourselves. For this purpose, we can use the <code class="docutils literal notranslate"><span class="pre">where()</span></code> function in <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> to perform a vectorized “if-else” operation as below. The syntax for this function is follows:</p>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="nf">np.where</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">condition</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">true</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">condition</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">false</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">target_encoded_where</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">target</span><span class="o">==</span><span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">target_encoded_where</span><span class="p">,</span> <span class="n">return_counts</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0, 1]), array([357, 212]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>We observe that manually encoding the target feature using the <code class="docutils literal notranslate"><span class="pre">where()</span></code> function gives us the encoding we want. As an alternative to the <code class="docutils literal notranslate"><span class="pre">where()</span></code> function, we can actually use the <code class="docutils literal notranslate"><span class="pre">replace()</span></code> function in <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> for the same encoding. Keep in mind that the <code class="docutils literal notranslate"><span class="pre">replace()</span></code> function is quite handy for replacing/ mapping values in a series.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># first convert &quot;target&quot; to a Series so that we can use the replace function</span>
+<span class="n">target_encoded_replace</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">target_encoded_replace</span><span class="p">,</span> <span class="n">return_counts</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0, 1]), array([357, 212]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>In case you are wondering, there is really nothing special about “label-encoding” in <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> as it is simply a “find-replace” logic as we did using the <code class="docutils literal notranslate"><span class="pre">where()</span></code> or <code class="docutils literal notranslate"><span class="pre">replace()</span></code> functions. To verify that both label-encoding and our manual “find-replace” logic using the <code class="docutils literal notranslate"><span class="pre">where()</span></code> function result in the same output, let’s confirm that the arrays <code class="docutils literal notranslate"><span class="pre">target_encoded_where</span></code> and <code class="docutils literal notranslate"><span class="pre">target_encoded_le</span></code> are exactly the same!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">target_encoded_where</span><span class="p">,</span> <span class="n">target_encoded_le</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="scaling-descriptive-features">
+<h2>Scaling Descriptive Features <a class="anchor" id="2.4"></a><a class="headerlink" href="#scaling-descriptive-features" title="Link to this heading">#</a></h2>
+<p>Once all categorical descriptive features are encoded, all features in this transformed dataset will be numerical. It is always a good idea to scale these numerical descriptive features before fitting any models, as scaling is mandatory for some important class of models such as nearest neighbors, SVMs, and deep learning.</p>
+<p>Three popular types of scaling are as follows:</p>
+<ol class="arabic">
+<li><p><strong>Min-Max Scaling:</strong> Each descriptive feature is scaled to be between 0 and 1. Min-max scaling for a numerical feature is done as follows:</p>
+<p><span class="math notranslate nohighlight">\(\mbox{scaled\_value} = \frac{\mbox{value - min\_value}}{\mbox{max\_value - min\_value}}\)</span></p>
+</li>
+<li><p><strong>Standard Scaling:</strong> Scaling of each descriptive feature is done via standardization. That is, each value of the descriptive feature is scaled by removing the mean and dividing by the standard deviation of that feature. This ensures that, after scaling, each descriptive feature has a 0 mean and 1 standard deviation. Standard scaling is done as follows:</p>
+<p><span class="math notranslate nohighlight">\(\mbox{scaled\_value} = \frac{\mbox{value - mean}}{\mbox{std. dev.}}\)</span></p>
+</li>
+<li><p><strong>Robust Scaling:</strong> Robust scaling is similar to standard scaling. However, this scaling type is robust to potential outliers in the feature as the median is used instead of mean, and MAD (median absolute deviation) is used instead of the standard deviation. If you suspect that there are outliers in your dataset, you may prefer to use robust scaling, which is done as follows:</p>
+<p><span class="math notranslate nohighlight">\(\mbox{scaled\_value} = \frac{\mbox{value - median}}{\mbox{MAD}}\)</span></p>
+</li>
+</ol>
+<p>All of the above scaling types can be easily performed using the <code class="docutils literal notranslate"><span class="pre">preprocessing</span></code> module in <code class="docutils literal notranslate"><span class="pre">sklearn</span></code>. Let’s have a look at a simple example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">))</span>
+
+<span class="n">min_max</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MinMaxScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">standard</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">robust</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">RobustScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="n">x_scaled_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="s1">&#39;min_max&#39;</span><span class="p">:</span> <span class="n">min_max</span><span class="p">,</span> <span class="s1">&#39;standard&#39;</span><span class="p">:</span> <span class="n">standard</span><span class="p">,</span> <span class="s1">&#39;robust&#39;</span><span class="p">:</span> <span class="n">robust</span><span class="p">})</span>
+<span class="n">x_scaled_df</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>min_max</th>
+      <th>standard</th>
+      <th>robust</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>0.00</td>
+      <td>-0.48</td>
+      <td>-1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.0</td>
+      <td>0.01</td>
+      <td>-0.44</td>
+      <td>-0.8</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.0</td>
+      <td>0.02</td>
+      <td>-0.41</td>
+      <td>-0.6</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3.0</td>
+      <td>0.03</td>
+      <td>-0.37</td>
+      <td>-0.4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4.0</td>
+      <td>0.04</td>
+      <td>-0.33</td>
+      <td>-0.2</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5.0</td>
+      <td>0.05</td>
+      <td>-0.30</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>6.0</td>
+      <td>0.06</td>
+      <td>-0.26</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>7.0</td>
+      <td>0.07</td>
+      <td>-0.22</td>
+      <td>0.4</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>8.0</td>
+      <td>0.08</td>
+      <td>-0.19</td>
+      <td>0.6</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>9.0</td>
+      <td>0.09</td>
+      <td>-0.15</td>
+      <td>0.8</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>100.0</td>
+      <td>1.00</td>
+      <td>3.15</td>
+      <td>19.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Let’s scale the descriptive features in our breast cancer dataset before fitting any classifiers. Here, we use the <code class="docutils literal notranslate"><span class="pre">MinMaxScaler</span></code> scaler as an illustration.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Data</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MinMaxScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="sampling-observations">
+<h2>Sampling Observations <a class="anchor" id="2.5"></a><a class="headerlink" href="#sampling-observations" title="Link to this heading">#</a></h2>
+<p>Sometimes your dataset will just have too many rows for your computer to handle. In this case, the smart thing to do will be to select only a small subset of the entire dataset during modeling.</p>
+<p>We can use the <code class="docutils literal notranslate"><span class="pre">sample</span></code> function in <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> for selecting a small random subset of the entire data. We can use the this function with either one of these two options: “frac” for selecting a certain fraction of the entire data, say 0.2, or “n” for selecting a certain number of rows, say 100 rows.</p>
+<p>In the example below, we load the same dataset (though with no column names) directly from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> to illustrate how we can still select a random subset even if the descriptive features and the target feature are in different arrays. In particular, since in this case data and target are in different <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> arrays, we need to set a common random state so that we select exactly the same rows in both the data and the target. Of course, the Breast Cancer dataset is already quite small with only 569 observations, so we do this sampling only for illustration purposes.</p>
+<p>In the code below, we use a simple trick to use the <code class="docutils literal notranslate"><span class="pre">sample</span></code> function: since this is a <code class="docutils literal notranslate"><span class="pre">Pandas</span></code> function, we first convert the data and the target to a data frame, use the <code class="docutils literal notranslate"><span class="pre">sample</span></code> function, and then revert them back to a <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> array using the <code class="docutils literal notranslate"><span class="pre">values</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_breast_cancer</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">()</span>
+
+<span class="n">Data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">target</span>
+
+<span class="n">Data_sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+<span class="n">target_sample</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s check to see both the data and the target are still <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> arrays and that they now have exactly 100 rows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">Data_sample</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">target_sample</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Data_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">target_sample</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;numpy.ndarray&#39;&gt;
+&lt;class &#39;numpy.ndarray&#39;&gt;
+(100, 30)
+(100, 1)
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./ml"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="README.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Machine Learning Tutorials with Scikit-Learn</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="SK0_Scikit_Learn_Introduction.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">SK Part 0: Introduction to Predictive Modeling with Python and Scikit-Learn</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-classification-example-breast-cancer-wisconsin-data">Binary Classification Example: Breast Cancer Wisconsin Data <a class="anchor" id="2"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-steps">Basic Steps <a class="anchor" id="2.1"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id-like-columns">ID-Like Columns</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constant-features">Constant Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-irrelevant-features">Other Irrelevant Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#redundant-features">Redundant Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#date-and-time-features">Date and Time Features</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-for-missing-values">Checking for Missing Values <a class="anchor" id="2.2.0"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discretizing-numeric-features">Discretizing Numeric Features <a class="anchor" id="2.2.1"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#making-categorical-features-numeric">Making Categorical Features Numeric  <a class="anchor" id="2.2.2"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nominal-vs-ordinal-categorical-features">Nominal vs. Ordinal Categorical Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-nominal-descriptive-features">Encoding Nominal Descriptive Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-ordinal-descriptive-features">Encoding Ordinal Descriptive Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-hot-encoding">One-Hot-Encoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#integer-encoding">Integer-Encoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-integer-encoding-a-nominal-descriptive-feature-is-a-bad-idea">Why Integer-Encoding a Nominal Descriptive Feature is a BAD Idea</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-the-target-feature">Encoding The Target Feature <a class="anchor" id="2.3"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-descriptive-features">Scaling Descriptive Features <a class="anchor" id="2.4"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sampling-observations">Sampling Observations <a class="anchor" id="2.5"></a></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By D. Akman
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

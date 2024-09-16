@@ -1,0 +1,1305 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Probability &#8212; Tutorials on Data Science with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'stats/ch3_probability';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Normal distribution" href="ch4_normal_distribution.html" />
+    <link rel="prev" title="Introduction to data" href="ch1n2_intro_to_data.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Tutorials on Data Science with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to D. Akman’s Tutorials on Data Science with Python!
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python/README.html">Python Basics (PB) Tutorial Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB1_nb_intro.html">INTRODUCTION TO JUPYTER NOTEBOOKS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB2_nb_markdown.html">NOTEBOOK MARKDOWN TUTORIAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB3_intro_to_python.html">Introduction to Python Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB4_numpy.html">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB5_pandas.html">Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB6_matplotlib.html">Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB7_seaborn.html">Seaborn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB8_python_vs_r.html">Python vs. R</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Statistics Tutorials/ OpenIntro Labs for Python</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ch1n2_intro_to_data.html">Introduction to data</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch4_normal_distribution.html">Normal distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5_confidence_intervals.html">Foundations for statistical inference - Confidence intervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5_sampling_distributions.html">Foundations for statistical inference - Sampling distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch6_inf_for_categorical_data.html">Inference for categorical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch7_inf_for_numerical_data.html">Inference for numerical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch8_simple_regression.html">Introduction to linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch9_multiple_regression.html">Multiple linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regression_case_study_predicting_age_in_census_data.html">Predicting Age in Census Data<a class="anchor-link" href="#Predicting-Age-in-Census-Data"></a></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml/README.html">Machine Learning Tutorials with Scikit-Learn</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ml/Data_Prep_for_Predictive_Modelling.html">Data Preparation for Predictive Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK0_Scikit_Learn_Introduction.html">SK Part 0: Introduction to Predictive Modeling with Python and Scikit-Learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK1_Basic_Modelling.html">SK Part 1: Basic Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK2_Feature_Selection.html">SK Part 2: Feature Selection and Ranking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK3_Model_Evaluation.html">SK Part 3: Model Evaluation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK4_HyperParameter_Tuning.html">SK Part 4: Cross-Validation and Hyper-parameter Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK5_Advanced_Topics.html">SK Part 5: Pipelines, Statistical Model Comparison, and Model Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK6_Clustering.html">SK Part 6: K-Means Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK7_Neural_Networks.html">SK Part 7: Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK8_LightGBM.html">Light GBM &amp; Parameter Tuning with Optuna</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/SK9_Forecasting.html">Forecasting Fundamentals with Python &amp; Facebook Prophet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/Case_Study1_Predicting_Income_Status.html">Predicting Income Status</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../ml/Case_Study2_Maintenance_Predictive_Modelling.html">Predicting Optimal Machine Maintenance Cycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml/Case_Study3_Hotel_Prediction.html">Hotel Prediction with Hybrid Collaborative Filtering with SVD</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../ml/Decision_Trees_InfoGain_Computation.html">Information Gain Computation in Python</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/stats/ch3_probability.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Probability</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hot-hands">Hot Hands</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting started</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h-m-m-h-h-m-m-m-m"><code class="docutils literal notranslate"><span class="pre">H</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">H</span> <span class="pre">H</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">M</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compared-to-what">Compared to What?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#p-shot-1-h-0-45"><code class="docutils literal notranslate"><span class="pre">P(shot</span> <span class="pre">1</span> <span class="pre">=</span> <span class="pre">H)</span> <span class="pre">=</span> <span class="pre">0.45</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#p-shot-2-h-shot-1-h-0-60"><code class="docutils literal notranslate"><span class="pre">P(shot</span> <span class="pre">2</span> <span class="pre">=</span> <span class="pre">H|shot</span> <span class="pre">1</span> <span class="pre">=</span> <span class="pre">H)</span> <span class="pre">=</span> <span class="pre">0.60</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#p-shot-2-h-shot-1-h-0-45"><code class="docutils literal notranslate"><span class="pre">P(shot</span> <span class="pre">2</span> <span class="pre">=</span> <span class="pre">H|shot</span> <span class="pre">1</span> <span class="pre">=</span> <span class="pre">H)</span> <span class="pre">=</span> <span class="pre">0.45</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulations-in-python">Simulations in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulating-the-independent-shooter">Simulating the Independent Shooter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#on-your-own">On Your Own</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-kobe-bryant-to-the-independent-shooter">Comparing Kobe Bryant to the Independent Shooter</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="probability">
+<h1>Probability<a class="headerlink" href="#probability" title="Link to this heading">#</a></h1>
+<section id="hot-hands">
+<h2>Hot Hands<a class="headerlink" href="#hot-hands" title="Link to this heading">#</a></h2>
+<p>Basketball players who make several baskets in succession are described as having a hot hand. Fans and players have long believed in the hot hand phenomenon, which refutes the assumption that each shot is independent of the next. However, a 1985 <a class="reference external" href="https://www.cs.colorado.edu/~mozer/Teaching/syllabi/7782/readings/gilovich%20vallone%20tversky.pdf">paper</a> by Gilovich, Vallone, and Tversky collected evidence that contradicted this belief and showed that successive shots are independent events. This paper started a great controversy that continues to this day, as you can see by Googling hot hand basketball.</p>
+<p>We do not expect to resolve this controversy today. However, in this lab we’ll apply one approach to answering questions like this. The goals for this lab are to (1) think about the effects of independent and dependent events, (2) learn how to simulate shooting streaks in Python, and (3) to compare a simulation to actual data in order to determine if the hot hand phenomenon appears to be real.</p>
+</section>
+<section id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h2>
+<p>Our investigation will focus on the performance of one player: Kobe Bryant of the Los Angeles Lakers. His performance against the Orlando Magic in the 2009 NBA finals earned him the title Most Valuable Player and many spectators commented on how he appeared to show a hot hand. Let’s load some data from those games and look at the first several rows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">df_url</span> <span class="o">=</span> <span class="s1">&#39;https://raw.githubusercontent.com/akmand/datasets/master/openintro/kobe.csv&#39;</span>
+<span class="n">url_content</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">df_url</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+<span class="n">kobe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">url_content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)))</span>
+
+<span class="n">kobe</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>vs</th>
+      <th>game</th>
+      <th>quarter</th>
+      <th>time</th>
+      <th>description</th>
+      <th>basket</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>9:47</td>
+      <td>Kobe Bryant makes 4-foot two point shot</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>9:07</td>
+      <td>Kobe Bryant misses jumper</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>8:11</td>
+      <td>Kobe Bryant misses 7-foot jumper</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>7:41</td>
+      <td>Kobe Bryant makes 16-foot jumper (Derek Fisher...</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>7:03</td>
+      <td>Kobe Bryant makes driving layup</td>
+      <td>H</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Let’s check the number of games played.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">kobe</span><span class="p">[</span><span class="s1">&#39;game&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5
+</pre></div>
+</div>
+</div>
+</div>
+<p>Five games were played. NBA games are played in four quarters. However, if the score is equal at the end of the 4th quarter, overtimes are played to determine the winning team. Let’s check if any game went to overtime.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">kobe</span><span class="p">[</span><span class="s1">&#39;quarter&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;1&#39; &#39;2&#39; &#39;3&#39; &#39;4&#39; &#39;1OT&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kobe</span><span class="p">[</span><span class="n">kobe</span><span class="p">[</span><span class="s1">&#39;quarter&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1OT&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>vs</th>
+      <th>game</th>
+      <th>quarter</th>
+      <th>time</th>
+      <th>description</th>
+      <th>basket</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>53</th>
+      <td>ORL</td>
+      <td>2</td>
+      <td>1OT</td>
+      <td>4:13</td>
+      <td>Kobe Bryant misses 22-foot jumper</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>ORL</td>
+      <td>2</td>
+      <td>1OT</td>
+      <td>2:17</td>
+      <td>Kobe Bryant makes 11-foot two point shot</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <th>80</th>
+      <td>ORL</td>
+      <td>4</td>
+      <td>1OT</td>
+      <td>4:13</td>
+      <td>Kobe Bryant makes 11-foot jumper</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <th>81</th>
+      <td>ORL</td>
+      <td>4</td>
+      <td>1OT</td>
+      <td>3:32</td>
+      <td>Kobe Bryant makes 19-foot jumper</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>ORL</td>
+      <td>4</td>
+      <td>1OT</td>
+      <td>2:49</td>
+      <td>Kobe Bryant misses 10-foot jumper</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>83</th>
+      <td>ORL</td>
+      <td>4</td>
+      <td>1OT</td>
+      <td>1:58</td>
+      <td>Kobe Bryant misses 18-foot jumper</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>ORL</td>
+      <td>4</td>
+      <td>1OT</td>
+      <td>0:47</td>
+      <td>Kobe Bryant misses 15-foot jumper</td>
+      <td>M</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We can see that Game 2 and Game 4 went to overtime (encoded as “1OT”).</p>
+<p>Before we begin, we need to make sure the data is properly sorted by <code class="docutils literal notranslate"><span class="pre">game</span></code> and <code class="docutils literal notranslate"><span class="pre">quarter</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kobe</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>vs</th>
+      <th>game</th>
+      <th>quarter</th>
+      <th>time</th>
+      <th>description</th>
+      <th>basket</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>9:47</td>
+      <td>Kobe Bryant makes 4-foot two point shot</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>9:07</td>
+      <td>Kobe Bryant misses jumper</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>8:11</td>
+      <td>Kobe Bryant misses 7-foot jumper</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>7:41</td>
+      <td>Kobe Bryant makes 16-foot jumper (Derek Fisher...</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>7:03</td>
+      <td>Kobe Bryant makes driving layup</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>128</th>
+      <td>ORL</td>
+      <td>3</td>
+      <td>4</td>
+      <td>3:33</td>
+      <td>Bryant Layup Shot: Missed</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>129</th>
+      <td>ORL</td>
+      <td>3</td>
+      <td>4</td>
+      <td>2:02</td>
+      <td>Bryant 3pt Shot: Missed</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>130</th>
+      <td>ORL</td>
+      <td>3</td>
+      <td>4</td>
+      <td>00:23.9</td>
+      <td>Bryant 3pt Shot: Missed</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>131</th>
+      <td>ORL</td>
+      <td>3</td>
+      <td>4</td>
+      <td>00:06.9</td>
+      <td>Bryant 3pt Shot: Missed</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>132</th>
+      <td>ORL</td>
+      <td>3</td>
+      <td>4</td>
+      <td>00:00.5</td>
+      <td>Bryant Layup Shot: Made (31 PTS)</td>
+      <td>H</td>
+    </tr>
+  </tbody>
+</table>
+<p>133 rows × 6 columns</p>
+</div></div></div>
+</div>
+<p>We know that five games were played in total. Yet the last rows shows the records of Game 3. Therefore, we should sort the data by <code class="docutils literal notranslate"><span class="pre">game</span></code> and <code class="docutils literal notranslate"><span class="pre">quarter</span></code> in ascending orders.</p>
+<p>First, let’s replace “1OT” with “5” for the <code class="docutils literal notranslate"><span class="pre">quarter</span></code> column to make sorting easier.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kobe</span><span class="p">[</span><span class="s1">&#39;quarter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kobe</span><span class="p">[</span><span class="s1">&#39;quarter&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;1OT&#39;</span><span class="p">,</span> <span class="s1">&#39;5&#39;</span><span class="p">)</span> 
+<span class="n">kobe</span><span class="p">[</span><span class="s1">&#39;quarter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kobe</span><span class="p">[</span><span class="s1">&#39;quarter&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then, we can sort the data by <code class="docutils literal notranslate"><span class="pre">game</span></code> and <code class="docutils literal notranslate"><span class="pre">quarter</span></code> in ascending orders, and finally begin talking about the concept of probability.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kobe</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;game&#39;</span><span class="p">,</span> <span class="s1">&#39;quarter&#39;</span><span class="p">],</span> <span class="n">ascending</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>  
+<span class="c1"># Note: time is already in descending order for each game and quarter, so we do not need to sort that one.</span>
+<span class="n">kobe</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>vs</th>
+      <th>game</th>
+      <th>quarter</th>
+      <th>time</th>
+      <th>description</th>
+      <th>basket</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>9:47</td>
+      <td>Kobe Bryant makes 4-foot two point shot</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>9:07</td>
+      <td>Kobe Bryant misses jumper</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>8:11</td>
+      <td>Kobe Bryant misses 7-foot jumper</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>7:41</td>
+      <td>Kobe Bryant makes 16-foot jumper (Derek Fisher...</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>ORL</td>
+      <td>1</td>
+      <td>1</td>
+      <td>7:03</td>
+      <td>Kobe Bryant makes driving layup</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>128</th>
+      <td>ORL</td>
+      <td>5</td>
+      <td>4</td>
+      <td>6:22</td>
+      <td>Kobe Bryant misses 18-foot jumper</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>129</th>
+      <td>ORL</td>
+      <td>5</td>
+      <td>4</td>
+      <td>4:26</td>
+      <td>Kobe Bryant misses 27-foot three point jumper</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>130</th>
+      <td>ORL</td>
+      <td>5</td>
+      <td>4</td>
+      <td>3:12</td>
+      <td>Kobe Bryant misses 27-foot three point jumper</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>131</th>
+      <td>ORL</td>
+      <td>5</td>
+      <td>4</td>
+      <td>2:38</td>
+      <td>Kobe Bryant makes 9-foot two point shot</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <th>132</th>
+      <td>ORL</td>
+      <td>5</td>
+      <td>4</td>
+      <td>2:06</td>
+      <td>Kobe Bryant misses 13-foot jumper</td>
+      <td>M</td>
+    </tr>
+  </tbody>
+</table>
+<p>133 rows × 6 columns</p>
+</div></div></div>
+</div>
+<p>In this data frame, every row records a shot taken by Kobe Bryant. If he hit the shot (made a basket), a hit, <code class="docutils literal notranslate"><span class="pre">H</span></code>, is recorded in the column named basket, otherwise a miss, <code class="docutils literal notranslate"><span class="pre">M</span></code>, is recorded.</p>
+<p>Just looking at the string of hits and misses, it can be difficult to gauge whether or not it seems like Kobe was shooting with a hot hand. One way we can approach this is by considering the belief that hot hand shooters tend to go on shooting streaks. For this lab, we define the length of a shooting streak to be the <em><strong>number of consecutive baskets made until a miss occurs</strong></em>.</p>
+<p>For example, in Game 1 Kobe had the following sequence of hits and misses from his nine shot attempts in the first quarter:</p>
+<section id="h-m-m-h-h-m-m-m-m">
+<h3><code class="docutils literal notranslate"><span class="pre">H</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">H</span> <span class="pre">H</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">M</span></code><a class="headerlink" href="#h-m-m-h-h-m-m-m-m" title="Link to this heading">#</a></h3>
+<p>To verify this use the following command:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kobe</span><span class="p">[</span><span class="s1">&#39;basket&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">9</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    H
+1    M
+2    M
+3    H
+4    H
+5    M
+6    M
+7    M
+8    M
+Name: basket, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>Within the nine shot attempts, there are six streaks, which are separated by a “|” above. Their lengths are one, zero, two, zero, zero, zero (in order of occurrence).</p>
+<div class = 'exercise'>
+<h4>Exercise 1</h4>
+What does a streak length of 1 mean, i.e. how many hits and misses are in a streak of 1? What about a streak length of 0?
+</div><p>The custom function <code class="docutils literal notranslate"><span class="pre">calc_streak()</span></code> can be used to calculate the lengths of all shooting streaks.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_streak</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">all_shoots</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">streak</span><span class="p">,</span> <span class="n">count</span> <span class="o">=</span> <span class="p">[],</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">shoot</span> <span class="ow">in</span> <span class="n">all_shoots</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">shoot</span> <span class="o">==</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">shoot</span> <span class="o">==</span> <span class="s1">&#39;M&#39;</span><span class="p">:</span>
+            <span class="n">streak</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="c1"># If the last shoot is a hit, make sure to append the last count to the streak list as well.</span>
+    <span class="k">if</span> <span class="n">all_shoots</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span>  
+        <span class="n">streak</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">streak</span>  
+    
+<span class="n">kobe_streak</span> <span class="o">=</span> <span class="n">calc_streak</span><span class="p">(</span><span class="n">kobe</span><span class="p">[</span><span class="s1">&#39;basket&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">kobe_streak</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1, 0, 2, 0, 0, 0, 3, 2, 0, 3, 0, 1, 3, 0, 0, 0, 0, 0, 1, 1, 0, 4, 1, 0, 1, 0, 1, 0, 1, 4, 3, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 2, 0, 1, 2, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0, 1, 2, 1, 0, 1, 0, 0, 1]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can look at the distribution of the lengths of all shooting streaks  with a barplot.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline 
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">kobe_streak_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">kobe_streak</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+
+<span class="n">kobe_streak_counts</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;crimson&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Length of Shooting Streaks&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/68c111706a75b850c381243b68a42473a193a42c861ac8f66ca90c035636d0c4.png"><img alt="../_images/68c111706a75b850c381243b68a42473a193a42c861ac8f66ca90c035636d0c4.png" src="../_images/68c111706a75b850c381243b68a42473a193a42c861ac8f66ca90c035636d0c4.png" style="width: 822px; height: 445px;" /></a>
+</div>
+</div>
+<p>Note that instead of making a histogram, we chose to make a bar plot. A bar plot is preferable here since our variable is discrete – counts – instead of continuous.</p>
+<div class = 'exercise'>
+<h4>Exercise 2</h4>
+Describe the distribution of Kobe's streak lengths from the 2009 NBA finals. What was his typical streak length? How long was his longest streak of baskets?
+</div></section>
+</section>
+<section id="compared-to-what">
+<h2>Compared to What?<a class="headerlink" href="#compared-to-what" title="Link to this heading">#</a></h2>
+<p>We’ve shown that Kobe had some long shooting streaks, but are they long enough to support the belief that he had hot hands? What can we compare them to?</p>
+<p>To answer these questions, let’s return to the idea of <em>independence</em>. Two processes are independent if the outcome of one process doesn’t effect the outcome of the second. If each shot that a player takes is an independent process, having made or missed your first shot will not affect the probability that you will make or miss your second shot.</p>
+<p>A shooter with a hot hand will have shots that are <em>not</em> independent of one another. Specifically, if the shooter makes his first shot, the hot hand model says he will have a <em>higher</em> probability of making his second shot.</p>
+<p>Let’s suppose for a moment that the hot hand model is valid for Kobe. During his career, the percentage of time Kobe makes a basket (i.e. his shooting percentage) is about 45%, or in probability notation,</p>
+<section id="p-shot-1-h-0-45">
+<h3><code class="docutils literal notranslate"><span class="pre">P(shot</span> <span class="pre">1</span> <span class="pre">=</span> <span class="pre">H)</span> <span class="pre">=</span> <span class="pre">0.45</span></code><a class="headerlink" href="#p-shot-1-h-0-45" title="Link to this heading">#</a></h3>
+<p>If he makes the first shot and has a hot hand (not independent shots), then the probability that he makes his second shot would go up to, let’s say, 60%,</p>
+</section>
+<section id="p-shot-2-h-shot-1-h-0-60">
+<h3><code class="docutils literal notranslate"><span class="pre">P(shot</span> <span class="pre">2</span> <span class="pre">=</span> <span class="pre">H|shot</span> <span class="pre">1</span> <span class="pre">=</span> <span class="pre">H)</span> <span class="pre">=</span> <span class="pre">0.60</span></code><a class="headerlink" href="#p-shot-2-h-shot-1-h-0-60" title="Link to this heading">#</a></h3>
+<p>As a result of these increased probabilites, you’d expect Kobe to have longer streaks. Compare this to the skeptical perspective where Kobe does <em>not</em> have a hot hand (where each shot is independent of the next). If he hit his first shot, the probability that he makes the second is still 0.45.</p>
+</section>
+<section id="p-shot-2-h-shot-1-h-0-45">
+<h3><code class="docutils literal notranslate"><span class="pre">P(shot</span> <span class="pre">2</span> <span class="pre">=</span> <span class="pre">H|shot</span> <span class="pre">1</span> <span class="pre">=</span> <span class="pre">H)</span> <span class="pre">=</span> <span class="pre">0.45</span></code><a class="headerlink" href="#p-shot-2-h-shot-1-h-0-45" title="Link to this heading">#</a></h3>
+<p>In other words, making the first shot did nothing to effect the probability that he’d make his second shot. If Kobe’s shots are independent, then he’d have the same probability of hitting every shot regardless of his past shots: 45%.</p>
+<p>Now that we’ve phrased the situation in terms of independent shots, let’s return to the question: how do we tell if Kobe’s shooting streaks are long enough to indicate that he has hot hands? We can compare his streak lengths to someone without hot hands: an independent shooter.</p>
+</section>
+</section>
+<section id="simulations-in-python">
+<h2>Simulations in Python<a class="headerlink" href="#simulations-in-python" title="Link to this heading">#</a></h2>
+<p>While we don’t have any data from a shooter we know to have independent shots, that sort of data is very easy to simulate in Python. In a simulation, you set the ground rules of a random process and then the computer uses random numbers to generate an outcome that adheres to those rules. As a simple example, you can simulate flipping a fair coin with the following:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">outcomes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;heads&#39;</span><span class="p">,</span> <span class="s1">&#39;tails&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">outcomes</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tails
+</pre></div>
+</div>
+</div>
+</div>
+<p>The vector <code class="docutils literal notranslate"><span class="pre">outcomes</span></code> can be thought of as a hat with two slips of paper in it: one slip says <code class="docutils literal notranslate"><span class="pre">heads</span></code> and the other says <code class="docutils literal notranslate"><span class="pre">tails</span></code>. The function <code class="docutils literal notranslate"><span class="pre">random.choice()</span></code> draws one slip from the hat and tells us if it was a head or a tail.</p>
+<p>Run the second command listed above several times. Just like when flipping a coin, sometimes you’ll get a heads, sometimes you’ll get a tails, but in the long run, you’d expect to get roughly equal numbers of each.</p>
+<p>If you wanted to simulate flipping a fair coin 100 times, you could either run the function 100 times or, more simply, adjust the <code class="docutils literal notranslate"><span class="pre">size</span></code> argument, which governs how many samples to draw (the <code class="docutils literal notranslate"><span class="pre">replace</span> <span class="pre">=</span> <span class="pre">True</span></code> argument indicates we put the slip of paper back in the hat before drawing again). Save the resulting array of heads and tails in a new object called sim_fair_coin.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sim_fair_coin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">outcomes</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To view the results of this simulation, use <code class="docutils literal notranslate"><span class="pre">unique()</span></code> to count up the number of heads and tails:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">unique</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">sim_fair_coin</span><span class="p">,</span> <span class="n">return_counts</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">((</span><span class="n">unique</span><span class="p">,</span> <span class="n">counts</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;heads&#39; &#39;48&#39;]
+ [&#39;tails&#39; &#39;52&#39;]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since there are only two elements in <code class="docutils literal notranslate"><span class="pre">outcomes</span></code>, the probability that we “flip” a coin and it lands heads is 0.5. Say we’re trying to simulate an unfair coin that we know only lands heads 20% of the time. We can adjust for this by adding an argument called <code class="docutils literal notranslate"><span class="pre">p</span></code>, which provides the probabilities associated with each entry in the array.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sim_unfair_coin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">outcomes</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">])</span>
+<span class="n">unique</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">sim_unfair_coin</span><span class="p">,</span> <span class="n">return_counts</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">((</span><span class="n">unique</span><span class="p">,</span> <span class="n">counts</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[&#39;heads&#39; &#39;22&#39;]
+ [&#39;tails&#39; &#39;78&#39;]]
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">[0.2,</span> <span class="pre">0.8]</span></code> indicates that for the two elements in the outcomes array, we want to select the first one, <code class="docutils literal notranslate"><span class="pre">heads</span></code> with probability 0.2 and the second one, <code class="docutils literal notranslate"><span class="pre">tails</span></code> with probability 0.8. Another way of thinking about this is to think of the outcome space as a bag of 10 chips, where 2 chips are labeled “head” and 8 chips “tail”. Therefore at each draw, the probability of drawing a chip that says “head” is 20%, and “tail” is 80%.</p>
+<div class = 'exercise'>
+<h4>Exercise 3</h4>
+In your simulation of flipping the unfair coin 100 times, how many flips came up heads?
+</div><p>In a sense, we’ve shrunken the size of the slip of paper that says “heads”, making it less likely to be drawn and we’ve increased the size of the slip of paper saying “tails”, making it more likely to be drawn. When we simulated the fair coin, both slips of paper were the same size. This happens by default if you don’t provide a <code class="docutils literal notranslate"><span class="pre">p</span></code> argument; all elements in the <code class="docutils literal notranslate"><span class="pre">outcomes</span></code> array have an equal probability of being drawn.</p>
+</section>
+<section id="simulating-the-independent-shooter">
+<h2>Simulating the Independent Shooter<a class="headerlink" href="#simulating-the-independent-shooter" title="Link to this heading">#</a></h2>
+<p>Simulating a basketball player who has independent shots uses the same mechanism that we use to simulate a coin flip. To make a valid comparison between Kobe and our simulated independent shooter, we need to align both their shooting percentage and the number of attempted shots.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">outcomes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">])</span>
+<span class="n">sim_basket</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">outcomes</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">133</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>With the results of the simulation saved as <code class="docutils literal notranslate"><span class="pre">sim_basket</span></code>, we have the data necessary to compare Kobe to our independent shooter. We can look at Kobe’s data alongside our simulated data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kobe</span><span class="p">[</span><span class="s1">&#39;basket&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39;
+ &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39;
+ &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39;
+ &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39;
+ &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39;
+ &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39;
+ &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39;
+ &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">sim_basket</span><span class="p">)</span>  <span class="c1"># Notice that every time you rerun the simulation above, the results of sim_basket changes.</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39;
+ &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39;
+ &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39;
+ &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39;
+ &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39;
+ &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39;
+ &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;H&#39;
+ &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;M&#39; &#39;H&#39; &#39;M&#39; &#39;H&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Both data sets represent the results of 133 shot attempts, each with the same shooting percentage of 45%. We know that our simulated data is from a shooter that has independent shots. That is, we know the simulated shooter does not have a hot hand.</p>
+</section>
+<hr class="docutils" />
+<section id="on-your-own">
+<h2>On Your Own<a class="headerlink" href="#on-your-own" title="Link to this heading">#</a></h2>
+<section id="comparing-kobe-bryant-to-the-independent-shooter">
+<h3>Comparing Kobe Bryant to the Independent Shooter<a class="headerlink" href="#comparing-kobe-bryant-to-the-independent-shooter" title="Link to this heading">#</a></h3>
+<p>Using <code class="docutils literal notranslate"><span class="pre">calc_streak()</span></code>, compute the streak lengths of <code class="docutils literal notranslate"><span class="pre">sim_basket</span></code>.</p>
+<ol>
+  <li>Describe the distribution of streak lengths. What is the typical streak length for this simulated independent shooter with a 45% shooting percentage? How long is the player's longest streak of baskets in 133 shots?</li><br>
+  <li>If you were to run the simulation of the independent shooter a second time, how would you expect its streak distribution to compare to the distribution from the question above? Exactly the same? Somewhat similar? Totally different? Explain your reasoning.</li><br>
+      <li>How does Kobe Bryant's distribution of streak lengths compare to the distribution of streak lengths for the simulated shooter? Using this comparison, do you have evidence that the hot hand model fits Kobe's shooting patterns? Explain.</li>
+</ol><div class = "license">
+This lab was adapted by David Akman and Imran Ture from OpenIntro by Andrew Bray and Mine Çetinkaya-Rundel.
+</div><hr class="docutils" />
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./stats"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ch1n2_intro_to_data.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Introduction to data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ch4_normal_distribution.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Normal distribution</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hot-hands">Hot Hands</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting started</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#h-m-m-h-h-m-m-m-m"><code class="docutils literal notranslate"><span class="pre">H</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">H</span> <span class="pre">H</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">M</span> <span class="pre">|</span> <span class="pre">M</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compared-to-what">Compared to What?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#p-shot-1-h-0-45"><code class="docutils literal notranslate"><span class="pre">P(shot</span> <span class="pre">1</span> <span class="pre">=</span> <span class="pre">H)</span> <span class="pre">=</span> <span class="pre">0.45</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#p-shot-2-h-shot-1-h-0-60"><code class="docutils literal notranslate"><span class="pre">P(shot</span> <span class="pre">2</span> <span class="pre">=</span> <span class="pre">H|shot</span> <span class="pre">1</span> <span class="pre">=</span> <span class="pre">H)</span> <span class="pre">=</span> <span class="pre">0.60</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#p-shot-2-h-shot-1-h-0-45"><code class="docutils literal notranslate"><span class="pre">P(shot</span> <span class="pre">2</span> <span class="pre">=</span> <span class="pre">H|shot</span> <span class="pre">1</span> <span class="pre">=</span> <span class="pre">H)</span> <span class="pre">=</span> <span class="pre">0.45</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulations-in-python">Simulations in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulating-the-independent-shooter">Simulating the Independent Shooter</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#on-your-own">On Your Own</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-kobe-bryant-to-the-independent-shooter">Comparing Kobe Bryant to the Independent Shooter</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By D. Akman
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,11 +1,18 @@
-# Welcome to your Jupyter Book
+# Welcome to D. Akman's Tutorials on Data Science with Python!
 
-This is a small sample book to give you a feel for how book content is
-structured.
-It shows off a few of the major file types, as well as some sample content.
-It does not go in-depth into any particular topic - check out [the Jupyter Book documentation](https://jupyterbook.org) for more information.
+This repository contains a collection of Jupyter notebooks designed to help you learn the following:
+- Fundamental concepts of Python programming together with Python’s Data Science stack
+- Introductory statistics with Python
+- Basic concepts to advanced techniques in machine learning with Python
 
-Check out the content pages bundled with this sample book to see more.
+These notebooks were written by yours truly, David Akman, and are my own work for the most part. They have been tested with Python 3.11.
 
-```{tableofcontents}
-```
+Check out my [GitHub](https://github.com/akmand) for more information.
+
+
+### Table of Contents
+
+- [Python](python/README.md)
+- [Statistics](stats/README.md)
+- [Machine Learning](ml/README.md)
+

@@ -1,0 +1,1558 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SK Part 3: Model Evaluation &#8212; Tutorials on Data Science with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ml/SK3_Model_Evaluation';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SK Part 4: Cross-Validation and Hyper-parameter Tuning" href="SK4_HyperParameter_Tuning.html" />
+    <link rel="prev" title="SK Part 2: Feature Selection and Ranking" href="SK2_Feature_Selection.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Tutorials on Data Science with Python</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Welcome to D. Akman’s Tutorials on Data Science with Python!
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python/README.html">Python Basics (PB) Tutorial Series</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB1_nb_intro.html">INTRODUCTION TO JUPYTER NOTEBOOKS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB2_nb_markdown.html">NOTEBOOK MARKDOWN TUTORIAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB3_intro_to_python.html">Introduction to Python Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB4_numpy.html">NumPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB5_pandas.html">Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB6_matplotlib.html">Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB7_seaborn.html">Seaborn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python/PB8_python_vs_r.html">Python vs. R</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../stats/README.html">Statistics Tutorials/ OpenIntro Labs for Python</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch1n2_intro_to_data.html">Introduction to data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch3_probability.html">Probability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch4_normal_distribution.html">Normal distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch5_confidence_intervals.html">Foundations for statistical inference - Confidence intervals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch5_sampling_distributions.html">Foundations for statistical inference - Sampling distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch6_inf_for_categorical_data.html">Inference for categorical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch7_inf_for_numerical_data.html">Inference for numerical data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch8_simple_regression.html">Introduction to linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/ch9_multiple_regression.html">Multiple linear regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stats/regression_case_study_predicting_age_in_census_data.html">Predicting Age in Census Data<a class="anchor-link" href="#Predicting-Age-in-Census-Data"></a></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="README.html">Machine Learning Tutorials with Scikit-Learn</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Data_Prep_for_Predictive_Modelling.html">Data Preparation for Predictive Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK0_Scikit_Learn_Introduction.html">SK Part 0: Introduction to Predictive Modeling with Python and Scikit-Learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK1_Basic_Modelling.html">SK Part 1: Basic Modeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK2_Feature_Selection.html">SK Part 2: Feature Selection and Ranking</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">SK Part 3: Model Evaluation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="SK4_HyperParameter_Tuning.html">SK Part 4: Cross-Validation and Hyper-parameter Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK5_Advanced_Topics.html">SK Part 5: Pipelines, Statistical Model Comparison, and Model Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK6_Clustering.html">SK Part 6: K-Means Clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK7_Neural_Networks.html">SK Part 7: Neural Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK8_LightGBM.html">Light GBM &amp; Parameter Tuning with Optuna</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SK9_Forecasting.html">Forecasting Fundamentals with Python &amp; Facebook Prophet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Case_Study1_Predicting_Income_Status.html">Predicting Income Status</a></li>
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Case_Study2_Maintenance_Predictive_Modelling.html">Predicting Optimal Machine Maintenance Cycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Case_Study3_Hotel_Prediction.html">Hotel Prediction with Hybrid Collaborative Filtering with SVD</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="Decision_Trees_InfoGain_Computation.html">Information Gain Computation in Python</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/ml/SK3_Model_Evaluation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>SK Part 3: Model Evaluation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">SK Part 3: Model Evaluation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-evaluation">Why Evaluation? <a class="anchor" id="why"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-procedures">Evaluation Procedures <a class="anchor" id="procedures"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-metric-s">Choosing the Right Metric(s) <a class="anchor" id="metrics"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-binary-classifiers">Evaluating Binary Classifiers  <a class="anchor" id="classifiers"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting Started <a class="anchor" id="classifiers_started"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confusion-matrix">Confusion Matrix <a class="anchor" id="cmatrix"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#precision-recall-and-f1-measures">Precision, Recall, and F1 Measures  <a class="anchor" id="c_report"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profit-matrix">Profit Matrix <a class="anchor" id="profit_matrix"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roc-curves">ROC Curves <a class="anchor" id="roc"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-multinomial-classifiers">Evaluating Multinomial Classifiers <a class="anchor" id="mn_classifiers"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Getting Started  <a class="anchor" id="mn_classification_started"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multinomial-evaluation-metrics">Multinomial Evaluation Metrics <a class="anchor" id="mn_eval"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-regressors">Evaluating Regressors <a class="anchor" id="regression"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Getting Started <a class="anchor" id="regression_started"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-multiple-regression-models">Evaluating Multiple Regression Models <a class="anchor" id="regression_multiple_models"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mae-and-r-squared-metrics">MAE and R-Squared Metrics <a class="anchor" id="regression_metrics"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-analysis">Residual Analysis <a class="anchor" id="regression_residuals"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-evaluation">Beyond Evaluation  <a class="anchor" id="beyond"></a></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises <a class="anchor" id="exercises"></a></a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="sk-part-3-model-evaluation">
+<h1>SK Part 3: Model Evaluation<a class="headerlink" href="#sk-part-3-model-evaluation" title="Link to this heading">#</a></h1>
+<section id="learning-objectives">
+<h2>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">#</a></h2>
+<p>The objective of this tutorial is to illustrate evaluation of machine learning algorithms using various performance metrics. We shall use the following datasets as examples of binary classification, multinomial (a.k.a. multiclass) classification, and regression problems respectively:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Diagnostic%29">Breast Cancer Wisconsin Data</a>. The target feature is binary, i.e., if a cancer diagnosis is “malignant” or “benign”.</p></li>
+<li><p><a class="reference external" href="https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data">Wine Data</a>. The target feature is multinomial. It consists of three classes of wines in a particular region in Italy.</p></li>
+<li><p><a class="reference external" href="https://www.kaggle.com/datasets/camnugent/california-housing-prices">California Housing Data</a>. The target feature is continuous, which is the house prices in California.</p></li>
+</ol>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#why"><span class="xref myst">Why Evaluation?</span></a></p></li>
+<li><p><a class="reference internal" href="#procedures"><span class="xref myst">Evaluation Procedures</span></a></p></li>
+<li><p><a class="reference internal" href="#metrics"><span class="xref myst">Choosing the Right Metric(s)</span></a></p></li>
+<li><p><a class="reference internal" href="#classifiers"><span class="xref myst">Evaluating Binary Classifiers</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#classifiers_started"><span class="xref myst">Getting Started</span></a></p></li>
+<li><p><a class="reference internal" href="#cmatrix"><span class="xref myst">Confusion Matrix</span></a></p></li>
+<li><p><a class="reference internal" href="#c_report"><span class="xref myst">Precision, Recall, and F1 Measures</span></a></p></li>
+<li><p><a class="reference internal" href="#profit_matrix"><span class="xref myst">Profit Matrix</span></a></p></li>
+<li><p><a class="reference internal" href="#roc"><span class="xref myst">ROC Curves</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#mn_classifiers"><span class="xref myst">Evaluating Multinomial Classifiers</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#mn_classification_started"><span class="xref myst">Getting Started</span></a></p></li>
+<li><p><a class="reference internal" href="#mn_eval"><span class="xref myst">Multinomial Evaluation Metrics</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#regression"><span class="xref myst">Evaluating Regressors</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#regression_started"><span class="xref myst">Getting Started</span></a></p></li>
+<li><p><a class="reference internal" href="#regression_multiple_models"><span class="xref myst">Evaluating Multiple Regression Models</span></a></p></li>
+<li><p><a class="reference internal" href="#regression_metrics"><span class="xref myst">MAE and R-Squared Metrics</span></a></p></li>
+<li><p><a class="reference internal" href="#regression_residuals"><span class="xref myst">Residual Analysis</span></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#beyond"><span class="xref myst">Beyond Evaluation</span></a></p></li>
+<li><p><a class="reference internal" href="#exercises"><span class="xref myst">Exercises</span></a></p></li>
+</ul>
+</section>
+<section id="why-evaluation">
+<h2>Why Evaluation? <a class="anchor" id="why"></a><a class="headerlink" href="#why-evaluation" title="Link to this heading">#</a></h2>
+<p>Model evaluation is a necessary step in machine learning in order to accomplish the following:</p>
+<ul class="simple">
+<li><p>Determine the “best” model</p></li>
+<li><p>Estimate how the models will perform when deployed</p></li>
+<li><p>Convince the end-users that the deployed model meets their needs</p></li>
+</ul>
+<p>There are two major considerations in evaluation:</p>
+<ol class="arabic simple">
+<li><p>How shall we split the data for evaluation?</p></li>
+<li><p>Which metric(s) should we use for evaluation?</p></li>
+</ol>
+</section>
+<section id="evaluation-procedures">
+<h2>Evaluation Procedures <a class="anchor" id="procedures"></a><a class="headerlink" href="#evaluation-procedures" title="Link to this heading">#</a></h2>
+<p>With respect to the first consideration, we can split the dataset into a training set and a test set (also known as hold-out-sampling). Then we build a machine learning model on the training set and we evaluate how well the model performs on the test set. Data splitting is crucial to avoid or at least mitigate the issue of overfitting.</p>
+<p>A more robust and methodical approach to hold-out sampling is cross-validation. Also, another extension of cross-validation is repeated cross-validation (say 3 times) where data is partitioned into 5 (or sometimes 10) equal-sized chunks multiple times and the cross-validation procedure is repeated, each time with a different partitioning of data.</p>
+</section>
+<section id="choosing-the-right-metric-s">
+<h2>Choosing the Right Metric(s) <a class="anchor" id="metrics"></a><a class="headerlink" href="#choosing-the-right-metric-s" title="Link to this heading">#</a></h2>
+<p>The second consideration is to choose the right metric(s), which is almost always problem-specific. Suppose the problem is a binary classification problem: either a patient is sick or healthy in a medical diagnosis setting. We want to predict a sick patient to be sick and, apparently we would never want to predict a sick patient to be healthy. However, there is no such thing as a perfect model and there is always some sort of trade-off involved. We can increase the cutoff threshold for scores to increase the chances of predicting a truly sick patient as sick, which would be increasing the true positive rate (TPR) (i.e., the recall). But there is no free lunch! Increasing TPR will probably lead to an increase in false positive rate (FPR) as well, i.e., predicting a healthy patient to be sick (a.k.a. false alarms). We discuss this issue of finding the “sweet balance” between TPR and FPR further below.</p>
+<p>Commonly used evaluation metrics for a binary classifier are as follows:</p>
+<ul class="simple">
+<li><p>Simple classification accuracy,</p></li>
+<li><p>Average class accuracy (using either arithmetic or harmonic mean),</p></li>
+<li><p>Confusion matrix,</p></li>
+<li><p>Area under ROC curve (AUC), and</p></li>
+<li><p>Classification report.</p></li>
+</ul>
+<p>Some of the binary evaluation metrics can be extended to multinomial classification problems with some caveats. Meanwhile, evaluating a regressor is simpler. We do not need to adjust prediction score (in fact, we cannot). Popular metrics for regression are as follows:</p>
+<ul class="simple">
+<li><p>Root mean squared error (RMSE),</p></li>
+<li><p>R-squared (<span class="math notranslate nohighlight">\(R^2\)</span>), and</p></li>
+<li><p>Mean absolute error (MAE).</p></li>
+</ul>
+<p>Please refer to <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> documentation on <a class="reference external" href="https://scikit-learn.org/stable/modules/model_evaluation.html">evaluation methods</a> for more details.</p>
+</section>
+<section id="evaluating-binary-classifiers">
+<h2>Evaluating Binary Classifiers  <a class="anchor" id="classifiers"></a><a class="headerlink" href="#evaluating-binary-classifiers" title="Link to this heading">#</a></h2>
+<section id="getting-started">
+<h3>Getting Started <a class="anchor" id="classifiers_started"></a><a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h3>
+<p>Let’s load the Breast Cancer Wisconsin dataset and let’s split the descriptive features and the target feature into a training set and a test set by a ratio of 70:30. That is, we use 70 % of the data to build a KNN classifier and evaluate its performance using the test set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_breast_cancer</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">()</span>
+<span class="n">Data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">target</span>
+
+<span class="n">Data</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MinMaxScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
+
+<span class="c1"># target is already encoded, but we need to reverse the labels</span>
+<span class="c1"># so that malignant is the positive class</span>
+<span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">target</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">D_train</span><span class="p">,</span> <span class="n">D_test</span><span class="p">,</span> <span class="n">t_train</span><span class="p">,</span> <span class="n">t_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span> 
+                                                    <span class="n">target</span><span class="p">,</span> 
+                                                    <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> 
+                                                    <span class="n">random_state</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We shall utilize cross-validation to find the optimal KNN parameters (please refer to the <strong>SK Part 4 tutorial</strong> for more details on hyper-parameter tuning). Here, we use a 3-repeated 5-fold stratified cross-validation on the training set. We choose accuracy as our performance metric. In <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code>, a performance metric is called a “score”. The accuracy rate is defined as</p>
+<div class="math notranslate nohighlight">
+\[\text{Accuracy rate} = \frac{\text{Number of correct predictions}}{\text{Total predictions}}\]</div>
+<p>Note that 1 - accuracy rate is called the misclassification rate, that is,</p>
+<div class="math notranslate nohighlight">
+\[\text{Misclassification rate} = \frac{\text{Number of incorrect predictions}}{\text{Total predictions}}\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RepeatedStratifiedKFold</span><span class="p">,</span> <span class="n">GridSearchCV</span>
+
+<span class="n">cv_method</span> <span class="o">=</span> <span class="n">RepeatedStratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> 
+                                    <span class="n">n_repeats</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> 
+                                    <span class="n">random_state</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using the grid search, we determine the optimal KNN parameters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_KNN</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">()</span>
+<span class="n">params_KNN</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;n_neighbors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> 
+              <span class="s1">&#39;p&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+
+<span class="n">gs_KNN</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">model_KNN</span><span class="p">,</span> 
+                      <span class="n">param_grid</span><span class="o">=</span><span class="n">params_KNN</span><span class="p">,</span> 
+                      <span class="n">cv</span><span class="o">=</span><span class="n">cv_method</span><span class="p">,</span>
+                      <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+                      <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span>
+                      <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gs_KNN</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">D_train</span><span class="p">,</span> <span class="n">t_train</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 15 folds for each of 21 candidates, totalling 315 fits
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s get the predictions for the test data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_pred</span> <span class="o">=</span> <span class="n">gs_KNN</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">D_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Scikit Learn has a module named <code class="docutils literal notranslate"><span class="pre">metrics</span></code> which contains different performance metrics for classifers and regressors. The example below shows how to calculate accuracy score on the test data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9649122807017544
+</pre></div>
+</div>
+</div>
+</div>
+<p>In general, a score function has two arguments:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">y_true</span></code>: the actual values. In our example,  <code class="docutils literal notranslate"><span class="pre">y_true</span> <span class="pre">=</span> <span class="pre">t_test</span></code> (the actual target values from the test data).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y_pred</span></code>: the predicted values. In our example, <code class="docutils literal notranslate"><span class="pre">y_pred</span> <span class="pre">=</span> <span class="pre">t_pred</span></code> (the predicted value from the test data).</p></li>
+</ul>
+</section>
+<section id="confusion-matrix">
+<h3>Confusion Matrix <a class="anchor" id="cmatrix"></a><a class="headerlink" href="#confusion-matrix" title="Link to this heading">#</a></h3>
+<p>A confusion matrix is a square matrix <span class="math notranslate nohighlight">\(M\)</span> constructed such that <span class="math notranslate nohighlight">\(M_{i,j}\)</span> is equal to the number of observations known to be in group <span class="math notranslate nohighlight">\(i\)</span> but predicted to be in group <span class="math notranslate nohighlight">\(j\)</span>. For a binary classifier,</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(M_{0,0}\)</span> = True negatives (TN)</p></li>
+<li><p><span class="math notranslate nohighlight">\(M_{1,0}\)</span> = False negative (FN)</p></li>
+<li><p><span class="math notranslate nohighlight">\(M_{1,1}\)</span> = True positives (TP)</p></li>
+<li><p><span class="math notranslate nohighlight">\(M_{0,1}\)</span> = False positives (FP)</p></li>
+</ul>
+<p>Above, we start the matrix index from 0 because Python indices start from 0. A confusion matrix for a binary classification problem can be shown as a table as below.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Target</p></th>
+<th class="head"><p>Predicted Negative</p></th>
+<th class="head"><p>Predicted Positive</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Target Negative:</p></td>
+<td><p>True Negative (TN)</p></td>
+<td><p>False Positive (FP)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Target Positive:</p></td>
+<td><p>False Negative (FN)</p></td>
+<td><p>True Positive (TP)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Let’s calculate the confusion matrix for the KNN model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[104,   1],
+       [  5,  61]])
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Exercise</strong></p>
+<ol class="arabic simple">
+<li><p>Calculate true positive rate (TPR), which is defined as TP/(TP + FN).</p></li>
+<li><p>Calculate false negative rate (FNR), which is defined as FN/(TP + FN).</p></li>
+</ol>
+</section>
+<section id="precision-recall-and-f1-measures">
+<h3>Precision, Recall, and F1 Measures  <a class="anchor" id="c_report"></a><a class="headerlink" href="#precision-recall-and-f1-measures" title="Link to this heading">#</a></h3>
+<p>Precision, recall, and F1 measures are commonly used metrics for binary classification problems. There are two ways to obtain these measures. The first way is to use the functions from <code class="docutils literal notranslate"><span class="pre">metrics</span></code> below:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">metrics.precision_score(y_true,</span> <span class="pre">y_pred)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metrics.recall_score(y_true,</span> <span class="pre">y_pred)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metrics.f1_score(y_true,</span> <span class="pre">y_pred)</span></code></p></li>
+</ul>
+<p>Another way is to use the <code class="docutils literal notranslate"><span class="pre">classification_report</span></code> which will report these measures.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              precision    recall  f1-score   support
+
+           0       0.95      0.99      0.97       105
+           1       0.98      0.92      0.95        66
+
+    accuracy                           0.96       171
+   macro avg       0.97      0.96      0.96       171
+weighted avg       0.97      0.96      0.96       171
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Refresher Questions</strong>:</p>
+<ol class="arabic simple">
+<li><p>Recall is equivalent to TPR. Does the value reported by <code class="docutils literal notranslate"><span class="pre">classification_report</span></code> match with the confusion matrix?</p></li>
+<li><p>Is the F1 score reported by <code class="docutils literal notranslate"><span class="pre">classification_report</span></code> correct? Hint: F1 <span class="math notranslate nohighlight">\( = 2\times\frac{\text{precision}\times\text{recall}}{\text{precision}+\text{recall}}\)</span></p></li>
+</ol>
+<p>So, is simple accuracy the correct measure in breast cancer classification? Most probably not. If you are a medical practitioner, you might want to increase <strong>TPR</strong> where malignant is the positive class and benign is the negative class. In <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code>, the positive class must be denoted by 1 and the negative class must be denoted by 0. However, in the original dataset, the target response is encoded as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{Target} = \begin{cases}1 &amp; \text{ if benign }\\ 0 &amp; \text{ if malignant }\end{cases}\end{split}\]</div>
+<p>So, we need to be very careful how we define the positive and negative classes in a binary classification problem like this. For this reason, we used the <code class="docutils literal notranslate"><span class="pre">np.where()</span></code> function above to revert the labels so that the positive class is denoted by 1 and the negative class is denoted by 0. After reversing the labels, we now have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{Target} = \begin{cases}0 &amp; \text{ if benign }\\ 1 &amp; \text{ if malignant }\end{cases}\end{split}\]</div>
+<p>Let’s retrain a KNN model using recall (TPR) as the performance metric.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D_train</span><span class="p">,</span> <span class="n">D_test</span><span class="p">,</span> <span class="n">t_train</span><span class="p">,</span> <span class="n">t_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="n">perf_metric</span> <span class="o">=</span> <span class="s1">&#39;recall&#39;</span> <span class="c1"># some other options are: accuracy, f1, roc_auc, etc.</span>
+
+<span class="n">gs_KNN</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">model_KNN</span><span class="p">,</span> 
+                      <span class="n">param_grid</span><span class="o">=</span><span class="n">params_KNN</span><span class="p">,</span> 
+                      <span class="n">cv</span><span class="o">=</span><span class="n">cv_method</span><span class="p">,</span>
+                      <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+                      <span class="n">scoring</span><span class="o">=</span><span class="n">perf_metric</span><span class="p">,</span>
+                      <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">gs_KNN</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">D_train</span><span class="p">,</span> <span class="n">t_train</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 15 folds for each of 21 candidates, totalling 315 fits
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_pred</span> <span class="o">=</span> <span class="n">gs_KNN</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">D_test</span><span class="p">)</span>
+<span class="n">metrics</span><span class="o">.</span><span class="n">recall_score</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.9242424242424242)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[104,   1],
+       [  5,  61]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>For this specific problem, F1 or AUC metrics can be good alternatives to accuracy or TPR since there is a mild class imbalance problem here: we have more benign classes than malignant classes (357 vs. 212 counts).</p>
+</section>
+<section id="profit-matrix">
+<h3>Profit Matrix <a class="anchor" id="profit_matrix"></a><a class="headerlink" href="#profit-matrix" title="Link to this heading">#</a></h3>
+<p>In many cases, it is incorrect to treat all outcomes equally. Sometimes we need to impose asymmetric gains for correct predictions and asymmetric costs for incorrect predictions. For instance, suppose the following is our profit matrix:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Predicted Negative</p></th>
+<th class="head"><p>Predicted Positive</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0 for True Negative (TN)</p></td>
+<td><p>-10 False Positive (FP)</p></td>
+</tr>
+<tr class="row-odd"><td><p>-50 for False Negative (FN)</p></td>
+<td><p>100 True Positive (TP)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Notice that we allocate more cost to false negatives than to false positives. Next we shall calculate the <strong>overall</strong> profit using the profit and confusion matrices. Let’s create the profit matrix using <code class="docutils literal notranslate"><span class="pre">NumPy</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">profit_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">profit_matrix</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[  0, -10],
+       [-50, 100]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">confusion_matrix</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">)</span>
+<span class="n">confusion_matrix</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[104,   1],
+       [  5,  61]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The overall profit matrix is calculated as element-wise multiplication of the profit and confusion matrices.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">overall_profit_matrix</span> <span class="o">=</span> <span class="n">profit_matrix</span><span class="o">*</span><span class="n">confusion_matrix</span>
+<span class="n">overall_profit_matrix</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[   0,  -10],
+       [-250, 6100]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The net profit (or loss) is given by the sum of the elements of the overall profit matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">overall_profit_matrix</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.int64(5840)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="roc-curves">
+<h3>ROC Curves <a class="anchor" id="roc"></a><a class="headerlink" href="#roc-curves" title="Link to this heading">#</a></h3>
+<p>In the previous section, we saw how the TPR and TNR are calculated from a confusion matrix. As explained in Chapter 8 of our textbook, these measures are tied to the threshold used to convert probability scores to predictions. By default, <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code> models predict on the data based on a threshold value of 0.5. If we change the threshold, the confusion matrix will also change. For instance, as the threshold decreases, both TPR and FPR increase. The opposite holds when the threshold increases. To capture this trade-off, we use ROC (Receiver Operating Characteristic) curves. For instance, decreasing the score threshold would be moving to the right on the ROC curve. The area under the ROC curve (AUC) together with the F1 score are some of the most popular metrics for evaluating binary classifiers as they are robust to the class imbalance issue in general.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code>, a quick way to get AUC is to use <code class="docutils literal notranslate"><span class="pre">metric.roc_auc_score</span></code>. But first we will retrain the model with AUC as our performance metric.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">perf_metric</span> <span class="o">=</span> <span class="s1">&#39;roc_auc&#39;</span>
+
+<span class="n">gs_KNN</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">model_KNN</span><span class="p">,</span> 
+                      <span class="n">param_grid</span><span class="o">=</span><span class="n">params_KNN</span><span class="p">,</span> 
+                      <span class="n">cv</span><span class="o">=</span><span class="n">cv_method</span><span class="p">,</span>
+                      <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+                      <span class="n">scoring</span><span class="o">=</span><span class="n">perf_metric</span><span class="p">,</span>
+                      <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">gs_KNN</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">D_train</span><span class="p">,</span> <span class="n">t_train</span><span class="p">);</span>
+
+<span class="n">metrics</span><span class="o">.</span><span class="n">roc_auc_score</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 15 folds for each of 21 candidates, totalling 315 fits
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.9573593073593074)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can visualize an ROC curve by calculating prediction scores using the <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> method in <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_prob</span> <span class="o">=</span> <span class="n">gs_KNN</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">D_test</span><span class="p">)</span>
+<span class="n">t_prob</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1.        , 0.        ],
+       [1.        , 0.        ],
+       [1.        , 0.        ],
+       [1.        , 0.        ],
+       [1.        , 0.        ],
+       [1.        , 0.        ],
+       [0.85714286, 0.14285714],
+       [0.14285714, 0.85714286],
+       [1.        , 0.        ],
+       [1.        , 0.        ]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>As a side note, <code class="docutils literal notranslate"><span class="pre">_proba</span></code> stands for “probability”, which is apparently between 0 and 1. Now let’s visualize the ROC curve.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">roc_curve</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_prob</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">roc_auc</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">)</span>
+<span class="n">roc_auc</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.9735930735930736)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;fpr&#39;</span><span class="p">:</span> <span class="n">fpr</span><span class="p">,</span> <span class="s1">&#39;tpr&#39;</span><span class="p">:</span> <span class="n">tpr</span><span class="p">})</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fpr</th>
+      <th>tpr</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.000000</td>
+      <td>0.727273</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.000000</td>
+      <td>0.863636</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.009524</td>
+      <td>0.893939</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.038095</td>
+      <td>0.924242</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0.076190</td>
+      <td>0.939394</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0.133333</td>
+      <td>0.939394</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.247619</td>
+      <td>0.969697</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1.000000</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline 
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;ggplot&quot;</span><span class="p">)</span>
+    
+<span class="n">ax</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;fpr&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;tpr&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;ROC Curve&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">marker</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;False Postive Rate (FPR)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;True Positive Rate (TPR)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/b5a1f8f9cdc4680c85c3c97f916790bef2b3aca52a69146d4e5fecb9a5814c7b.png"><img alt="../_images/b5a1f8f9cdc4680c85c3c97f916790bef2b3aca52a69146d4e5fecb9a5814c7b.png" src="../_images/b5a1f8f9cdc4680c85c3c97f916790bef2b3aca52a69146d4e5fecb9a5814c7b.png" style="width: 569px; height: 459px;" /></a>
+</div>
+</div>
+<p>Our ROC curve has an “elbow” around FNR = 0.1 with a very high corresponding TPR. This indicates the optimized KNN model has an outstanding predictive performance!</p>
+</section>
+</section>
+<section id="evaluating-multinomial-classifiers">
+<h2>Evaluating Multinomial Classifiers <a class="anchor" id="mn_classifiers"></a><a class="headerlink" href="#evaluating-multinomial-classifiers" title="Link to this heading">#</a></h2>
+<p>Multinomial classification refers to prediction problems where the target feature is multinomial (a.k.a. multiclass). That is, the target feature is categorical with at least three different levels. For multinomial classification illustration, we use the <a class="reference external" href="https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data">Wine Data</a>. The target feature refers to three different classes of wines in a particular region in Italy. Although multinomial classification is a generalization of the binary case, we cannot use the following binary metrics to evaluate a multinomial classifier:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">metrics.roc_auc_score</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metrics.average_precision_score</span></code></p></li>
+</ul>
+<p>Some other metrics can be applied to multinomial targets, but they require an “average” parameter as discussed below.</p>
+<section id="id1">
+<h3>Getting Started  <a class="anchor" id="mn_classification_started"></a><a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Let’s load up the wine data and split it into 70% training and 30% test data. We shall use 3-repeated 5-fold cross-validation to determine optimal hyperparameters of a KNN model using the training set. Then we shall evaluate the model’s performance on the test set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_wine</span>
+
+<span class="n">wine</span> <span class="o">=</span> <span class="n">load_wine</span><span class="p">()</span>
+<span class="n">Data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">wine</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">wine</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s check class counts.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">wine</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">return_counts</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0, 1, 2]), array([59, 71, 48]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>We shall optimize the KNN hyperparameters based on the simple accuracy score.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D_train</span><span class="p">,</span> <span class="n">D_test</span><span class="p">,</span> <span class="n">t_train</span><span class="p">,</span> <span class="n">t_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span> 
+                                                    <span class="n">target</span><span class="p">,</span> 
+                                                    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> 
+                                                    <span class="n">stratify</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
+                                                    <span class="n">random_state</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="n">model_KNN</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">()</span>
+<span class="n">params_KNN</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;n_neighbors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> 
+              <span class="s1">&#39;p&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+
+<span class="n">gs_KNN</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">model_KNN</span><span class="p">,</span> 
+                      <span class="n">param_grid</span><span class="o">=</span><span class="n">params_KNN</span><span class="p">,</span> 
+                      <span class="n">cv</span><span class="o">=</span><span class="n">cv_method</span><span class="p">,</span>
+                      <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+                      <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> 
+                      <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">gs_KNN</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">D_train</span><span class="p">,</span> <span class="n">t_train</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 15 folds for each of 18 candidates, totalling 270 fits
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="multinomial-evaluation-metrics">
+<h3>Multinomial Evaluation Metrics <a class="anchor" id="mn_eval"></a><a class="headerlink" href="#multinomial-evaluation-metrics" title="Link to this heading">#</a></h3>
+<p>The accuracy of the KNN model on the test data can be calculated as follows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+
+<span class="n">t_pred</span> <span class="o">=</span> <span class="n">gs_KNN</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">D_test</span><span class="p">)</span>
+<span class="n">metrics</span><span class="o">.</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7222222222222222
+</pre></div>
+</div>
+</div>
+</div>
+<p>How about the confusion matrix? Clearly, it will be a 3 x 3 square matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[15,  1,  2],
+       [ 2, 16,  3],
+       [ 0,  7,  8]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>As in binary classification problems, we can also generate a classification report.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              precision    recall  f1-score   support
+
+           0       0.88      0.83      0.86        18
+           1       0.67      0.76      0.71        21
+           2       0.62      0.53      0.57        15
+
+    accuracy                           0.72        54
+   macro avg       0.72      0.71      0.71        54
+weighted avg       0.72      0.72      0.72        54
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the classification report, “micro” averaging refers to calculating metrics globally by counting the total true positives, false negatives, and false positives. On the other hand, “macro” averaging refers to calculating metrics for each label, and find their unweighted mean. Macro averaging does not take label imbalance into account. Thus, micro averaging would be preferred to macro when there is a class imbalance. Likewise, if the class counts are somewhat balanced as in the wine data example, micro and macro averaging results will be similar. Also, the micro F1 score is the harmonic mean of micro recall and micro precision. To obtain micro scores, we set <code class="docutils literal notranslate"><span class="pre">average='micro'</span></code> as below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">recall_score</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;micro&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.7222222222222222)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">precision_score</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;micro&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.7222222222222222)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">f1_score</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;micro&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.7222222222222222)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we can calculate the “average class accuracy using arithmetic mean” by using the <code class="docutils literal notranslate"><span class="pre">balanced_accuracy_score</span></code> method. This metric can be used for both binary as well as multinomial classification problems.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(0.7095238095238096)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="evaluating-regressors">
+<h2>Evaluating Regressors <a class="anchor" id="regression"></a><a class="headerlink" href="#evaluating-regressors" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h3>Getting Started <a class="anchor" id="regression_started"></a><a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>Let’s load up the California housing data. Then we split the data into training and test sets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_california_housing</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+
+<span class="n">housing_df</span> <span class="o">=</span> <span class="n">fetch_california_housing</span><span class="p">()</span>
+
+<span class="n">Data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">housing_df</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">housing_df</span><span class="o">.</span><span class="n">target</span>
+
+<span class="c1"># scale each descriptive feature to be between 0 and 1</span>
+<span class="n">Data</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MinMaxScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
+
+<span class="n">D_train</span><span class="p">,</span> <span class="n">D_test</span><span class="p">,</span> <span class="n">t_train</span><span class="p">,</span> <span class="n">t_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We choose mean squared error (MSE) for model performance evaluation and comparison. The MSE is defined as</p>
+<div class="math notranslate nohighlight">
+\[\text{MSE} = \frac{\sum_{i=1}^{n}(t_{i} - \mathbb{M}(d_{i})^2)}{n}\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(t_{1}, t_{2}, ..., t_{n}\)</span> is the set of <span class="math notranslate nohighlight">\(n\)</span> actual target values (in our case, housing prices) from the test data.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{M}\)</span> is the model we train and <span class="math notranslate nohighlight">\(\mathbb{M}(d_{i})\)</span> is the model’s prediction for observation <span class="math notranslate nohighlight">\(d_i\)</span> in the test data.</p></li>
+</ul>
+<p>As in classification problems, it is recommended to use the same performance metric for model evaluation and hyperparameter tuning. We determine the optimal parameters using a 3 repeated 5-folded cross validation. Keep in mind that stratification will not work with regression problems as there is nothing to stratify on as in classification problems!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RepeatedKFold</span><span class="p">,</span> <span class="n">GridSearchCV</span>
+<span class="n">cv_method</span> <span class="o">=</span> <span class="n">RepeatedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">999</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="evaluating-multiple-regression-models">
+<h3>Evaluating Multiple Regression Models <a class="anchor" id="regression_multiple_models"></a><a class="headerlink" href="#evaluating-multiple-regression-models" title="Link to this heading">#</a></h3>
+<p>Unlike the previous classification problem, we shall illustrate how we can evaluate <strong>two</strong> models simultaneously within the same cross validation strategy.</p>
+<p>First, we need to import the modules required to build a KNN and a DT model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsRegressor</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">tree</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Second, we create a dictionary called <code class="docutils literal notranslate"><span class="pre">models</span></code> as follows: each dictionary key corresponds to a different model and the dictionary values are the model objects. For example, the first key is <code class="docutils literal notranslate"><span class="pre">KNN</span></code> with a value of <code class="docutils literal notranslate"> <span class="pre">KNeighborsRegressor()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">models</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;KNN&#39;</span><span class="p">:</span> <span class="n">KNeighborsRegressor</span><span class="p">(),</span>
+          <span class="s1">&#39;DT&#39;</span><span class="p">:</span> <span class="n">tree</span><span class="o">.</span><span class="n">DecisionTreeRegressor</span><span class="p">()}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Third, we create a dictionary named <code class="docutils literal notranslate"><span class="pre">models_parameters</span></code> which <strong>must share the same keys</strong> as in <code class="docutils literal notranslate"><span class="pre">models</span></code> dictionary. In <code class="docutils literal notranslate"><span class="pre">models_parameters</span></code>, each item contains its own dictionary of parameters we would like to optimize. For instance, <code class="docutils literal notranslate"><span class="pre">KNN</span></code> has a dictionary consisting of <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code> and <code class="docutils literal notranslate"><span class="pre">p</span></code> keys. Within this dictionary, each item has the range of parameter values that we would like to try.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">models_parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;KNN&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;n_neighbors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> 
+                             <span class="s1">&#39;p&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]},</span>
+                     <span class="s1">&#39;DT&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> 
+                            <span class="s1">&#39;min_samples_split&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Fourth, we need to create a <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> object where we specify <code class="docutils literal notranslate"><span class="pre">estimator=models</span></code> and <code class="docutils literal notranslate"><span class="pre">param_grid=models_parameters</span></code> to tell <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> the models and their corresponding parameters we wish to build and train.</p>
+<p>We define <code class="docutils literal notranslate"><span class="pre">scoring='neg_mean_squared_error'</span></code> as the regression performance metric we want to use. The convention in <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> is that when it comes to scores, “higher is always better”. Thus, whenever we would like to use a metric for which lower values are better (such as MSE), we need to use their negatives as the score so that we are compliant with the convention that “higher score is better”. The reason is that maximizing the negative of MSE will actually minimize the MSE. For instance, in order to minimize MAE, we would define <code class="docutils literal notranslate"><span class="pre">scoring='neg_mean_absolute_error'</span></code>.</p>
+<p>For each model, we determine the optimal set of parameters that result in the lowest MSE as possible. Please remember to include <code class="docutils literal notranslate"><span class="pre">cv_method</span></code> (the cross-validation strategy we defined) in <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code>.</p>
+<p>Finally, we run the grid search in a loop. We create a dictionary named <code class="docutils literal notranslate"><span class="pre">fitted_models</span></code> to store the grid search outputs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fitted_models</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># this creates an empty dictionary</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span> <span class="c1"># this will loop over the dictionary keys</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Hyperparameter tuning for </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s1">:&#39;</span><span class="p">)</span>
+    <span class="n">gs</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">models</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> 
+                      <span class="n">param_grid</span><span class="o">=</span><span class="n">models_parameters</span><span class="p">[</span><span class="n">m</span><span class="p">],</span> 
+                      <span class="n">cv</span><span class="o">=</span><span class="n">cv_method</span><span class="p">,</span>
+                      <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+                      <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;neg_mean_squared_error&#39;</span><span class="p">)</span>
+    <span class="n">gs</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">D_train</span><span class="p">,</span> <span class="n">t_train</span><span class="p">);</span>
+    <span class="n">fitted_models</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">gs</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Best </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s1"> model: </span><span class="si">{</span><span class="n">gs</span><span class="o">.</span><span class="n">best_params_</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hyperparameter tuning for KNN:
+Fitting 15 folds for each of 15 candidates, totalling 225 fits
+Best KNN model: {&#39;n_neighbors&#39;: 5, &#39;p&#39;: 1}
+
+Hyperparameter tuning for DT:
+Fitting 15 folds for each of 12 candidates, totalling 180 fits
+Best DT model: {&#39;max_depth&#39;: 4, &#39;min_samples_split&#39;: 2}
+</pre></div>
+</div>
+</div>
+</div>
+<p>To compare KNN and DT models, we predict housing prices from the test data and compute the MSE (via <code class="docutils literal notranslate"><span class="pre">mean_squared_error(&lt;true</span> <span class="pre">target</span> <span class="pre">value&gt;,</span> <span class="pre">&lt;predicted</span> <span class="pre">target</span> <span class="pre">value&gt;)</span></code> from <code class="docutils literal notranslate"><span class="pre">metrics</span></code>) as below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">fitted_models</span><span class="p">:</span>
+    <span class="n">t_pred</span> <span class="o">=</span> <span class="n">fitted_models</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">D_test</span><span class="p">)</span>
+    <span class="n">mse</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;MSE of </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s1"> is: </span><span class="si">{</span><span class="n">mse</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MSE of KNN is: 0.36735193335669697
+MSE of DT is: 0.5527616617419007
+</pre></div>
+</div>
+</div>
+</div>
+<p>KNN has a lower test MSE error compared to DT, implying (optimized) KNN is more accurate in predicting the housing price.</p>
+</section>
+<section id="mae-and-r-squared-metrics">
+<h3>MAE and R-Squared Metrics <a class="anchor" id="regression_metrics"></a><a class="headerlink" href="#mae-and-r-squared-metrics" title="Link to this heading">#</a></h3>
+<p>Besides MSE, we can compute other metrics:</p>
+<ul class="simple">
+<li><p>Mean Absolute Error (MAE) which is more robust to outliers. This can be calculated via <code class="docutils literal notranslate"><span class="pre">metrics.mean_absolute_error</span></code>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(R^{2}\)</span>, a domain-independent measure of error. This metric measures the amount of variability in the target feature that is explained by the descriptive features. It is between 0 and 1 with higher values being better. It can be calculated via <code class="docutils literal notranslate"><span class="pre">r2_score</span></code>.</p></li>
+</ul>
+<p>Let’s check whether KNN still outperforms DT if we evaluate them using MAE or <span class="math notranslate nohighlight">\(R^{2}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">fitted_models</span><span class="p">:</span>
+    <span class="n">t_pred</span> <span class="o">=</span> <span class="n">fitted_models</span><span class="p">[</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">D_test</span><span class="p">)</span>
+    <span class="n">mae</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">)</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">r2_score</span><span class="p">(</span><span class="n">t_test</span><span class="p">,</span> <span class="n">t_pred</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;MAE and r-squared </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s1"> are: </span><span class="si">{</span><span class="n">mae</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">r2</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MAE and r-squared KNN are: 0.4046782580749354, 0.7323287461112485
+MAE and r-squared DT are: 0.5534859610267931, 0.5972298124359738
+</pre></div>
+</div>
+</div>
+</div>
+<p>KNN has a lower test MAE error and a higher <span class="math notranslate nohighlight">\(R^{2}\)</span> than DT. Thus, KNN outperforms DT with respect to these two metrics as well. In practice though, using a different metric during hyperparameter tuning will likely result in a different model evaluation. Recall that we used MSE to optimize the hyperparameters of each model. In our case, it is just a coincidence that KNN has lower MSE and MAE values and a higher <span class="math notranslate nohighlight">\(R^2\)</span> than DT. In summary, whatever metric you want to optimize, you should use the same metric for both hyperparameter tuning and model evaluation. That is, you should avoid using different metrics for tuning and evaluation.</p>
+<p><strong>Refresher Questions</strong>:</p>
+<ul class="simple">
+<li><p>Why does a higher <span class="math notranslate nohighlight">\(R^2\)</span> value indicate a better model performance? Hint: <span class="math notranslate nohighlight">\(R^2\)</span> is defined as:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[R^{2} = 1 - \frac{\text{Sum of squared error}}{\text{Total sum of squares}}\]</div>
+<ul class="simple">
+<li><p>What is the range of MSE? How about MAE?</p></li>
+</ul>
+<p><strong>Important Side Notes</strong></p>
+<ol class="arabic simple">
+<li><p>There are many ways to evaluate multiple models in <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>. Our example makes use of dictionaries and for loops because this approach is easier. Other approaches include utilizing <code class="docutils literal notranslate"><span class="pre">pipeline</span></code> from <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> or defining our own “classes” in an object-oriented programming framework. We do not cover the latter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> allows to optimize parameters using multiple metrics. Again we do not cover in this tutorial because it would return a <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> object with nested information.</p></li>
+<li><p>We can define our own performance metrics. If you are curious, please refer to “<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.make_scorer.html#sklearn.metrics.make_scorer">How to make scorer in scikit-learn</a>”.</p></li>
+</ol>
+</section>
+<section id="residual-analysis">
+<h3>Residual Analysis <a class="anchor" id="regression_residuals"></a><a class="headerlink" href="#residual-analysis" title="Link to this heading">#</a></h3>
+<p>The regression metrics help us evaluate and rank model performance. However, using metrics alone cannot help us validate the models, including checking the underlying model assumptions. The model validation process primarily stems from statistics. One way to validate a model is to conduct a residual analysis. Residual is the difference between an actual value and a predicted value. That is, for observation <span class="math notranslate nohighlight">\(i\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\text{Residual}_{i} = t_{i} - \mathbb{M}(d_{i}).\]</div>
+<p>For simplicity, we shall use histograms to visualize the residuals. The goal here is to make sure that there are not too many residuals with very large negative or positive values. The intuition is that if a regression model has a good predictive power, its predictions should not deviate too much from the actual values. Likewise, we would expect residual values to be close to zero on average for a good model.</p>
+<p>To illustrate the concept, let’s create a histogram of residuals for the KNN and DT models.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_pred_knn</span> <span class="o">=</span> <span class="n">fitted_models</span><span class="p">[</span><span class="s1">&#39;KNN&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">D_test</span><span class="p">)</span>
+<span class="n">residuals_knn</span> <span class="o">=</span> <span class="n">t_test</span> <span class="o">-</span> <span class="n">t_pred_knn</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">residuals_knn</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Residuals (Binned)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Number of Residuals&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribution of Residuals for KNN Model&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/dec741888576af9c3c4fe8fdf359113165f3e7b60ddac244f14c89de577e837a.png"><img alt="../_images/dec741888576af9c3c4fe8fdf359113165f3e7b60ddac244f14c89de577e837a.png" src="../_images/dec741888576af9c3c4fe8fdf359113165f3e7b60ddac244f14c89de577e837a.png" style="width: 583px; height: 459px;" /></a>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_pred_dt</span> <span class="o">=</span> <span class="n">fitted_models</span><span class="p">[</span><span class="s1">&#39;DT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">D_test</span><span class="p">)</span>
+<span class="n">residuals_dt</span> <span class="o">=</span> <span class="n">t_test</span> <span class="o">-</span> <span class="n">t_pred_dt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">residuals_dt</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Residuals (Binned)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Number of Residuals&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribution of Residuals for DT Model&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="../_images/699f9748a20042b1368350506e137e28f96e46a66a8373771f410fe329d20d93.png"><img alt="../_images/699f9748a20042b1368350506e137e28f96e46a66a8373771f410fe329d20d93.png" src="../_images/699f9748a20042b1368350506e137e28f96e46a66a8373771f410fe329d20d93.png" style="width: 583px; height: 459px;" /></a>
+</div>
+</div>
+<p>KNN residuals are somewhat more tightly distributed compared to that of DT. This might explain why KNN has a lower MSE value.</p>
+</section>
+</section>
+<section id="beyond-evaluation">
+<h2>Beyond Evaluation  <a class="anchor" id="beyond"></a><a class="headerlink" href="#beyond-evaluation" title="Link to this heading">#</a></h2>
+<p>Data is unlikely to be constant (or stable) forever. For example, consumers change their spending habits and housing prices fluctuate over time. This is known as <strong>“concept drift”</strong>. Thus, it is important to monitor the model performance in an on-going validation framework. Below are some common approaches to monitor changes in the underlying process:</p>
+<ol class="arabic simple">
+<li><p>Monitoring changes in model performance metrics.</p></li>
+<li><p>Monitoring model output (target) distribution changes using stability index.</p></li>
+<li><p>Monitoring descriptive feature distribution changes.</p></li>
+<li><p>Conducting comparative experiments using control groups.</p></li>
+</ol>
+<p>We shall not cover model monitoring topics in this tutorial.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="exercises">
+<h1>Exercises <a class="anchor" id="exercises"></a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h1>
+<ol class="arabic simple">
+<li><p>Using breast cancer data, build a DT model evaluated on <strong>precision</strong> and compute a confusion matrix.</p></li>
+<li><p>Using the DT model from the previous question, compute and visualize a ROC curve.</p></li>
+<li><p>Using the California housing data, build and evaluate three regressor models - KNN, DT and (Gaussian) Naive Bayes (NB) using MAE as the metric.</p></li>
+</ol>
+<hr class="docutils" />
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./ml"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="SK2_Feature_Selection.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">SK Part 2: Feature Selection and Ranking</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="SK4_HyperParameter_Tuning.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">SK Part 4: Cross-Validation and Hyper-parameter Tuning</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">SK Part 3: Model Evaluation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-objectives">Learning Objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-evaluation">Why Evaluation? <a class="anchor" id="why"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-procedures">Evaluation Procedures <a class="anchor" id="procedures"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-right-metric-s">Choosing the Right Metric(s) <a class="anchor" id="metrics"></a></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-binary-classifiers">Evaluating Binary Classifiers  <a class="anchor" id="classifiers"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting Started <a class="anchor" id="classifiers_started"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confusion-matrix">Confusion Matrix <a class="anchor" id="cmatrix"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#precision-recall-and-f1-measures">Precision, Recall, and F1 Measures  <a class="anchor" id="c_report"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#profit-matrix">Profit Matrix <a class="anchor" id="profit_matrix"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roc-curves">ROC Curves <a class="anchor" id="roc"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-multinomial-classifiers">Evaluating Multinomial Classifiers <a class="anchor" id="mn_classifiers"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Getting Started  <a class="anchor" id="mn_classification_started"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multinomial-evaluation-metrics">Multinomial Evaluation Metrics <a class="anchor" id="mn_eval"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-regressors">Evaluating Regressors <a class="anchor" id="regression"></a></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Getting Started <a class="anchor" id="regression_started"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-multiple-regression-models">Evaluating Multiple Regression Models <a class="anchor" id="regression_multiple_models"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mae-and-r-squared-metrics">MAE and R-Squared Metrics <a class="anchor" id="regression_metrics"></a></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-analysis">Residual Analysis <a class="anchor" id="regression_residuals"></a></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-evaluation">Beyond Evaluation  <a class="anchor" id="beyond"></a></a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">Exercises <a class="anchor" id="exercises"></a></a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By D. Akman
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

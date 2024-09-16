@@ -3,7 +3,7 @@ name: Deploy HTML Site
 on:
   push:
     branches:
-      - main
+      - main  # Triggers the workflow on every push to the main branch
 
 jobs:
   deploy:
@@ -18,13 +18,13 @@ jobs:
       - name: Install unzip
         run: sudo apt-get install unzip
 
-      # Step 3: Unzip the uploaded HTML folder
-      - name: Unzip HTML folder
-        run: unzip html_site.zip -d html_site
+      # Step 3: Unzip the uploaded HTML folder to the root
+      - name: Unzip HTML folder to root
+        run: unzip html.zip -d ./  # Unzips the content directly into the root of the repo
 
-      # Step 4: Deploy to GitHub Pages
+      # Step 4: Deploy to GitHub Pages (if using GitHub Pages from the 'gh-pages' branch)
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./html_site  # Directory containing unzipped HTML files
+          publish_dir: ./  # This ensures everything at the root is deployed
